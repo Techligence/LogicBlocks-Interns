@@ -3,7 +3,7 @@ import { Card } from '@mui/material';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
 
-// Import the button components
+
 import FlagButton from './Canvas/FlagButton';
 import StopButton from './Canvas/StopButton';
 import UndoButton from './Canvas/UndoButton';
@@ -13,8 +13,9 @@ import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
 const Canvas = () => {
+
   return (
-    <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden' }}>
+    <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden', background:"url({camera}) center / contain no-repeat" }}>
       <h1 style={{ textAlign: 'center' ,fontSize: '14px'}}>Canvas</h1>
       <Draggable bounds="parent" defaultPosition={{x: 150, y: 100}}>
         <Resizable
@@ -55,6 +56,23 @@ const Canvas = () => {
           <FullScreen onClick={() => {}} />
         </div>
       </div>
+
+      
+      <video  //Rendering the Feed of the Camera
+        id="cameraFeed" 
+        autoPlay
+        muted
+        loop
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: -1
+        }}
+      />
     </Card>
   );
 };
