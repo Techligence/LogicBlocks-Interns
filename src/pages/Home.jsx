@@ -3,17 +3,20 @@ import BlocklyComponent from '../components/BlocklyComponent';
 import Canvas from '../components/Canvas';
 import AnchorMenu from '../components/AnchorMenu';
 import FloatingActionButton from '../components/FloatingActionButton';
+import Header from '../components/Header';
 
 const Home = () => {
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>LogicBlocks</h1>
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-        <BlocklyComponent />
-        <Canvas/>
-        <AnchorMenu />
-        <FloatingActionButton />
+      <Header />
+      <div style={{ textAlign: 'center' }}>
       </div>
+      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
+        <BlocklyComponent />
+        <Canvas />
+      </div>
+      <AnchorMenu />
+      <FloatingActionButton />
     </div>
   );
 };

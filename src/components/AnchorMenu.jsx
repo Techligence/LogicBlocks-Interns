@@ -4,7 +4,7 @@ import { Button, Menu, Box } from '@mui/material';
 import CameraToggle from './AnchorMenu/CameraToggle';
 import MicToggle from './AnchorMenu/MicToggle';
 import ModeToggle from './AnchorMenu/ModeToggle';
-import { Mic } from '@mui/icons-material';
+
 
 const AnchorMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,7 +21,7 @@ const AnchorMenu = () => {
   };
 
   return (
-    <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
+    <Box sx={{ position: 'absolute', top: 70, right: 16 }}>
       <Button variant="contained" color="primary" onClick={handleClick}>
         <AnchorIcon />
       </Button>

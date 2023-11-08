@@ -26,7 +26,7 @@ const Canvas = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: `url(trial_sprite.png) center / contain no-repeat`,
+            background: `url(trial_sprite_nobkg.png) center / contain no-repeat`,
             cursor: 'move'
           }}
           lockAspectRatio={true}
