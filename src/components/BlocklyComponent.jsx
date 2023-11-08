@@ -5,7 +5,6 @@ import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
 import initializeBlockly from './InitializeBlockly';  // import the function
-import { MoveSpriteBlock } from './BlockCategories/Motion';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
@@ -19,7 +18,6 @@ const BlocklyComponent = () => {
           ${Loops}
           ${Math}
           ${Text}
-          ${MoveSpriteBlock}
         </xml>
       `;
       initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
