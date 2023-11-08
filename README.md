@@ -31,7 +31,7 @@ npm run dev
 
 If you encounter any errors, delete the local cloned repository and try again and make sure you have the latest stable versions of Node.js and npm, and try running the commands again.
 
-If that still does not work fill out the Contact form 📧.
+If that still does not work just write us an email.
 
 
 ## Contributing👩‍💻👨‍💻
