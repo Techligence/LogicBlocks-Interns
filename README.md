@@ -14,7 +14,7 @@ While you're free to use any IDE that suits your needs, we highly recommend Visu
 ### Steps  
 1.Clone the Repository: This will download a copy of the code onto your local machine.
 ```
-https://github.com/Techligence/LogicBlocks-Interns.git
+git clone https://github.com/Techligence/LogicBlocks-Interns.git
 
 #Navigate to the directory
 cd LogicBlocks-Interns
