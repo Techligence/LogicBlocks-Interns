@@ -36,12 +36,14 @@ export default function Header() {
           </Typography>
 
           {/* Navigation Buttons */}
-          <Button color="inherit">Files</Button>
-          <Button color="inherit">Edit</Button>
-          <Button color="inherit">Tutorials</Button>
-          <Button color="inherit">Boards</Button>
-          <Button color="inherit">Connect</Button>
-
+          <div className="nav-button">
+          <Button className="btn" color="inherit">Files</Button>
+          <Button className="btn" color="inherit">Edit</Button>
+          <Button className="btn" color="inherit">Tutorials</Button>
+          <Button className="btn" color="inherit">Boards</Button>
+          <Button className="btn" color="inherit">Connect</Button>
+          </div> 
+          
           {/* Editable Project Name */}
           <ProjectNameInput
             value={projectName}
