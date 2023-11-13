@@ -29,7 +29,7 @@ const BlocklyComponent = () => {
     <div style={{ width: '100%', height: '480px' }}>
       <h1 style={{ display: 'inline-block', fontSize: '14px', marginRight: '500px' }}>Blockly Toolbox</h1>
       <h1 style={{ display: 'inline-block', fontSize: '14px' }}>Blockly Workspace</h1>
-      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%' }}></div>
+      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%', position: 'relative' }}></div>      
     </div>
   );
 };
