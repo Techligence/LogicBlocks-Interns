@@ -14,7 +14,10 @@ import FullScreen from './Canvas/FullScreen';
 
 const Canvas = () => {
   return (
-    <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden' }}>
+    // <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '300px', overflow: 'hidden' }}>
+
+    <div className="Canvasbox">
+    <Card class="highlighted">
       <h1 style={{ textAlign: 'center' ,fontSize: '14px'}}>Canvas</h1>
       <Draggable bounds="parent" defaultPosition={{x: 150, y: 100}}>
         <Resizable
@@ -56,6 +59,7 @@ const Canvas = () => {
         </div>
       </div>
     </Card>
+  </div>
   );
 };
 
