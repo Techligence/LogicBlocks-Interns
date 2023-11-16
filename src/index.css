@@ -25,14 +25,17 @@ body {
   justify-content: space-between;
 }
 
-.upload-audio i.audio-icon {
-  font-size: 5em;
-}
-
 /* the container where wavesurfer adds the audio waveform */
 .waveform-container {
-  margin: 0 auto;
-  max-width: 80vw;
+  margin: 0 auto;  
+}
+
+div#soundBlocklyDiv.highlighted > div{
+  width: 90%;
+}
+
+#waveform:nth-child(2) > canvas{
+  width: 90%;
 }
 
 /* style for the navbar */
@@ -68,16 +71,23 @@ h1 {
   color: #1d0b22;
 }
 
+i.material-icons.audio-icon {
+  font-size: 5em;
+  color: #1976d2 !important;
+  margin: 1rem auto;
+}
+
 /* style for the upload button */
 button.upload-btn {
   width: 10em;
   font-size: 1em;
-  padding: 0.5em;
-  background: #5b266b;
+  padding: 0.5em;  
+  background: #1976d2;
   border-radius: 999px;
   color: white;
   border-color: #5b266b;
   cursor: pointer;
+  margin: 1rem auto;
 }
 
 button.upload-btn:hover {

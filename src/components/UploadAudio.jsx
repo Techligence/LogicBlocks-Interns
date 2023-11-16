@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { FileContext } from "../contexts/fileContext.jsx";
 import AudioWaveform from "./AudioWaveform"; // Import your AudioWaveform component
+import "../index.css";
 
 const UploadAudio = () => {
   const inputFile = useRef(null);

@@ -1,4 +1,4 @@
-// Books.jsx
+// Sounds.jsx
 import React from "react";
 import UploadAudio from "./UploadAudio";
 
@@ -24,7 +24,7 @@ export default function Books({ history }) {
 
       <div
         className="highlighted"
-        id="blocklyDiv"
+        id="soundBlocklyDiv"
         style={{
           width: "100%",
           position: "absolute",
@@ -35,6 +35,7 @@ export default function Books({ history }) {
           alignItems: "center",
           justifyContent: "center",
           height: "100%",
+          textAlign: "center",
         }}
       >
         <UploadAudio history={history} />
