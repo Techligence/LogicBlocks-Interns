@@ -12,9 +12,8 @@ const BlocklyComponent = () => {
 
   useEffect(() => {
     if (blocklyRef.current === null) {
-       // Initialize Blockly with English
-        Blockly.setLocale('en');
-      
+      // Initialize Blockly with English
+      Blockly.setLocale('en');
       // Construct the complete toolbox XML
       const toolboxXml = `
         <xml id="toolbox" style="display: none">
