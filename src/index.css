@@ -1,0 +1,365 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.highlighted {
+  border: 8px solid #000000; /*Example with a red-orange color */
+  border-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23cffffe' /%3E%3Cstop offset='25%25' stop-color='%23f9f7d9' /%3E%3Cstop offset='50%25' stop-color='%23fce2ce' /%3E%3Cstop offset='100%25' stop-color='%23ffc1f3' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3'/%3E %3C/svg%3E") 1;
+
+}
+
+
+.blocklyTreeRow {
+ /* border: 2px solid #333; */    /* Add border */
+  margin: 5px 0;                /* Space between categories */
+  border-radius: 5px;           /* Optional rounded corners */
+  padding: 5px;                 /* Some padding */
+}
+
+
+
+/* Testing */
+
+.highlghted-text h1{
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 199px;
+}
+
+
+
+.blocklyToolboxDiv{
+  background-color: rgb(40, 40, 40);
+  color: white;
+}
+
+.blocklyFlyoutBackground{
+  fill: rgb(57, 57, 57);
+  fill-opacity: .8;
+}
+
+.blocklyToolboxCategory:hover{
+  background-color: cadetblue;
+  transition: 0.3s;
+}
+
+.BlockyComp{
+  width:100%;
+  height: 600px;
+}
+
+.highlighted{
+  position: relative;
+   width: 361px; 
+   /* margin: 28px auto;  */
+   height: 300px; 
+   overflow: hidden;
+  }
+
+.Canvasbox{
+  margin-top: 24px;
+  width: 505px;
+  height: 100px;
+  margin-left: 17px;
+}
+
+.react-draggable{
+    bottom: 60px;
+    right: 52px;
+}
+
+.imgResize{
+  width: 70%;
+  height:70%;
+}
+
+
+/* FullScreen */
+
+.Canvasbox.fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.highlighted.fullscreen-card {
+  width: 90%;
+  height: 70%;
+  margin-top: 1px;
+}
+
+
+.button-container {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+  overflow: hidden;
+  width: 443px;
+}
+
+
+/* Responsive */
+
+@media only screen and (min-width:1000px) and (max-width:1237px){
+  .highlghted-text h1{
+    color: red;
+    margin-right: 119px;
+  }
+}
+
+
+
+@media only screen and (min-width:881px) and (max-width:1000px){
+  .highlghted-text h1{
+    color: blueviolet;
+    margin-right: 50px;
+  }
+
+  .css-1juivf6-MuiTypography-root h1{
+    font-size: 20px;
+  }
+
+  .highlighted {
+    position: relative;
+    width: 324px;
+    height: 300px;
+    overflow: hidden;
+}
+}
+
+.home-box{
+  display: flex;
+  justify-content: space-around; 
+  margin-top: 20px;
+}
+
+
+
+@media only screen and (min-width:666px) and (max-width:881px){
+
+  .highlghted-text h1{
+    color: rgb(64, 226, 43);
+    margin-right: 47px;
+  }
+  
+  .css-1juivf6-MuiTypography-root h1{
+    font-size: 15px;
+    margin-right: 11px;
+  }
+
+  .nav-button .btn {
+    /* border: 2px solid red; */
+    font-size: 10px;
+  }
+
+  .css-rxj24x{
+    margin-top: 8px;
+  }
+
+  .highlighted {
+    position: relative;
+    width: 214px;
+    height: 300px;
+    overflow: hidden;
+  }
+
+  .Canvasbox {
+    margin-top: 24px;
+    width: 216px;
+    height: 100px;
+  }
+
+  .react-draggable {
+    bottom: 83px;
+    right: 94px;
+}
+   /* Anchor Button */
+  .css-sghohy-MuiButtonBase-root-MuiButton-root {
+    top: -10px;
+  }
+}
+
+@media only screen and (min-width:535px) and (max-width:666px){
+  .BlockyComp {
+    width: 100%;
+    height: 517px;
+}
+
+}
+
+
+@media only screen and (min-width:376px) and (max-width:666px){
+  .highlghted-text h1{
+    color: rgb(226, 43, 208);
+    margin-right: 47px;
+  }
+  
+  .BlockyComp {
+    width: 96%;
+    height: 517px;
+}
+
+  .css-1juivf6-MuiTypography-root h1{
+    font-size: 20px;
+    margin-right: 11px;
+  }
+
+  .css-rxj24x {
+    position: absolute;
+    top: 122px;
+    right: 16px;
+  }
+
+  .nav-button{
+    display: flex;
+    margin-right: 75px;
+  }
+
+  .nav-button button{
+    display: flex;
+    font-size: 10px;
+    flex-direction: row;
+  }
+
+  .nav-button .btn {
+    /* border: 2px solid red; */
+    font-size: 10px;
+  }
+
+  .css-hyum1k-MuiToolbar-root{
+  flex-wrap: wrap
+  }
+
+  .highlighted {
+    position: relative;
+    width: 415px;
+    height: 199px;
+    overflow: hidden;
+}
+
+  .Canvasbox {
+    margin-top: 41px;
+    width: 242px;
+    height: 100px;
+  }
+
+  .home-box{
+    display: flex;
+    justify-content: space-around; 
+    margin-top: 20px;
+    flex-direction: column;
+  }
+
+  /* Anchor Button */
+  .css-sghohy-MuiButtonBase-root-MuiButton-root {
+    top: 20px;
+  }
+
+}
+
+@media screen and (max-width:572px) {
+  /* Anchor Button */
+  .css-sghohy-MuiButtonBase-root-MuiButton-root {
+    top: 23px;
+  }
+
+  .css-1juivf6-MuiTypography-root h1{
+    font-size: 13px;
+    width: auto;
+    /* margin-right: 11px; */
+  }
+
+  .BlockyComp {
+    width: 100%;
+    height: 516px;
+}
+}
+
+@media screen and (max-width: 533px) {
+  /* Anchor Button */
+  .css-sghohy-MuiButtonBase-root-MuiButton-root {
+    top: 42px;
+  }
+
+.BlockyComp {
+    width: 100%;
+    height: 517px;
+}
+
+}
+
+
+
+/* table, th, td{
+  border : 1px solid black;
+  border-collapse : collapse;
+  width:446px;
+} */
+
+img{
+  height: 40px;
+  width: 40px;
+}
+
+table.scrolldown{
+  width: 100%;           
+  /* border-collapse: collapse; */ 
+  border-spacing: 0; 
+  border: 2px solid black; 
+  height: 282.5px;
+}
+ /* To display the block as level element */ 
+table.scrolldown tbody, table.scrolldown thead { 
+  display: block; 
+}  
+
+thead tr th { 
+  height: 40px;  
+  line-height: 40px; 
+} 
+
+table.scrolldown tbody { 
+    
+  /* Set the height of table body */ 
+  height: 220px;  
+    
+  /* Set vertical scroll */ 
+  overflow-y: auto; 
+    
+  /* Hide the horizontal scroll */ 
+  overflow-x: hidden;  
+} 
+
+tbody {  
+  border-top: 2px solid black; 
+} 
+
+tbody td, thead th { 
+  width : 110px; 
+  border-right: 2px solid black; 
+} 
+td { 
+  text-align:center; 
+} 
