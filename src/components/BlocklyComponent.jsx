@@ -1,5 +1,6 @@
 // Updated BlocklyComponent.jsx
 import React, { useEffect, useRef } from 'react';
+import Blockly from 'blockly';
 import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
@@ -11,6 +12,8 @@ const BlocklyComponent = () => {
 
   useEffect(() => {
     if (blocklyRef.current === null) {
+      // Initialize Blockly with English
+        Blockly.setLocale('en');
       // Construct the complete toolbox XML
       const toolboxXml = `
         <xml id="toolbox" style="display: none">
