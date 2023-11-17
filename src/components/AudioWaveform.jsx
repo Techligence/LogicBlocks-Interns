@@ -18,6 +18,11 @@ const AudioWaveform = () => {
   const [volume, setVolume] = useState(1); // to control volume level of the audio. 0-mute, 1-max
   const [zoom, setZoom] = useState(1); // to control the zoom level of the waveform
   const [duration, setDuration] = useState(0); // duration is used to set the default region of selection for trimming the audio
+  const [indexCopy, setIndexCopy] = useState({
+		firstIndexCopy: null,
+		secondIndexCopy: null,
+		secondListMemAlloc: null
+	});
 
   // create the waveform inside the correct component
   useEffect(() => {
@@ -122,6 +127,91 @@ const AudioWaveform = () => {
     setZoom(e.target.value);
   };
 
+  const handleCopy = (e) => {
+		console.log("copied");
+		if(wavesurferObj){
+			// get start and end points of the selected region
+			const region =
+				wavesurferObj.regions.list[
+					Object.keys(wavesurferObj.regions.list)[0]
+				];
+			
+			if (region) {
+				const start = region.start;
+				const end = region.end;
+				
+				// obtain the original array of the audio
+				const original_buffer = wavesurferObj.backend.buffer;
+
+				// create 2 indices:
+				// left & right to the part to be copied
+				setIndexCopy(prevIndex => {
+					return {
+                        ...prevIndex,
+						firstIndexCopy: start * original_buffer.sampleRate,
+						secondIndexCopy: end * original_buffer.sampleRate,
+						secondListMemAlloc: (end - start) * original_buffer.sampleRate
+					}
+				})
+			}
+		}
+	};
+
+	const handlePaste = (e) => {
+		console.log("pasted");
+		if(wavesurferObj) {
+			// obtain the original array of the audio
+			const original_buffer = wavesurferObj.backend.buffer;
+
+			// create a temporary new buffer array with the new length, sample rate and no of channels as the original audio
+			const new_buffer = wavesurferObj.backend.ac.createBuffer(
+				original_buffer.numberOfChannels,
+				original_buffer.length + indexCopy.secondListMemAlloc,
+				original_buffer.sampleRate
+			);
+
+			// create a new array upto the region to be trimmed
+			const originalaudio = new Float32Array(parseInt(original_buffer.length));
+
+			// create a new array of region for the copied region 
+			const copied = new Float32Array(original_buffer.getChannelData(0).subarray(indexCopy.firstIndexCopy, indexCopy.secondIndexCopy));
+
+			// create an array to combine the 2 parts
+			const combined = new Float32Array(original_buffer.length + indexCopy.secondListMemAlloc);
+
+			// 2 channels: 1-right, 0-left
+			// copy the buffer values for the 2 regions from the original buffer
+
+			// for the region to the left of the trimmed section
+			original_buffer.copyFromChannel(originalaudio, 1);
+			original_buffer.copyFromChannel(originalaudio, 0);
+
+			// for the region to the right of the trimmed section
+			original_buffer.copyFromChannel(
+				copied,
+				1,
+				original_buffer.length
+			);
+			original_buffer.copyFromChannel(
+				copied,
+				0,
+				original_buffer.length
+			);
+
+			// create the combined buffer for the trimmed audio
+			combined.set(originalaudio);
+			combined.set(copied, original_buffer.length);
+
+			// copy the combined array to the new_buffer
+			new_buffer.copyToChannel(combined, 1);
+			new_buffer.copyToChannel(combined, 0);
+
+			// load the new_buffer, to restart the wavesurfer's waveform display
+			wavesurferObj.loadDecodedBuffer(new_buffer);
+			
+		}
+	};
+
   const handleTrim = (e) => {
     if (wavesurferObj) {
       // get start and end points of the selected region
@@ -183,6 +273,67 @@ const AudioWaveform = () => {
     }
   };
 
+  const handleForward = () => {
+    if (wavesurferObj) {
+      const currentPosition = wavesurferObj.getCurrentTime();
+      const newPosition = currentPosition + 10; // Move forward by 10 seconds
+      wavesurferObj.seekTo(newPosition / wavesurferObj.getDuration());
+    }
+  };
+
+  const handleBackward = () => {
+    if (wavesurferObj) {
+      const currentPosition = wavesurferObj.getCurrentTime();
+      const newPosition = currentPosition - 10; // Move backward by 10 seconds
+      wavesurferObj.seekTo(newPosition / wavesurferObj.getDuration());
+    }
+  };
+  
+  const handleFadeIn = () => {
+    if (wavesurferObj) {
+      const fadeInDuration = 5; // Adjust the fade-in duration (in seconds) as needed
+      const initialVolume = wavesurferObj.getVolume();
+      const targetVolume = 1;
+
+      // Gradually increase the volume to create a fade-in effect
+      wavesurferObj.setVolume(0);
+      wavesurferObj.play(); // Start playback if not already playing
+
+      const intervalId = setInterval(() => {
+        const currentVolume = wavesurferObj.getVolume();
+        const newVolume = currentVolume + 0.01;
+
+        if (newVolume >= targetVolume) {
+          wavesurferObj.setVolume(targetVolume);
+          clearInterval(intervalId);
+        } else {
+          wavesurferObj.setVolume(newVolume);
+        }
+      }, fadeInDuration * 10); // Adjust the interval for smoother effect
+    }
+  };
+
+  const handleFadeOut = () => {
+    if (wavesurferObj) {
+      const fadeOutDuration = 5; // Adjust the fade-out duration (in seconds) as needed
+      const targetVolume = 0;
+
+      // Gradually decrease the volume to create a fade-out effect
+      const intervalId = setInterval(() => {
+        const currentVolume = wavesurferObj.getVolume();
+        const newVolume = currentVolume - 0.01;
+
+        if (newVolume <= targetVolume) {
+          wavesurferObj.setVolume(targetVolume);
+          clearInterval(intervalId);
+          wavesurferObj.pause(); // Pause playback after fade-out
+        } else {
+          wavesurferObj.setVolume(newVolume);
+        }
+      }, fadeOutDuration * 10); // Adjust the interval for smoother effect
+    }
+  };
+
   return (
     <section className="waveform-container">
       <div ref={wavesurferRef} id="waveform" />
@@ -215,20 +366,62 @@ const AudioWaveform = () => {
             </i>
             Trim
           </button>
+
+          <button className='trim' onClick={handleCopy}>
+						<i
+							style={{
+								fontSize: '1.2em',
+								color: 'white',
+							}}
+							className='material-icons'>
+							content_copy
+						</i>
+						Copy
+					</button>
+					<button className='trim' onClick={handlePaste}>
+						<i
+							style={{
+								fontSize: '1.2em',
+								color: 'white',
+							}}
+							className='material-icons'>
+							content_paste
+						</i>
+						Paste
+					</button>
+
+          <button className="controls" onClick={handleBackward}>
+            <i className="material-icons">fast_rewind</i>            
+          </button>
+          <button className="controls" onClick={handleForward}>
+            <i className="material-icons">fast_forward</i>            
+          </button>    
+
+
         </div>
-        <div className="right-container">
-          <div className="volume-slide-container">
-            <i className="material-icons zoom-icon">remove_circle</i>
-            <input
-              type="range"
-              min="1"
-              max="1000"
-              value={zoom}
-              onChange={handleZoomSlider}
-              class="slider zoom-slider"
-            />
-            <i className="material-icons zoom-icon">add_circle</i>
-          </div>
+        <div className="right-container">             
+          <button className='fadein trim' onClick={handleFadeIn}>
+						<i
+							style={{
+								fontSize: '1.2em',
+								color: 'white',
+							}}
+							className='material-icons'>
+							content_cut
+						</i>
+						Fade In
+					</button>
+					<button className='fadeout trim' onClick={handleFadeOut}>
+						<i
+							style={{
+								fontSize: '1.2em',
+								color: 'white',
+							}}
+							className='material-icons'>
+							content_cut
+						</i>
+						Fade Out
+					</button>      
           <div className="volume-slide-container">
             {volume > 0 ? (
               <i className="material-icons">volume_up</i>
