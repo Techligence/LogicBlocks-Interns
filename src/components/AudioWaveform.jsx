@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js";
+// import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
 import { FileContext } from "../contexts/fileContext.jsx";
 import wavesurfer from "wavesurfer.js";
@@ -33,9 +33,9 @@ const AudioWaveform = () => {
           progressColor: "#69207F",
           responsive: true,
           plugins: [
-            TimelinePlugin.create({
-              container: "#wave-timeline",
-            }),
+            // TimelinePlugin.create({
+            //   container: "#wave-timeline",
+            // }),
             RegionsPlugin.create({}),
           ],
         })
@@ -186,7 +186,7 @@ const AudioWaveform = () => {
   return (
     <section className="waveform-container">
       <div ref={wavesurferRef} id="waveform" />
-      <div ref={timelineRef} id="wave-timeline" />
+      {/* <div ref={timelineRef} id="wave-timeline" /> */}
       <div className="all-controls">
         <div className="left-container">
           <button
