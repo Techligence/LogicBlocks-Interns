@@ -1,9 +1,22 @@
 import Blockly from "blockly/core";
 import "blockly/blocks";
+import {
+  ContinuousToolbox,
+  ContinuousFlyout,
+  ContinuousMetrics,
+} from '@blockly/continuous-toolbox';
+import { InitializeAutocomplete, autocompleteArray} from "./Functions/Autcomplete";
 
 const InitializeBlockly = (toolboxXml) => {
   const workspace = Blockly.inject("blocklyDiv", {
+    plugins: {
+      'toolbox': ContinuousToolbox,
+      'flyoutsVerticalToolbox': ContinuousFlyout,
+      'metricsManager': ContinuousMetrics,
+    },
     toolbox: toolboxXml,
+    renderer: "zelos",
+    theme: "zelos",
     zoom: {
       controls: false, // Disable default controls
       wheel: true,
@@ -37,6 +50,13 @@ const InitializeBlockly = (toolboxXml) => {
   blocklyDiv.appendChild(customZoomInButton.button);
   blocklyDiv.appendChild(customResetButton.button);
   blocklyDiv.appendChild(customZoomOutButton.button);
+
+  // Select the Search input
+  const toolboxSearchInput = document.querySelector('.blocklyToolboxContents input[type="search"]');
+  toolboxSearchInput.classList.add("autocomplete-input"); // Add a class for styling if needed
+
+  // Call the autocomplete function with the selected input and array of words
+  InitializeAutocomplete(toolboxSearchInput, autocompleteArray);
 
   return workspace;
 };

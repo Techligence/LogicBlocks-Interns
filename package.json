@@ -11,6 +11,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@blockly/continuous-toolbox": "^5.0.8",
+    "@blockly/toolbox-search": "^1.2.3",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.15",
