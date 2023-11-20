@@ -11,12 +11,7 @@ body {
   margin: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-}
-
-.highlighted {
-  border: 8px solid #000000; /*Example with a red-orange color */
-  border-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23cffffe' /%3E%3Cstop offset='25%25' stop-color='%23f9f7d9' /%3E%3Cstop offset='50%25' stop-color='%23fce2ce' /%3E%3Cstop offset='100%25' stop-color='%23ffc1f3' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3'/%3E %3C/svg%3E") 1;
-
+  overflow: hidden;
 }
 
 
@@ -31,52 +26,62 @@ body {
 
 /* Testing */
 
+.highlghted-text {
+  margin-left: 5px;
+}
+
 .highlghted-text h1{
   display: inline-block;
   font-size: 14px;
   margin-right: 199px;
+  /* padding-bottom: 5px; */
+  top: 10px;
 }
-
 
 
 .blocklyToolboxDiv{
-  background-color: rgb(40, 40, 40);
-  color: white;
+  background-color: rgb(232, 225, 130);
+  color: rgb(47, 47, 48);
 }
 
 .blocklyFlyoutBackground{
-  fill: rgb(57, 57, 57);
-  fill-opacity: .8;
+  fill: rgb(213, 213, 152);
+  fill-opacity: 0.8;
 }
 
-.blocklyToolboxCategory:hover{
+/* .blocklyToolboxCategory:hover{
   background-color: cadetblue;
   transition: 0.3s;
-}
+} */
 
 .BlockyComp{
   width:100%;
-  height: 600px;
+  height: 625px;
 }
 
 .highlighted{
   position: relative;
-   width: 361px; 
-   /* margin: 28px auto;  */
-   height: 300px; 
-   overflow: hidden;
-  }
+  width: 361px; 
+  /* margin: 28px auto;  */
+  height: 300px; 
+  overflow: hidden;
+  border: 1px solid rgb(157, 157, 157);
+  border-width: thin;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgb(129, 129, 132);
+}
 
 .Canvasbox{
   margin-top: 24px;
   width: 505px;
   height: 100px;
   margin-left: 17px;
+  margin-right: 5px;
 }
 
 .react-draggable{
-    bottom: 60px;
-    right: 52px;
+  bottom: 60px;
+  right: 52px;
 }
 
 .imgResize{
@@ -85,11 +90,13 @@ body {
 }
 
 
+
 /* FullScreen */
 
 .Canvasbox.fullscreen {
   width: 100vw;
   height: 100vh;
+  box-shadow: 2px 2px rgb(129, 129, 132);
 }
 
 .highlighted.fullscreen-card {
@@ -97,7 +104,6 @@ body {
   height: 70%;
   margin-top: 1px;
 }
-
 
 .button-container {
   position: absolute;
@@ -130,7 +136,6 @@ body {
 }
 
 
-
 @media only screen and (min-width:881px) and (max-width:1000px){
   .highlghted-text h1{
     color: blueviolet;
@@ -146,7 +151,7 @@ body {
     width: 324px;
     height: 300px;
     overflow: hidden;
-}
+  }
 }
 
 .home-box{
@@ -154,7 +159,6 @@ body {
   justify-content: space-around; 
   margin-top: 20px;
 }
-
 
 
 @media only screen and (min-width:666px) and (max-width:881px){
@@ -194,7 +198,7 @@ body {
   .react-draggable {
     bottom: 83px;
     right: 94px;
-}
+  }
    /* Anchor Button */
   .css-sghohy-MuiButtonBase-root-MuiButton-root {
     top: -10px;
@@ -205,7 +209,7 @@ body {
   .BlockyComp {
     width: 100%;
     height: 517px;
-}
+  }
 
 }
 
@@ -219,7 +223,7 @@ body {
   .BlockyComp {
     width: 96%;
     height: 517px;
-}
+  }
 
   .css-1juivf6-MuiTypography-root h1{
     font-size: 20px;
@@ -257,7 +261,7 @@ body {
     width: 415px;
     height: 199px;
     overflow: hidden;
-}
+  }
 
   .Canvasbox {
     margin-top: 41px;
@@ -294,7 +298,7 @@ body {
   .BlockyComp {
     width: 100%;
     height: 516px;
-}
+  }
 }
 
 @media screen and (max-width: 533px) {
@@ -306,8 +310,7 @@ body {
 .BlockyComp {
     width: 100%;
     height: 517px;
-}
-
+  }
 }
 
 
@@ -330,6 +333,7 @@ table.scrolldown{
   border: 2px solid black; 
   height: 282.5px;
 }
+
  /* To display the block as level element */ 
 table.scrolldown tbody, table.scrolldown thead { 
   display: block; 
@@ -363,3 +367,8 @@ tbody td, thead th {
 td { 
   text-align:center; 
 } 
+
+.resizable {
+  position: absolute;
+  display: inline-block;
+}
