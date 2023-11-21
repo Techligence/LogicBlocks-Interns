@@ -160,55 +160,73 @@ const AudioWaveform = () => {
 	const handlePaste = (e) => {
 		console.log("pasted");
 		if(wavesurferObj) {
-			// obtain the original array of the audio
-			const original_buffer = wavesurferObj.backend.buffer;
+            // get start and end points of the selected region
+			const region =
+        wavesurferObj.regions.list[
+            Object.keys(wavesurferObj.regions.list)[0]
+        ];
 
-			// create a temporary new buffer array with the new length, sample rate and no of channels as the original audio
-			const new_buffer = wavesurferObj.backend.ac.createBuffer(
-				original_buffer.numberOfChannels,
-				original_buffer.length + indexCopy.secondListMemAlloc,
-				original_buffer.sampleRate
-			);
+        if (region) {
+          const start = region.start;
+          const end = region.end;
 
-			// create a new array upto the region to be trimmed
-			const originalaudio = new Float32Array(parseInt(original_buffer.length));
+          // obtain the original array of the audio
+          const original_buffer = wavesurferObj.backend.buffer;
 
-			// create a new array of region for the copied region 
-			const copied = new Float32Array(original_buffer.getChannelData(0).subarray(indexCopy.firstIndexCopy, indexCopy.secondIndexCopy));
-
-			// create an array to combine the 2 parts
-			const combined = new Float32Array(original_buffer.length + indexCopy.secondListMemAlloc);
-
-			// 2 channels: 1-right, 0-left
-			// copy the buffer values for the 2 regions from the original buffer
-
-			// for the region to the left of the trimmed section
-			original_buffer.copyFromChannel(originalaudio, 1);
-			original_buffer.copyFromChannel(originalaudio, 0);
-
-			// for the region to the right of the trimmed section
-			original_buffer.copyFromChannel(
-				copied,
-				1,
-				original_buffer.length
-			);
-			original_buffer.copyFromChannel(
-				copied,
-				0,
-				original_buffer.length
-			);
-
-			// create the combined buffer for the trimmed audio
-			combined.set(originalaudio);
-			combined.set(copied, original_buffer.length);
-
-			// copy the combined array to the new_buffer
-			new_buffer.copyToChannel(combined, 1);
-			new_buffer.copyToChannel(combined, 0);
-
-			// load the new_buffer, to restart the wavesurfer's waveform display
-			wavesurferObj.loadDecodedBuffer(new_buffer);
+          // create 2 indices:
+          // left & right to the part to be trimmed
+          const trimmedstart = start * original_buffer.sampleRate;
+          const trimmedend = end * original_buffer.sampleRate;
 			
+          // create a temporary new buffer array with the new length, sample rate and no of channels as the original audio
+          const new_buffer = wavesurferObj.backend.ac.createBuffer(
+              original_buffer.numberOfChannels,
+              original_buffer.length + indexCopy.secondListMemAlloc - (trimmedend-trimmedstart),
+              original_buffer.sampleRate
+          );
+
+          // create a new array upto the region to be trimmed
+          const leftcopied = new Float32Array(parseInt(trimmedstart));
+
+          // create a new array of region for the copied region 
+          const copied = new Float32Array(original_buffer.getChannelData(0).subarray(indexCopy.firstIndexCopy, indexCopy.secondIndexCopy));
+
+          const rightcopied = new Float32Array(parseInt(original_buffer.length-trimmedend))
+
+          // create an array to combine the 2 parts
+          const combined = new Float32Array(original_buffer.length + indexCopy.secondListMemAlloc);
+
+          // 2 channels: 1-right, 0-left
+          // copy the buffer values for the 2 regions from the original buffer
+
+          // for the region to the left of the trimmed section
+          original_buffer.copyFromChannel(leftcopied, 1);
+          original_buffer.copyFromChannel(leftcopied, 0);
+
+          // for the region to the right of the trimmed section
+          original_buffer.copyFromChannel(
+              rightcopied,
+              1,
+              trimmedend
+          )
+          original_buffer.copyFromChannel(
+              rightcopied,
+              0,
+              trimmedend
+          )
+
+          // create the combined buffer for the trimmed audio
+          combined.set(leftcopied);
+          combined.set(copied, trimmedstart);
+          combined.set(rightcopied, trimmedstart+indexCopy.secondListMemAlloc)
+
+          // copy the combined array to the new_buffer
+          new_buffer.copyToChannel(combined, 1);
+          new_buffer.copyToChannel(combined, 0);
+
+          // load the new_buffer, to restart the wavesurfer's waveform display
+          wavesurferObj.loadDecodedBuffer(new_buffer);
+      }
 		}
 	};
 
