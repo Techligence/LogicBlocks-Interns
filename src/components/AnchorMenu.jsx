@@ -4,13 +4,17 @@ import { Button, Menu, Box } from '@mui/material';
 import CameraToggle from './AnchorMenu/CameraToggle';
 import MicToggle from './AnchorMenu/MicToggle';
 import ModeToggle from './AnchorMenu/ModeToggle';
-import { Mic } from '@mui/icons-material';
+import Canvas from './Canvas';
 
 const AnchorMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mode, setMode] = useState(null);
   const [camera, setCamera] = useState(false);
   const [mic, setMic] = useState(false);
+  // const {extractedVideoRef} =Canvas()
+
+  // console.log(extractedVideoRef)
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,7 +25,7 @@ const AnchorMenu = () => {
   };
 
   return (
-    <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
+    <Box sx={{ position: 'absolute', top: 70, right: 16 }}>
       <Button variant="contained" color="primary" onClick={handleClick}>
         <AnchorIcon />
       </Button>
@@ -35,6 +39,7 @@ const AnchorMenu = () => {
           },
         }}
       >
+        {/* <CameraToggle camera={camera} setCamera={setCamera} extractedVideoRef={extractedVideoRef} /> */}
         <CameraToggle camera={camera} setCamera={setCamera} />
         <MicToggle mic={mic} setMic={setMic} />
         <ModeToggle mode={mode} setMode={setMode} />
