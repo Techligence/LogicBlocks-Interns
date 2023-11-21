@@ -1,50 +1,71 @@
-import React, { useState } from 'react';
 import { MenuItem, ListItemIcon, ListItemText, Switch } from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { useState} from 'react';
+import CameraError from './CameraError'
 
-const CameraToggle = () => {
 
-  const [camera, setCamera] = useState(false);
+const CameraToggle = ({ camera, setCamera}) => {
+
+  // const {extractedVideoRef} =Canvas();
   
-  const startCamera = () => {
-    const constraints = {
-      video: true,
-      audio: false
-    };
+  // console.log("Outside Use",extractedVideoRef)
 
-    navigator.mediaDevices.getUserMedia(constraints)
-      .then(stream => {
-        const videoElement = document.getElementById('cameraFeed');
-        if (videoElement) {
-          videoElement.srcObject = stream;
+  const [isCameraError,issetCameraError] = useState(false)
+
+  // useEffect(() => {
+   
+  //   // console.log("inside Use",extractedVideoRef);
+  // }, [extractedVideoRef]);  
+  const startCamera = () =>{
+      navigator.mediaDevices.getUserMedia({video:true,audio:false})
+      .then(stream =>{
+        const  extractedVideoRef = document.getElementById("VideoFeed")
+        if (extractedVideoRef){
+       
+          extractedVideoRef.srcObject = stream;
+
         }
-        setCamera(true);
+        setCamera(true)
       })
-      .catch(error => {
+      .catch(error =>{
         console.error('Error accessing media devices.', error);
-        alert("The Camera is Not Accessable. Kindly On the Camera or Use a Different Device")
-      });
-  };
+        issetCameraError(true)
+      })
+  }
 
-  const stopCamera = () => {
-    const videoElement = document.getElementById('cameraFeed');
-    if (videoElement) {
-      videoElement.srcObject = null;
+  const stopCamera = () =>{
+    
+   const extractedVideoRef =document.getElementById("VideoFeed")
+    if(extractedVideoRef) {
+      
+      extractedVideoRef.srcObject = null;
     }
     setCamera(false);
   };
 
-  return (
+  const closeCameraError =() =>{
+
+    issetCameraError(false);
+  }
+
+
+  const jsx =  (
     <div>
-      <MenuItem>
-        <ListItemIcon>
-          <CameraAltIcon color={camera ? 'primary' : 'inherit'} />
-        </ListItemIcon>
-        <ListItemText primary="Camera" />
-        <Switch checked={camera}  onChange={() => camera ? stopCamera()  : startCamera()} />
-      </MenuItem>
-    </div>
-  );
+          <MenuItem>
+            <ListItemIcon>
+              <CameraAltIcon color={camera ? 'primary' : 'inherit'} />
+            </ListItemIcon>
+            <ListItemText primary="Camera" />
+            <Switch checked={camera} onChange={() => (camera ? stopCamera() : startCamera())} />
+          </MenuItem>
+          {isCameraError && <CameraError onClose={closeCameraError} />}
+        </div>
+        
+        
+        )
+
+
+  return jsx;
 };
 
 export default CameraToggle;
