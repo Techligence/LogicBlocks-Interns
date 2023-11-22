@@ -32,10 +32,10 @@ const AudioWaveform = () => {
           container: "#waveform",
           scrollParent: true,
           autoCenter: true,
-          cursorColor: "violet",
+          cursorColor: "blue",
           loopSelection: true,
-          waveColor: "#211027",
-          progressColor: "#69207F",
+          waveColor: "#1976d2",
+          progressColor: "#04315e",
           responsive: true,
           plugins: [
             // TimelinePlugin.create({
@@ -354,40 +354,28 @@ const AudioWaveform = () => {
           <button title="reload" className="controls" onClick={handleReload}>
             <i className="material-icons">replay</i>
           </button>
-          <button className="trim" onClick={handleTrim}>
-            <i
-              style={{
-                fontSize: "1.2em",
-                color: "white",
-              }}
+          <button className="controls" onClick={handleTrim}>
+            <i              
               className="material-icons"
             >
               content_cut
             </i>
-            Trim
+            
           </button>
 
-          <button className='trim' onClick={handleCopy}>
-						<i
-							style={{
-								fontSize: '1.2em',
-								color: 'white',
-							}}
+          <button className='controls' onClick={handleCopy}>
+						<i							
 							className='material-icons'>
 							content_copy
 						</i>
-						Copy
+						
 					</button>
-					<button className='trim' onClick={handlePaste}>
-						<i
-							style={{
-								fontSize: '1.2em',
-								color: 'white',
-							}}
+					<button className='controls' onClick={handlePaste}>
+						<i							
 							className='material-icons'>
 							content_paste
 						</i>
-						Paste
+						
 					</button>
 
           <button className="controls" onClick={handleBackward}>
@@ -400,27 +388,20 @@ const AudioWaveform = () => {
 
         </div>
         <div className="right-container">             
-          <button className='fadein trim' onClick={handleFadeIn}>
-						<i
-							style={{
-								fontSize: '1.2em',
-								color: 'white',
-							}}
+          <button className="controls" onClick={handleFadeIn}>    
+            {/* <i
+							// style={{
+							// 	fontSize: '1.2em',
+							// 	color: 'white',
+							// }}
 							className='material-icons'>
 							content_cut
-						</i>
-						Fade In
+						</i>        
+            FadeIn */}
+            <i class="fa-solid fa-signal"></i>
 					</button>
-					<button className='fadeout trim' onClick={handleFadeOut}>
-						<i
-							style={{
-								fontSize: '1.2em',
-								color: 'white',
-							}}
-							className='material-icons'>
-							content_cut
-						</i>
-						Fade Out
+					<button className='controls' onClick={handleFadeOut}>						
+            <i class="fa-solid fa-signal fa-flip-horizontal" ></i>
 					</button>      
           <div className="volume-slide-container">
             {volume > 0 ? (
