@@ -1,11 +1,11 @@
 // Updated BlocklyComponent.jsx
 import React, { useEffect, useRef } from 'react';
+import Blockly from 'blockly';
 import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
 import initializeBlockly from './InitializeBlockly';  // import the function
-import Blockly from 'blockly';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
