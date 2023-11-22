@@ -7,7 +7,6 @@ import { Box, Button, createTheme, ThemeProvider } from '@mui/material';
 
 
 function App() {
-
   return (
     <div className="App">
       <Provider store={store}>
@@ -18,18 +17,6 @@ function App() {
             <Route path="/" element={<Home />} />
           </Routes>
         </BrowserRouter>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: 'background.default',
-            color: 'text.primary',
-            borderRadius: 1,
-            p: 3
-          }}
-        >
-        </Box>
       </Provider>
     </div>
   );

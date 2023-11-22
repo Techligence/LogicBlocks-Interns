@@ -6,6 +6,7 @@
 }
 
 body {
+  background-color: #121212; /*Default Dark Mode*/
   width: 100vw;
   padding: 0;
   margin: 0;

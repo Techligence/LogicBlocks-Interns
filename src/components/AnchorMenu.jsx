@@ -7,9 +7,9 @@ import ModeToggle from './AnchorMenu/ModeToggle';
 import DarkModeToggle from './AnchorMenu/DarkModeToggle';
 
 
-const AnchorMenu = () => {
+const AnchorMenu = ({mode, toggleMode}) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [mode, setMode] = useState(null);
+  // const [mode, setMode] = useState(null);
   const [camera, setCamera] = useState(false);
   const [mic, setMic] = useState(false);
 
@@ -38,9 +38,8 @@ const AnchorMenu = () => {
       >
         <CameraToggle camera={camera} setCamera={setCamera} />
         <MicToggle mic={mic} setMic={setMic} />
-        <ModeToggle mode={mode} setMode={setMode} />
-        <DarkModeToggle />
-
+        <ModeToggle mode={mode} setMode={toggleMode} />
+        <DarkModeToggle mode={mode} toggleMode={toggleMode} />
       </Menu>
     </Box>
   );

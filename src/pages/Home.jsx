@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react'
+import { ColorModeContext } from '../store/index';
 import BlocklyComponent from '../components/BlocklyComponent';
 import Canvas from '../components/Canvas';
 import AnchorMenu from '../components/AnchorMenu';
@@ -7,6 +8,7 @@ import Header from '../components/Header';
 import { Box } from '@mui/material';
 
 const Home = () => {
+  const { mode, toggleMode } = useContext(ColorModeContext);
   return (
     <Box sx={{
       bgcolor: "background.default",
@@ -25,7 +27,7 @@ const Home = () => {
         <BlocklyComponent />
         <Canvas />
       </Box>
-      <AnchorMenu />
+      <AnchorMenu mode={mode} toggleMode={toggleMode} />
       <FloatingActionButton />
     </Box>
   );
