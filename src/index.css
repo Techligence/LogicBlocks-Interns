@@ -109,6 +109,14 @@ button.upload-btn:hover {
   border: 1px solid rebeccapurple;
 }
 
+.fade{
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 /* all the button controls */
 div.all-controls {
   margin: 2em auto;
