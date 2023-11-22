@@ -25,6 +25,12 @@ const UploadAudio = () => {
     setFile(URL.createObjectURL(e.target.files[0]));
   };
 
+  const handleDelete = () => {
+    // Reset the fileURL and hide the AudioWaveform
+    setFile(null);
+    setShowAudioWaveform(false);
+  };
+
   return (
     <div style={{ position: "relative" }}>
       {showAudioWaveform ? (
@@ -47,6 +53,16 @@ const UploadAudio = () => {
             onChange={handleFileUpload}
           />
         </>
+      )}
+       {showAudioWaveform && (
+        <button
+        title="delete"
+        className="controls"
+        onClick={handleDelete}
+      >
+        <i className="material-icons">delete</i> 
+        
+      </button>
       )}
     </div>
   );

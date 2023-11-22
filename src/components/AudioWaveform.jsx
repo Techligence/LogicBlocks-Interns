@@ -4,9 +4,13 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
 import { FileContext } from "../contexts/fileContext.jsx";
 import wavesurfer from "wavesurfer.js";
 
+
 const AudioWaveform = () => {
   const wavesurferRef = useRef(null);
   const timelineRef = useRef(null);
+
+  // const wavesurferRef = useRef(null);
+  // const timelineRef = useRef(null);
 
   // fetch file url from the context
   const { fileURL, setFileURL } = useContext(FileContext);
@@ -23,6 +27,18 @@ const AudioWaveform = () => {
 		secondIndexCopy: null,
 		secondListMemAlloc: null
 	});
+
+  useEffect(() => {
+    return () => {
+      // Cleanup function when component is unmounted
+      if (wavesurferObj) {
+        // Stop and destroy the wavesurfer instance
+        wavesurferObj.stop();
+        wavesurferObj.clearRegions();
+        wavesurferObj.destroy();
+      }
+    };
+  }, [wavesurferObj]);// Empty dependency array ensures this runs only on unmount
 
   // create the waveform inside the correct component
   useEffect(() => {
@@ -288,6 +304,23 @@ const AudioWaveform = () => {
       wavesurferObj.seekTo(newPosition / wavesurferObj.getDuration());
     }
   };
+
+  const handleDelete = () => {
+    // Stop playback
+    if (wavesurferObj.play()) {
+      wavesurferObj.pause();
+    }
+
+    // Remove all regions
+    if (wavesurferObj) {
+      wavesurferObj.clearRegions();
+    }
+
+    // Set file URL to null and hide the AudioWaveform
+    setFileURL(null);
+    setShowAudioWaveform(false);
+  };
+  
   
   const handleFadeIn = () => {
     if (wavesurferObj) {
