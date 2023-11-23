@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from '@mui/material';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
+import { useSelector } from 'react-redux';
 
 // Import the button components
 import FlagButton from './Canvas/FlagButton';
@@ -13,10 +14,12 @@ import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
 const Canvas = () => {
+  const position = useSelector((state) => state.motion.position);
+  
   return (
     <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden' }}>
       <h1 style={{ textAlign: 'center' ,fontSize: '14px'}}>Canvas</h1>
-      <Draggable bounds="parent" defaultPosition={{x: 150, y: 100}}>
+      <Draggable bounds="parent" position={position} defaultPosition={position}>
         <Resizable
           defaultSize={{
             width: '50%',
@@ -56,6 +59,7 @@ const Canvas = () => {
         </div>
       </div>
     </Card>
+  
   );
 };
 
