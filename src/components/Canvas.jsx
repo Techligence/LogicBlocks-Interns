@@ -1,8 +1,13 @@
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Card } from '@mui/material';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
+import Blockly from 'blockly';
+import 'blockly/javascript';
+
+import {javascriptGenerator} from 'blockly/javascript';
+
 
 // Import Image from src
 import Demo from '../Images/trial_sprite_nobkg.png'
@@ -33,13 +38,12 @@ const Canvas = () => {
 
   const undo = () => {
     if (historyPointer > 0 || zoomPointer > 0) {
-      if (historyPointer > 0) {
-        setHistoryPointer(historyPointer - 1);
-        setCurrentPosition(positionHistory[historyPointer - 1]);
-      }
       if (zoomPointer > 0) {
         setZoomPointer(zoomPointer - 1);
         setImageSize(zoomHistory[zoomPointer - 1]);
+      } else if (historyPointer > 0) {
+        setHistoryPointer(historyPointer - 1);
+        setCurrentPosition(positionHistory[historyPointer - 1]);
       }
     } else {
       // If no more undo is possible, set current position and zoom to default
@@ -49,16 +53,15 @@ const Canvas = () => {
       setImageSize(minImageSize);
     }
   };
-
+  
   const redo = () => {
     if (historyPointer < positionHistory.length - 1 || zoomPointer < zoomHistory.length - 1) {
-      if (historyPointer < positionHistory.length - 1) {
-        setHistoryPointer(historyPointer + 1);
-        setCurrentPosition(positionHistory[historyPointer + 1]);
-      }
       if (zoomPointer < zoomHistory.length - 1) {
         setZoomPointer(zoomPointer + 1);
         setImageSize(zoomHistory[zoomPointer + 1]);
+      } else if (historyPointer < positionHistory.length - 1) {
+        setHistoryPointer(historyPointer + 1);
+        setCurrentPosition(positionHistory[historyPointer + 1]);
       }
     } else {
       // If no more redo is possible, set the current position and zoom to the latest values
@@ -86,7 +89,7 @@ const Canvas = () => {
       return newSize < minImageSize ? minImageSize : newSize;
     });
   };
-  
+
 
   const handleMouseDown = (e) => {
     setDragging(true);
@@ -94,11 +97,11 @@ const Canvas = () => {
     setPositionHistory([...positionHistory.slice(0, historyPointer + 1), { ...currentPosition }]);
     setHistoryPointer(historyPointer + 1);
   };
-  
+
 
   const handleMouseUp = () => {
     setDragging(false);
-  
+
     if (
       currentPosition.x !== position.x ||
       currentPosition.y !== position.y
@@ -107,7 +110,7 @@ const Canvas = () => {
       setHistoryPointer(historyPointer + 1);
     }
   };
-  
+
   const handleMouseMove = (e) => {
     if (dragging) {
       const dx = e.clientX - mousePosition.x;
@@ -127,40 +130,69 @@ const Canvas = () => {
     setIsFullScreen(!isFullScreen);
   };
 
+// execution button
+const handleExecuteBlocks = (event) => {
+  console.log('Flag button clicked');
+
+  // Get the main workspace
+  const workspace = Blockly.getMainWorkspace();
+
+  // Iterate through all blocks in the workspace
+  workspace.getAllBlocks().forEach((block) => {
+    // Print the ID of each block to the console
+    console.log(`Block ID: ${block.id}`);
+  });
+
+  // // Convert the entire workspace to JavaScript code
+  // const code = javascriptGenerator.workspaceToCode(workspace);
+
+  // try {
+  //   // Execute the generated JavaScript code
+  //   eval(code);
+  // } catch (error) {
+  //   console.error(`Error executing blocks: ${error}`);
+  // }
+};
+
+
+
+
+
+
 
   return (
     <div className={`Canvasbox ${isFullScreen ? 'fullscreen' : ''}`}>
-    <Card className={`highlighted ${isFullScreen ? 'fullscreen-card' : ''}`}>
-      <h1 style={{ textAlign: 'center' ,fontSize: '14px'}}>Canvas</h1>
-      <img
-        src={Demo}
-        alt="Your Image"
-        style={{
-          width: `${imageSize}px`,
-          height: `${imageSize}px`,
+      <Card className={`highlighted ${isFullScreen ? 'fullscreen-card' : ''}`}>
+        <h1 style={{ textAlign: 'center', fontSize: '14px' }}>Canvas</h1>
+        <img
+          src={Demo}
+          alt="Your Image"
+          style={{
+            width: `${imageSize}px`,
+            height: `${imageSize}px`,
+            position: 'absolute',
+            left: `${currentPosition.x}px`,
+            top: `${currentPosition.y}px`,
+            cursor: 'grab'
+          }}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          draggable="false"
+        />
+
+
+        <div style={{
           position: 'absolute',
-          left: `${currentPosition.x}px`,
-          top: `${currentPosition.y}px`,
-          cursor: 'grab'
-        }}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        draggable="false"
-      />
-
-
-      <div style={{ 
-        position: 'absolute', 
-        bottom: 10, 
-        right: 10, 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        width: '100%'
-      }}>
-        <div>
-        <FlagButton onClick={() => {}} />
-            <StopButton onClick={() => {}} />
+          bottom: 10,
+          right: 10,
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%'
+        }}>
+          <div>
+            <FlagButton onClick={handleExecuteBlocks} />
+            <StopButton onClick={() => { }} />
             <UndoButton onClick={undo} disabled={historyPointer <= 0 && zoomPointer <= 0} />
             <RedoButton onClick={redo} disabled={historyPointer >= positionHistory.length - 1 && zoomPointer >= zoomHistory.length - 1} />
           </div>
@@ -168,10 +200,10 @@ const Canvas = () => {
             <ZoomIn onClick={handleZoomIn} disabled={imageSize >= maxImageSize} />
             <ZoomOut onClick={handleZoomOut} disabled={imageSize <= minImageSize} />
             <FullScreen onClick={handleFullScreen} />
+          </div>
         </div>
-      </div>
-    </Card>
-  </div>
+      </Card>
+    </div>
   );
 };
 

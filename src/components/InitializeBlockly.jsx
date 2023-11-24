@@ -1,6 +1,7 @@
+// InitializeBlockly.jsx
 import Blockly from 'blockly';
 
-const InitializeBlockly = (toolboxXml) => {
+const initializeBlockly = (toolboxXml) => {
   return Blockly.inject('blocklyDiv', {
     toolbox: toolboxXml,
     zoom: {
@@ -27,4 +28,4 @@ const InitializeBlockly = (toolboxXml) => {
   });
 };
 
-export default InitializeBlockly;
+export default initializeBlockly;
