@@ -1,22 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BlocklyComponent from '../components/BlocklyComponent';
 import Canvas from '../components/Canvas';
 import AnchorMenu from '../components/AnchorMenu';
 import FloatingActionButton from '../components/FloatingActionButton';
-import Header from '../components/Header';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import Extension from '../components/Canvas/Extension/Extension';
 
 const Home = () => {
+  const [isExtensionOpen, setIsExtensionOpen] = useState(false);
+
+  const openExtension = () => {
+    setIsExtensionOpen(true);
+  };
+
+  const closeExtension = () => {
+    setIsExtensionOpen(false);
+  };
+
   return (
     <div>
-      <Header />
-      <div style={{ textAlign: 'center' }}>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
+      <h1 style={{ textAlign: 'center' }}>LogicBlocks</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
         <BlocklyComponent />
+        <AnchorMenu />
+        <FloatingActionButton />      
         <Canvas />
+        <button onClick={openExtension}>
+          <ExtensionIcon style={{ position: 'absolute', bottom: 20, left: 20 }} />
+        </button>
+        
       </div>
-      <AnchorMenu />
-      <FloatingActionButton />
+      {isExtensionOpen && (
+        <Extension onClose={closeExtension} />
+      )}
     </div>
   );
 };

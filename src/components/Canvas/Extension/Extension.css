@@ -1,0 +1,52 @@
+nav {
+    background-color: #0074e0;
+    color:#0074e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    z-index: 100;
+  }
+  
+  .extension-overlay .back-button {
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-weight: 900;
+    
+  }
+  
+  .extension-overlay .extension-title {
+    font-size: 1.5rem;
+    flex: 1;
+    text-align:center;
+    color: #fff;
+    
+  }
+  
+  .extension-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:#edeff1;
+    flex-direction: column;
+   
+    z-index: 1050;
+  }
+
+  .card_main {
+    margin-top: 1rem;
+   display: flex;
+   justify-content: center;
+   gap: 1.5rem;   
+   
+  }
+
+  .card {
+    display: grid;
+    gap: 2rem;
+    
+    
+}
