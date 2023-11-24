@@ -1,19 +1,30 @@
 // BlocklyComponent.jsx
 import React, { useEffect, useRef } from 'react';
+import Blockly from 'blockly';
 import { useState } from 'react';
 import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
+import {Operators} from './BlockCategories/Operators'
 import initializeBlockly from './InitializeBlockly';
 import BoardsSelectionModal from './BoardsSelectionModal';
+import { javascriptGenerator } from 'blockly/javascript';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
   const workspaceRef = useRef(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isBoardSelectionModalOpen, setIsBoardSelectionModalOpen] = useState(false);
-
+  const [generatedCode, setGeneratedCode] = useState('');
+  const workspace=Blockly.getMainWorkspace();
+ 
+  const generateCode = () => {
+    javascriptGenerator.addReservedWords('code');
+    var code = javascriptGenerator.workspaceToCode(workspace);
+    setGeneratedCode(code);
+    eval(code);
+  };
   useEffect(() => {
     if (blocklyRef.current === null) {
       // Construct the complete toolbox XML
@@ -23,6 +34,7 @@ const BlocklyComponent = () => {
           ${Loops}
           ${Math}
           ${Text}
+          ${Operators}
         </xml>
       `;
       workspaceRef.current = initializeBlockly(toolboxXml);
@@ -54,7 +66,12 @@ const BlocklyComponent = () => {
         onClose={() => setIsBoardSelectionModalOpen(false)}
         onSelectBoard = {handleBoardSelection}
       />
+      <button onClick={generateCode}>Generate Code</button>  
+      <pre style={{ whiteSpace: 'pre-wrap', marginTop: '20px' }}>
+        <br></br>{generatedCode}
+      </pre>
     </div>
+    
   );
 };
 
