@@ -4,19 +4,20 @@ import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
+import { ReactSketchCanvas } from 'react-sketch-canvas';
 
 const FloatingActionButton = ({ onSelect }) => {
   const [speedDialOpen, setSpeedDialOpen] = useState(false);
 
   const actions = [
-    { icon: <PetsIcon/>, name: 'Choose a Sprite' },
+    { icon: <PetsIcon />, name: 'Choose a Sprite' },
     { icon: <WallpaperIcon />, name: 'Choose a Backdrop' },
   ];
 
   return (
     <SpeedDial
       ariaLabel="SpeedDial"
-      sx={{ position: 'absolute', bottom: 16, right: 16 }} 
+      sx={{ position: 'absolute', bottom: 16, right: 16 }}
       icon={<SpeedDialIcon />}
       onClose={() => setSpeedDialOpen(false)}
       onOpen={() => setSpeedDialOpen(true)}
@@ -28,6 +29,7 @@ const FloatingActionButton = ({ onSelect }) => {
           icon={action.icon}
           tooltipTitle={action.name}
           onClick={() => {
+            action.click();
             onSelect(action.name);
             setSpeedDialOpen(false);
           }}
