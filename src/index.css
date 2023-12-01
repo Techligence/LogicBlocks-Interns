@@ -21,7 +21,7 @@ body {
 
 
 .blocklyTreeRow {
- /* border: 2px solid #333; */    /* Add border */
+ border: 2px solid #333;    /* Add border */
   margin: 5px 0;                /* Space between categories */
   border-radius: 5px;           /* Optional rounded corners */
   padding: 5px;                 /* Some padding */
@@ -39,7 +39,7 @@ body {
 
 
 
-.blocklyToolboxDiv{
+/* .blocklyToolboxDiv{
   background-color: rgb(40, 40, 40);
   color: white;
 }
@@ -52,11 +52,11 @@ body {
 .blocklyToolboxCategory:hover{
   background-color: cadetblue;
   transition: 0.3s;
-}
+} */
 
 .BlockyComp{
   width:100%;
-  height: 453px;
+  height: 625px;
 }
 
 .highlighted{
