@@ -89,9 +89,9 @@ Blockly.Blocks['when_dropdown_greater_than_input'] = {
 Blockly.Blocks['when_i_receive_dropdown'] = {
   init: function () {
     this.messageOptions = [
-      ['Message1', 'BACKDROP1'],
-      ['New Message', 'NEW_MESSAGE']
+      ['New Message', 'NEW_MESSAGE'],
       // Add more existing options here...
+      ['Message1', 'BACKDROP1'],
     ];
 
     this.appendDummyInput()
@@ -99,6 +99,9 @@ Blockly.Blocks['when_i_receive_dropdown'] = {
       .appendField(new Blockly.FieldDropdown(this.generateDropdownOptions.bind(this)), 'BACKDROP_NAME');
     this.setNextStatement(true, null);
     this.setColour(300);
+
+    // Set the initial value of the dropdown to 'Message1'
+    this.getField('BACKDROP_NAME').setValue('BACKDROP1');
   },
 
   generateDropdownOptions: function () {
@@ -112,7 +115,12 @@ Blockly.Blocks['when_i_receive_dropdown'] = {
         let newMessage = prompt('Enter the new message:');
         if (newMessage !== null && newMessage.trim() !== '') {
           let messageKey = newMessage.toUpperCase().replace(/\s/g, '_');
-          this.messageOptions.push([newMessage, messageKey]);
+
+          // Find the index of 'Message1' in the options array
+          let message1Index = this.messageOptions.findIndex(option => option[1] === 'BACKDROP1');
+          
+          // Insert the new message between 'New Message' and 'Message1'
+          this.messageOptions.splice(message1Index, 0, [newMessage, messageKey]);
           this.getField('BACKDROP_NAME').setValue(messageKey);
           this.getField('BACKDROP_NAME').setOptions(this.messageOptions);
         }
@@ -126,9 +134,9 @@ Blockly.Blocks['when_i_receive_dropdown'] = {
 Blockly.Blocks['broadcast'] = {
   init: function () {
     this.messageOptions = [
-      ['Message1', 'BACKDROP1'],
-      ['New Message', 'NEW_MESSAGE']
+      ['New Message', 'NEW_MESSAGE'],
       // Add more existing options here...
+      ['Message1', 'BACKDROP1'],
     ];
 
     this.appendDummyInput()
@@ -136,6 +144,9 @@ Blockly.Blocks['broadcast'] = {
       .appendField(new Blockly.FieldDropdown(this.generateDropdownOptions.bind(this)), 'BACKDROP_NAME');
     this.setNextStatement(true, null);
     this.setColour(300);
+
+    // Set initial value of dropdown to Message1
+    this.getField('BACKDROP_NAME').setValue('BACKDROP1');
   },
 
   generateDropdownOptions: function () {
@@ -149,7 +160,12 @@ Blockly.Blocks['broadcast'] = {
         let newMessage = prompt('Enter the new message:');
         if (newMessage !== null && newMessage.trim() !== '') {
           let messageKey = newMessage.toUpperCase().replace(/\s/g, '_');
-          this.messageOptions.push([newMessage, messageKey]);
+
+          // Find the index of 'Message1' in the options array
+          let message1Index = this.messageOptions.findIndex(option => option[1] === 'BACKDROP1');
+          
+          // Insert the new message between 'New Message' and 'Message1'
+          this.messageOptions.splice(message1Index, 0, [newMessage, messageKey]);
           this.getField('BACKDROP_NAME').setValue(messageKey);
           this.getField('BACKDROP_NAME').setOptions(this.messageOptions);
         }
@@ -164,9 +180,9 @@ Blockly.Blocks['broadcast'] = {
 Blockly.Blocks['broadcast_message_and_wait'] = {
   init: function () {
     this.messageOptions = [
-      ['Message1', 'BACKDROP1'],
-      ['New Message', 'NEW_MESSAGE']
+      ['New Message', 'NEW_MESSAGE'],
       // Add more existing options here...
+      ['Message1', 'BACKDROP1'],
     ];
 
     this.appendDummyInput()
@@ -175,6 +191,9 @@ Blockly.Blocks['broadcast_message_and_wait'] = {
       .appendField("and wait");
     this.setNextStatement(true, null);
     this.setColour(300);
+
+    // Set initial value of dropdown to Message1
+    this.getField('BACKDROP_NAME').setValue('BACKDROP1');
   },
 
   generateDropdownOptions: function () {
@@ -188,7 +207,11 @@ Blockly.Blocks['broadcast_message_and_wait'] = {
         let newMessage = prompt('Enter the new message:');
         if (newMessage !== null && newMessage.trim() !== '') {
           let messageKey = newMessage.toUpperCase().replace(/\s/g, '_');
-          this.messageOptions.push([newMessage, messageKey]);
+          // Find the index of 'Message1' in the options array
+          let message1Index = this.messageOptions.findIndex(option => option[1] === 'BACKDROP1');
+          
+          // Insert the new message between 'New Message' and 'Message1'
+          this.messageOptions.splice(message1Index, 0, [newMessage, messageKey]);
           this.getField('BACKDROP_NAME').setValue(messageKey);
           this.getField('BACKDROP_NAME').setOptions(this.messageOptions);
         }
