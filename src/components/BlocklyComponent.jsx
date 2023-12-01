@@ -9,6 +9,7 @@ import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
+// import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
@@ -29,10 +30,10 @@ const BlocklyComponent = () => {
       const newWorkspace = initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
       blocklyRef.current = newWorkspace;  // Assign the workspace to the ref
     }
-  
+
     // Attach the click event handler to the workspace
     blocklyRef.current.addChangeListener(handleBlockClick);
-  
+
     // Clean up the event handler when the component is unmounted
     return () => {
       if (blocklyRef.current) {
@@ -40,11 +41,11 @@ const BlocklyComponent = () => {
       }
     };
   }, []);
-  
+
 
   const getAllConnectedBlocks = (block) => {
     const connectedBlocks = [];
-  
+
     const populateConnectedBlocks = (currentBlock) => {
       if (currentBlock) {
         connectedBlocks.push(currentBlock);
@@ -53,26 +54,28 @@ const BlocklyComponent = () => {
         });
       }
     };
-  
+
     populateConnectedBlocks(block);
     return connectedBlocks;
   };
-  
+
   const handleBlockClick = (event) => {
     if (event.type === Blockly.Events.CLICK) {
       const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
-  
+
       // Include connected blocks
       const connectedBlocks = getAllConnectedBlocks(clickedBlock);
-  
+
       // Log block IDs to the console
       connectedBlocks.forEach((block) => {
         console.log('Connected Block ID:', block.id);
+        // const generatedCode = generateCodeForBlock(block);
+        console.log('Generated Code:', generatedCode);
       });
     }
   };
-  
-  
+
+
 
   return (
     <div className="BlockyComp">

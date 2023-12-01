@@ -17,6 +17,7 @@ import FlagButton from './Canvas/FlagButton';
 import StopButton from './Canvas/StopButton';
 import UndoButton from './Canvas/UndoButton';
 import RedoButton from './Canvas/RedoButton';
+import ExecutionButton from './Canvas/ExecutionButton';
 import ZoomIn from './Canvas/ZoomIn';
 import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
@@ -132,7 +133,7 @@ const Canvas = () => {
 
 // execution button
 const handleExecuteBlocks = (event) => {
-  console.log('Flag button clicked');
+  console.log('Execution button clicked');
 
   // Get the main workspace
   const workspace = Blockly.getMainWorkspace();
@@ -140,8 +141,11 @@ const handleExecuteBlocks = (event) => {
   // Iterate through all blocks in the workspace
   workspace.getAllBlocks().forEach((block) => {
     // Print the ID of each block to the console
+
     console.log(`Block ID: ${block.id}`);
   });
+
+  
 
   // // Convert the entire workspace to JavaScript code
   // const code = javascriptGenerator.workspaceToCode(workspace);
@@ -153,6 +157,24 @@ const handleExecuteBlocks = (event) => {
   //   console.error(`Error executing blocks: ${error}`);
   // }
 };
+
+const handleFlagButtonClicked = () => {
+  console.log('When flag clicked block is triggered');
+
+  // Get the main workspace
+  const workspace = Blockly.getMainWorkspace();
+
+  // Find the 'when flag clicked' block
+  const flagClickedBlock = workspace.getAllBlocks().find((block) => block.type === 'flag_clicked_event');
+
+  if (flagClickedBlock) {
+    // Log the ID of the 'when flag clicked' block to the console
+    console.log(`Block ID: ${flagClickedBlock.id}`);
+  } else {
+    console.warn("No 'when flag clicked' block found in the workspace");
+  }
+};
+
 
 
 
@@ -191,7 +213,8 @@ const handleExecuteBlocks = (event) => {
           width: '100%'
         }}>
           <div>
-            <FlagButton onClick={handleExecuteBlocks} />
+            <ExecutionButton onClick={handleExecuteBlocks} />
+            <FlagButton onClick={handleFlagButtonClicked} />
             <StopButton onClick={() => { }} />
             <UndoButton onClick={undo} disabled={historyPointer <= 0 && zoomPointer <= 0} />
             <RedoButton onClick={redo} disabled={historyPointer >= positionHistory.length - 1 && zoomPointer >= zoomHistory.length - 1} />
