@@ -10,9 +10,15 @@ import { Motion } from './BlockCategories/Motion';
 import { Control } from './BlockCategories/Control';
 import { javascriptGenerator } from 'blockly/javascript';
 import {store} from '../store/store';
-import {moveSprite} from '../features/motionSlice';
+
+
+
+import {moveSteps, setX, setY, goTo, goToXY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
+ } from '../features/motionSlice';
+
 import { waitSeconds } from '../features/controlSlice';
 import { useDispatch } from 'react-redux';
+
 
 const BlocklyComponent = () => {
   // const dispatch = useDispatch();
@@ -20,11 +26,11 @@ const BlocklyComponent = () => {
   const [generatedCode, setGeneratedCode] = useState('');
   const workspace=Blockly.getMainWorkspace();
 
-  const generateCode = () => {
+  const generateCode = async () => {
     javascriptGenerator.addReservedWords('code');
     var code = javascriptGenerator.workspaceToCode(workspace);
     setGeneratedCode(code);
-    eval(code);
+    await eval(`(async () => { ${code} })();`);
   };
 
   useEffect(() => {
