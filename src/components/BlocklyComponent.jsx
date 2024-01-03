@@ -9,7 +9,7 @@ import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
-// import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
+import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
@@ -69,7 +69,7 @@ const BlocklyComponent = () => {
       // Log block IDs to the console
       connectedBlocks.forEach((block) => {
         console.log('Connected Block ID:', block.id);
-        // const generatedCode = generateCodeForBlock(block);
+        const generatedCode = generateCodeForBlock(block);
         console.log('Generated Code:', generatedCode);
       });
     }
