@@ -1,5 +1,5 @@
 // Updated BlocklyComponent.jsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Blockly from 'blockly';
 
 import { Logic } from './BlockCategories/Logic';
@@ -9,10 +9,25 @@ import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
-import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
+import { javascriptGenerator } from 'blockly/javascript';
+// import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
+  const [generatedCode, setGeneratedCode] = useState('');
+  const workspace=Blockly.getMainWorkspace();
+
+  const generateCode = () => {
+    javascriptGenerator.addReservedWords('code');
+    var code = javascriptGenerator.workspaceToCode(workspace);
+    setGeneratedCode(code);
+    console.log(code);
+    // try {
+    //   eval(code);
+    // } catch (e) {
+    //   alert(e);
+    // }
+  };
 
   useEffect(() => {
     if (!blocklyRef.current) {
@@ -82,13 +97,12 @@ const BlocklyComponent = () => {
       <div className="highlghted-text">
         <h1>Blockly Toolbox</h1>
         <h1>Blockly Workspace</h1>
+      <button onClick={generateCode}>Generate Code</button>  
+      {/* <pre style={{ whiteSpace: 'pre-wrap', marginTop: '20px' }}>
+        <br></br>{generatedCode}
+      </pre> */}
       </div>
-      <div
-        className="highlighted"
-        id="blocklyDiv"
-        style={{ height: '100%', width: '100%' }}
-        onClick={handleBlockClick}  // Add the click handler directly to the blocklyDiv
-      ></div>
+      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%' }} onClick={handleBlockClick}></div>
     </div>
   );
 };
