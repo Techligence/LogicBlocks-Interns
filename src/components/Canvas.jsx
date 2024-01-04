@@ -186,22 +186,41 @@ const handleFlagButtonClicked = () => {
     <div className={`Canvasbox ${isFullScreen ? 'fullscreen' : ''}`}>
       <Card className={`highlighted ${isFullScreen ? 'fullscreen-card' : ''}`}>
         <h1 style={{ textAlign: 'center', fontSize: '14px' }}>Canvas</h1>
-        <img
-          src={Demo}
-          alt="Your Image"
-          style={{
-            width: `${imageSize}px`,
-            height: `${imageSize}px`,
-            position: 'absolute',
-            left: `${currentPosition.x}px`,
-            top: `${currentPosition.y}px`,
-            cursor: 'grab'
+        <Draggable
+          position={{ x: currentPosition.x, y: currentPosition.y }}
+          onStart={(e, data) => {
+            setDragging(true);
+            setMousePosition({ x: data.x, y: data.y });
+            setPositionHistory([...positionHistory.slice(0, historyPointer + 1), { ...currentPosition }]);
+            setHistoryPointer(historyPointer + 1);
           }}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          draggable="false"
-        />
+          onDrag={(e, data) => {
+            const dx = data.x - mousePosition.x;
+            const dy = data.y - mousePosition.y;
+            setCurrentPosition((prevPosition) => ({
+              x: prevPosition.x + dx,
+              y: prevPosition.y + dy,
+            }));
+            setMousePosition({ x: data.x, y: data.y });
+          }}
+          onStop={() => {
+            setDragging(false);
+            setPositionHistory([...positionHistory.slice(0, historyPointer + 1), { ...currentPosition }]);
+            setHistoryPointer(historyPointer + 1);
+          }}
+        >
+          <img
+            src={Demo}
+            alt="Your Image"
+            style={{
+              width: `${imageSize}px`,
+              height: `${imageSize}px`,
+              cursor: 'grab',
+            }}
+            draggable="false"
+          />
+        </Draggable>
+
 
 
         <div style={{
