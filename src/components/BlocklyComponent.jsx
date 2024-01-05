@@ -1,5 +1,5 @@
 // Updated BlocklyComponent.jsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Blockly from 'blockly';
 
 import { Logic } from './BlockCategories/Logic';
@@ -9,10 +9,38 @@ import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
-// import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
+import { store } from '../store/store';
+import { 
+  getVariable,
+  clearFetchedVariable,
+  setVariable,
+  changeVariableBy,
+  showVariable,
+  hideVariable,
+} from '../features/variableSlice';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { javascriptGenerator } from 'blockly/javascript';
+Blockly.JavaScript = javascriptGenerator;
+// import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
+  const [generatedCode, setGeneratedCode] = useState('');
+  const workspace = Blockly.getMainWorkspace();
+  const dispatch = useDispatch();
+
+  const generateCode = () => {
+    javascriptGenerator.addReservedWords('code');
+    var code = javascriptGenerator.workspaceToCode(workspace);
+    setGeneratedCode(code);
+    console.log(code);
+    // try {
+    //   eval(code);
+    // } catch (e) {
+    //   alert(e);
+    // }
+  };
 
   useEffect(() => {
     if (!blocklyRef.current) {
@@ -59,29 +87,61 @@ const BlocklyComponent = () => {
     return connectedBlocks;
   };
 
-  const handleBlockClick = (event) => {
-    if (event.type === Blockly.Events.CLICK) {
-      const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
-
-      // Include connected blocks
-      const connectedBlocks = getAllConnectedBlocks(clickedBlock);
-
-      // Log block IDs to the console
-      connectedBlocks.forEach((block) => {
-        console.log('Connected Block ID:', block.id);
-        // const generatedCode = generateCodeForBlock(block);
-        console.log('Generated Code:', generatedCode);
-      });
-    }
+  const getBlockJavaScriptCode = (block) => {
+    javascriptGenerator.addReservedWords('code');
+    const code = Blockly.JavaScript.blockToCode(block);
+    return code.trim();
   };
 
 
+
+  const handleBlockClick = (event) => {
+    if (event.type === Blockly.Events.CLICK) {
+      const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
+      const connectedBlocks = getAllConnectedBlocks(clickedBlock);
+      connectedBlocks.forEach((block) => {
+        // console.log('Connected Block ID:', block.id);
+        const generatedCode = getBlockJavaScriptCode(block);
+        console.log(generatedCode);
+      });
+
+      const blockType = clickedBlock?.type;
+      if (blockType === 'variables_set') {
+        const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
+        const value = 0;
+        dispatch(setVariable({ variableName, value }));
+      } 
+      else if (blockType === 'variables_changeby') {
+        const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
+        const changeBy = 1; 
+        dispatch(changeVariableBy({ variableName, changeBy }));
+      } 
+      else if (blockType === 'variables_show') {
+        const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
+        dispatch(showVariable(variableName));
+      } 
+      else if (blockType === 'variables_hide') {
+        const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
+        dispatch(hideVariable(variableName));
+      }
+    }
+  };
+
+  const handleGenerateCode = () => {
+    const code = Blockly.JavaScript.workspaceToCode(blocklyRef.current);
+    dispatch(generateCode(code)); // Dispatch the code to Redux store
+    console.log('Generated Code:', code);
+  };
 
   return (
     <div className="BlockyComp">
       <div className="highlghted-text">
         <h1>Blockly Toolbox</h1>
         <h1>Blockly Workspace</h1>
+        <button onClick={generateCode}>Generate Code</button>
+        {/* <pre style={{ whiteSpace: 'pre-wrap', marginTop: '20px' }}>
+        <br></br>{generatedCode}
+      </pre> */}
       </div>
       <div
         className="highlighted"

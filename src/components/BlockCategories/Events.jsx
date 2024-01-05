@@ -11,6 +11,13 @@ Blockly.Blocks['event_trigger'] = {
     this.setColour(300);
   }
 };
+// JavaScript code generator for 'event_trigger' block
+Blockly.JavaScript['event_trigger'] = function (block) {
+  const eventName = block.getFieldValue('EVENT_NAME');
+  const code = `whenEventTriggered("${eventName}");\n`;
+  // console.log(code);
+  return code;
+};
 
 // Block for KEY_PRESSED event trigger.
 Blockly.Blocks['key_press_event'] = {
@@ -89,9 +96,9 @@ Blockly.Blocks['when_dropdown_greater_than_input'] = {
 Blockly.Blocks['when_i_receive_dropdown'] = {
   init: function () {
     this.messageOptions = [
-      ['New Message', 'NEW_MESSAGE'],
-      // Add more existing options here...
       ['Message1', 'BACKDROP1'],
+      ['New Message', 'NEW_MESSAGE']
+      // Add more existing options here...
     ];
 
     this.appendDummyInput()
@@ -99,9 +106,6 @@ Blockly.Blocks['when_i_receive_dropdown'] = {
       .appendField(new Blockly.FieldDropdown(this.generateDropdownOptions.bind(this)), 'BACKDROP_NAME');
     this.setNextStatement(true, null);
     this.setColour(300);
-
-    // Set the initial value of the dropdown to 'Message1'
-    this.getField('BACKDROP_NAME').setValue('BACKDROP1');
   },
 
   generateDropdownOptions: function () {
@@ -115,12 +119,7 @@ Blockly.Blocks['when_i_receive_dropdown'] = {
         let newMessage = prompt('Enter the new message:');
         if (newMessage !== null && newMessage.trim() !== '') {
           let messageKey = newMessage.toUpperCase().replace(/\s/g, '_');
-
-          // Find the index of 'Message1' in the options array
-          let message1Index = this.messageOptions.findIndex(option => option[1] === 'BACKDROP1');
-          
-          // Insert the new message between 'New Message' and 'Message1'
-          this.messageOptions.splice(message1Index, 0, [newMessage, messageKey]);
+          this.messageOptions.push([newMessage, messageKey]);
           this.getField('BACKDROP_NAME').setValue(messageKey);
           this.getField('BACKDROP_NAME').setOptions(this.messageOptions);
         }
@@ -134,9 +133,9 @@ Blockly.Blocks['when_i_receive_dropdown'] = {
 Blockly.Blocks['broadcast'] = {
   init: function () {
     this.messageOptions = [
-      ['New Message', 'NEW_MESSAGE'],
-      // Add more existing options here...
       ['Message1', 'BACKDROP1'],
+      ['New Message', 'NEW_MESSAGE']
+      // Add more existing options here...
     ];
 
     this.appendDummyInput()
@@ -144,9 +143,6 @@ Blockly.Blocks['broadcast'] = {
       .appendField(new Blockly.FieldDropdown(this.generateDropdownOptions.bind(this)), 'BACKDROP_NAME');
     this.setNextStatement(true, null);
     this.setColour(300);
-
-    // Set initial value of dropdown to Message1
-    this.getField('BACKDROP_NAME').setValue('BACKDROP1');
   },
 
   generateDropdownOptions: function () {
@@ -160,12 +156,7 @@ Blockly.Blocks['broadcast'] = {
         let newMessage = prompt('Enter the new message:');
         if (newMessage !== null && newMessage.trim() !== '') {
           let messageKey = newMessage.toUpperCase().replace(/\s/g, '_');
-
-          // Find the index of 'Message1' in the options array
-          let message1Index = this.messageOptions.findIndex(option => option[1] === 'BACKDROP1');
-          
-          // Insert the new message between 'New Message' and 'Message1'
-          this.messageOptions.splice(message1Index, 0, [newMessage, messageKey]);
+          this.messageOptions.push([newMessage, messageKey]);
           this.getField('BACKDROP_NAME').setValue(messageKey);
           this.getField('BACKDROP_NAME').setOptions(this.messageOptions);
         }
@@ -180,9 +171,9 @@ Blockly.Blocks['broadcast'] = {
 Blockly.Blocks['broadcast_message_and_wait'] = {
   init: function () {
     this.messageOptions = [
-      ['New Message', 'NEW_MESSAGE'],
-      // Add more existing options here...
       ['Message1', 'BACKDROP1'],
+      ['New Message', 'NEW_MESSAGE']
+      // Add more existing options here...
     ];
 
     this.appendDummyInput()
@@ -191,9 +182,6 @@ Blockly.Blocks['broadcast_message_and_wait'] = {
       .appendField("and wait");
     this.setNextStatement(true, null);
     this.setColour(300);
-
-    // Set initial value of dropdown to Message1
-    this.getField('BACKDROP_NAME').setValue('BACKDROP1');
   },
 
   generateDropdownOptions: function () {
@@ -207,11 +195,7 @@ Blockly.Blocks['broadcast_message_and_wait'] = {
         let newMessage = prompt('Enter the new message:');
         if (newMessage !== null && newMessage.trim() !== '') {
           let messageKey = newMessage.toUpperCase().replace(/\s/g, '_');
-          // Find the index of 'Message1' in the options array
-          let message1Index = this.messageOptions.findIndex(option => option[1] === 'BACKDROP1');
-          
-          // Insert the new message between 'New Message' and 'Message1'
-          this.messageOptions.splice(message1Index, 0, [newMessage, messageKey]);
+          this.messageOptions.push([newMessage, messageKey]);
           this.getField('BACKDROP_NAME').setValue(messageKey);
           this.getField('BACKDROP_NAME').setOptions(this.messageOptions);
         }
@@ -221,9 +205,74 @@ Blockly.Blocks['broadcast_message_and_wait'] = {
 };
 
 
+// JavaScript code generator for 'key_press_event' block
+Blockly.JavaScript['key_press_event'] = function (block) {
+  const keyName = block.getFieldValue('KEY_NAME');
+  const code = `whenKeyPressed("${keyName}");\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code generator for 'sprite_clicked_event' block
+Blockly.JavaScript['sprite_clicked_event'] = function (block) {
+  const code = `whenSpriteClicked();\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code generator for 'flag_clicked_event' block
+Blockly.JavaScript['flag_clicked_event'] = function (block) {
+  const code = `whenFlagClicked();\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code generator for 'when_backdrop_switches_to' block
+Blockly.JavaScript['when_backdrop_switches_to'] = function (block) {
+  const backdropName = block.getFieldValue('BACKDROP_NAME');
+  const code = `whenBackdropSwitchesTo("${backdropName}");\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code generator for 'when_dropdown_greater_than_input' block
+Blockly.JavaScript['when_dropdown_greater_than_input'] = function (block) {
+  const dropdownName = block.getFieldValue('DROPDOWN_NAME');
+  const inputValue = block.getFieldValue('INPUT_VALUE');
+  const code = `whenDropdownGreaterThanInput("${dropdownName}", ${inputValue});\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code generator for 'when_i_receive_dropdown' block
+Blockly.JavaScript['when_i_receive_dropdown'] = function (block) {
+  const backdropName = block.getFieldValue('BACKDROP_NAME');
+  const code = `whenIReceive("${backdropName}");\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code generator for 'broadcast' block
+Blockly.JavaScript['broadcast'] = function (block) {
+  const backdropName = block.getFieldValue('BACKDROP_NAME');
+  const code = `broadcast("${backdropName}");\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code generator for 'broadcast_message_and_wait' block
+Blockly.JavaScript['broadcast_message_and_wait'] = function (block) {
+  const backdropName = block.getFieldValue('BACKDROP_NAME');
+  const code = `broadcastAndWait("${backdropName}");\n`;
+  // console.log(code);
+  return code;
+};
+
+// JavaScript code for generating category XML
 export const Events = `
   <category name="Events" colour="#FFD600" categorystyle="event_category">
       <block type="flag_clicked_event"></block>
+      <block type="event_trigger"></block>
       <block type="key_press_event"></block>
       <block type="sprite_clicked_event"></block>
       <block type="when_backdrop_switches_to"></block>
@@ -233,4 +282,4 @@ export const Events = `
       <block type="broadcast_message_and_wait"></block>
       <!-- Other event blocks go here... -->
   </category>
-  `
+  `;

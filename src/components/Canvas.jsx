@@ -7,6 +7,7 @@ import Blockly from 'blockly';
 import 'blockly/javascript';
 
 import {javascriptGenerator} from 'blockly/javascript';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 // Import Image from src
@@ -23,6 +24,12 @@ import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
 const Canvas = () => {
+
+  // const dispatch = useDispatch();
+
+  // const curr_variable_value = useSelector(state => state.variable.value);
+
+
 
   const [imageSize, setImageSize] = useState(100); // useState for zooming in-out
   const maxImageSize = 200; // Maximum limit for image size
