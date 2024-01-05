@@ -7,17 +7,17 @@ Blockly.JavaScript = javascriptGenerator;
 Blockly.Blocks['variables_get'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldVariable("VAR_NAME"), "FIELD_NAME");
+      .appendField(new Blockly.FieldVariable("VAR_NAME"), "GET_VARIABLE"),
     this.setOutput(true, null);
-    this.setColour(350)
+    this.setColour(350);
   }
 };
 
 // JavaScript code generator for variable getter.
 javascriptGenerator['variables_get'] = function(block) {
-  const fieldName = block.getFieldValue('FIELD_NAME');
-  const code = `${fieldName}`;
-  console.log(code);
+  const getVariable = block.getField('GET_VARIABLE').getText();
+  const code = `${getVariable}`;
+  // console.log(code);
   return code;
   // return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
@@ -38,7 +38,7 @@ Blockly.Blocks['variables_set'] = {
 
 // JavaScript code generator for variable setter.
 javascriptGenerator['variables_set'] = function(block) {
-  const fieldName = block.getFieldValue('FIELD_NAME');
+  const fieldName = block.getField('FIELD_NAME').getText();
   const value = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
   const code = `${fieldName} = ${value};\n`;
   return code;
@@ -60,7 +60,7 @@ Blockly.Blocks['variables_changeby'] = {
 
 // JavaScript code generator for changing variable by 1.
 javascriptGenerator['variables_changeby'] = function(block) {
-  const fieldName = block.getFieldValue('FIELD_NAME');
+  const fieldName = block.getField('FIELD_NAME').getText();
   const code = `${fieldName} += 1;\n`;
   return code;
 };
@@ -79,7 +79,7 @@ Blockly.Blocks['variables_show'] = {
 };
 // JavaScript code generator for showing variable.
 javascriptGenerator['variables_show'] = function(block) {
-  const variable = block.getFieldValue('SHOW_VARIABLE');
+  const variable = block.getField('SHOW_VARIABLE').getText();
   const code = `showVariable(${variable});\n`;
   return code;
 };
@@ -99,7 +99,7 @@ Blockly.Blocks['variables_hide'] = {
 
 // JavaScript code generator for hiding variable.
 javascriptGenerator['variables_hide'] = function(block) {
-  const fieldName = block.getFieldValue('FIELD_NAME');
+  const fieldName = block.getField('FIELD_NAME').getText();
   const code = `hideVariable(${fieldName});\n`;
   return code;
 };

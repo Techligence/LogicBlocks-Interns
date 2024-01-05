@@ -12,12 +12,12 @@ Blockly.Blocks['event_trigger'] = {
   }
 };
 // JavaScript code generator for 'event_trigger' block
-// Blockly.JavaScript['event_trigger'] = function (block) {
-//   const eventName = block.getFieldValue('EVENT_NAME');
-//   const code = `whenEventTriggered("${eventName}");\n`;
-//   console.log(code);
-//   return code;
-// };
+Blockly.JavaScript['event_trigger'] = function (block) {
+  const eventName = block.getFieldValue('EVENT_NAME');
+  const code = `whenEventTriggered("${eventName}");\n`;
+  // console.log(code);
+  return code;
+};
 
 // Block for KEY_PRESSED event trigger.
 Blockly.Blocks['key_press_event'] = {
@@ -209,21 +209,21 @@ Blockly.Blocks['broadcast_message_and_wait'] = {
 Blockly.JavaScript['key_press_event'] = function (block) {
   const keyName = block.getFieldValue('KEY_NAME');
   const code = `whenKeyPressed("${keyName}");\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'sprite_clicked_event' block
 Blockly.JavaScript['sprite_clicked_event'] = function (block) {
   const code = `whenSpriteClicked();\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'flag_clicked_event' block
 Blockly.JavaScript['flag_clicked_event'] = function (block) {
   const code = `whenFlagClicked();\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
@@ -231,7 +231,7 @@ Blockly.JavaScript['flag_clicked_event'] = function (block) {
 Blockly.JavaScript['when_backdrop_switches_to'] = function (block) {
   const backdropName = block.getFieldValue('BACKDROP_NAME');
   const code = `whenBackdropSwitchesTo("${backdropName}");\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
@@ -240,7 +240,7 @@ Blockly.JavaScript['when_dropdown_greater_than_input'] = function (block) {
   const dropdownName = block.getFieldValue('DROPDOWN_NAME');
   const inputValue = block.getFieldValue('INPUT_VALUE');
   const code = `whenDropdownGreaterThanInput("${dropdownName}", ${inputValue});\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
@@ -248,7 +248,7 @@ Blockly.JavaScript['when_dropdown_greater_than_input'] = function (block) {
 Blockly.JavaScript['when_i_receive_dropdown'] = function (block) {
   const backdropName = block.getFieldValue('BACKDROP_NAME');
   const code = `whenIReceive("${backdropName}");\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
@@ -256,7 +256,7 @@ Blockly.JavaScript['when_i_receive_dropdown'] = function (block) {
 Blockly.JavaScript['broadcast'] = function (block) {
   const backdropName = block.getFieldValue('BACKDROP_NAME');
   const code = `broadcast("${backdropName}");\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
@@ -264,7 +264,7 @@ Blockly.JavaScript['broadcast'] = function (block) {
 Blockly.JavaScript['broadcast_message_and_wait'] = function (block) {
   const backdropName = block.getFieldValue('BACKDROP_NAME');
   const code = `broadcastAndWait("${backdropName}");\n`;
-  console.log(code);
+  // console.log(code);
   return code;
 };
 
