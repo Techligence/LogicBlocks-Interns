@@ -8,6 +8,8 @@ import 'blockly/javascript';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import { useSelector, useDispatch } from 'react-redux';
+import { spriteClickedEvent,flagClickedEvent } from './BlockCategories/Events';
+
 
 
 // Import Image from src
@@ -149,7 +151,7 @@ const handleExecuteBlocks = (event) => {
   workspace.getAllBlocks().forEach((block) => {
     // Print the ID of each block to the console
 
-    console.log(`Block ID: ${block.id}`);
+    // console.log(`Block ID: ${block.id}`);
   });
 
   
@@ -166,21 +168,40 @@ const handleExecuteBlocks = (event) => {
 };
 
 const handleFlagButtonClicked = () => {
-  console.log('When flag clicked block is triggered');
+  // console.log('When flag clicked block is triggered');
 
-  // Get the main workspace
   const workspace = Blockly.getMainWorkspace();
 
-  // Find the 'when flag clicked' block
   const flagClickedBlock = workspace.getAllBlocks().find((block) => block.type === 'flag_clicked_event');
 
   if (flagClickedBlock) {
     // Log the ID of the 'when flag clicked' block to the console
-    console.log(`Block ID: ${flagClickedBlock.id}`);
+    // console.log(`Block ID: ${flagClickedBlock.id}`);
+    const generatedCode = flagClickedEvent(flagClickedBlock);  // Replace someBlock with your actual block
+    console.log(generatedCode);
   } else {
     console.warn("No 'when flag clicked' block found in the workspace");
   }
 };
+
+const handleSpriteClicked = () => {
+  const workspace = Blockly.getMainWorkspace();
+
+  // Find the 'sprite clicked' block in the workspace
+  const spriteClickedBlock = workspace.getAllBlocks().find((block) => block.type === 'sprite_clicked_event');
+
+  if (spriteClickedBlock) {
+    // Log the ID of the 'sprite clicked' block to the console
+    // console.log(`Block ID: ${spriteClickedBlock.id}`);
+    
+    // Call the JavaScript code generator function for 'sprite clicked' block
+    const generatedCode = spriteClickedEvent(spriteClickedBlock);  // Replace spriteClickedEvent with your actual function
+    console.log(generatedCode);
+  } else {
+    console.warn("No 'sprite clicked' block found in the workspace");
+  }
+};
+
 
 
 
@@ -208,6 +229,7 @@ const handleFlagButtonClicked = () => {
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
           draggable="false"
+          onClick={handleSpriteClicked} 
         />
 
 

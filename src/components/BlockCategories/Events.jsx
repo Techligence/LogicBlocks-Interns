@@ -214,18 +214,22 @@ Blockly.JavaScript['key_press_event'] = function (block) {
 };
 
 // JavaScript code generator for 'sprite_clicked_event' block
-Blockly.JavaScript['sprite_clicked_event'] = function (block) {
+const spriteClickedEvent = function (block) {
   const code = `whenSpriteClicked();\n`;
   // console.log(code);
   return code;
 };
+Blockly.JavaScript['sprite_clicked_event'] = spriteClickedEvent;
+export { spriteClickedEvent };
 
 // JavaScript code generator for 'flag_clicked_event' block
-Blockly.JavaScript['flag_clicked_event'] = function (block) {
+const flagClickedEvent = function (block) {
   const code = `whenFlagClicked();\n`;
   // console.log(code);
   return code;
 };
+Blockly.JavaScript['flag_clicked_event'] = flagClickedEvent;
+export {flagClickedEvent}
 
 // JavaScript code generator for 'when_backdrop_switches_to' block
 Blockly.JavaScript['when_backdrop_switches_to'] = function (block) {
