@@ -9,6 +9,7 @@ import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
+import { useDispatch } from 'react-redux';
 import { javascriptGenerator } from 'blockly/javascript';
 // import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
@@ -16,6 +17,7 @@ const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
   const [generatedCode, setGeneratedCode] = useState('');
   const workspace=Blockly.getMainWorkspace();
+  const dispatch = useDispatch();
 
   const generateCode = () => {
     javascriptGenerator.addReservedWords('code');
@@ -74,6 +76,11 @@ const BlocklyComponent = () => {
     return connectedBlocks;
   };
 
+  const getBlockJavaScriptCode = (block) => {
+    const code = Blockly.JavaScript.blockToCode(block);
+    return code.trim();
+  };
+
   const handleBlockClick = (event) => {
     if (event.type === Blockly.Events.CLICK) {
       const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
@@ -88,6 +95,12 @@ const BlocklyComponent = () => {
         console.log('Generated Code:', generatedCode);
       });
     }
+  };
+
+  const handleGenerateCode = () => {
+    const code = Blockly.JavaScript.workspaceToCode(blocklyRef.current);
+    dispatch(generateCode(code)); // Dispatch the code to Redux store
+    console.log('Generated Code:', code);
   };
 
 
