@@ -4,6 +4,7 @@ import { Button, Menu, Box } from '@mui/material';
 import CameraToggle from './AnchorMenu/CameraToggle';
 import MicToggle from './AnchorMenu/MicToggle';
 import ModeToggle from './AnchorMenu/ModeToggle';
+import DarkModeToggle from './AnchorMenu/DarkModeToggle';
 
 
 const AnchorMenu = () => {
@@ -38,6 +39,8 @@ const AnchorMenu = () => {
         <CameraToggle camera={camera} setCamera={setCamera} />
         <MicToggle mic={mic} setMic={setMic} />
         <ModeToggle mode={mode} setMode={setMode} />
+        <DarkModeToggle />
+
       </Menu>
     </Box>
   );
