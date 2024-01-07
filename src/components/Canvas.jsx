@@ -29,7 +29,19 @@ const Canvas = () => {
 
   // const dispatch = useDispatch();
 
-  // const curr_variable_value = useSelector(state => state.variable.value);
+  // const { position, angle } = useSelector((state) => ({
+  //   position: state.motion.position,
+  //   angle: state.motion.angle,
+  // }));
+
+
+  // useEffect(() => {
+  //   const spriteElement = document.getElementById('sprite');
+  //   if (spriteElement) {
+  //     spriteElement.style.transform = `translate(${position.x}px, ${position.y}px) rotate(${angle}deg)`;
+  //   }
+  // }, [position, angle]); 
+  
 
 
 
@@ -201,8 +213,6 @@ const handleSpriteClicked = () => {
     console.warn("No 'sprite clicked' block found in the workspace");
   }
 };
-
-
 
 
 
