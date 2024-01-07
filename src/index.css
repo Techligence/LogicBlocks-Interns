@@ -23,3 +23,71 @@ body {
   border-radius: 5px;     /* Optional rounded corners */
   padding: 5px;           /* Some padding */
 }
+
+
+.blocklyToolboxDiv{
+  padding: 0;
+  overflow-x: hidden;
+  width: 18vw;
+  max-width: 160px;
+  min-width: 110px;
+  
+}
+
+.blocklyTreeRow {
+  border: 2px solid #463434;  /* Add border */
+  margin: 5px 0;          /* Space between categories */
+  border-radius: 15px;     /* Optional rounded corners */
+  padding: 5px;           /* Some padding */
+  height: 3;
+}
+
+.blocklyToolboxContents{
+  /* justify-content: center; */
+  border: 0.1px solid #8a8888;  /* Add border */
+  background-color: #ece8e8;
+  
+  
+}
+
+.blocklyTreeRowContentContainer{
+  height: 10%;
+}
+
+.autocomplete-input {
+  /* Add more styles as needed */
+  position: relative;
+  border: 2px solid #463434; /* Border color */
+  border-radius: 15px; /* Rounded corners */
+  padding: 8px; /* Padding inside the input */
+  outline: none; /* Remove the default focus border */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+  width: 107%;
+  /* Add box shadow for a subtle lift effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  top:-7px;
+  margin-bottom: -15px;
+  /* height: ; */
+  /*left: 2px;*/
+  right:10px;
+  height:30px;
+}
+
+.autocomplete-input:focus {
+  border-color: #2980b9;
+}
+
+.categoryBubble{
+  /* display: none; */
+  position: relative;
+  margin-top: -26px;
+  margin-left: -0px;
+  margin-bottom: -2.5px;
+  top :21px;
+  border-radius: 13px 0px 0px 13px;
+  height: 20px;
+  border: none;
+  height: 28px;
+  padding: 0;
+}

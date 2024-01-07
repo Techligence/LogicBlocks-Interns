@@ -1,6 +1,6 @@
 // MathCategory.jsx
 export const Math = `
-  <category name="Math" colour="#5C81A6" categorystyle="math_category">
+  <category name="Math" categorystyle="math_category">
     <block type="math_number"></block>
     <block type="math_arithmetic"></block>
     <block type="math_random_int">
