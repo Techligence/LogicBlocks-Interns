@@ -1,5 +1,24 @@
 // BlocklyBlocksAndCategory.js
 import Blockly from "blockly";
+import { setIsPlaying, setVolume } from "../../state/reducers/audioSlice";
+import { useDispatch } from "react-redux";
+import { javascriptGenerator } from 'blockly/javascript';
+
+
+// Category definition
+export const Sounds = `
+  <category name="Sounds" colour="">
+    <block type="play_sound"></block>
+    <block type="start_sound"></block>
+    <block type="change_by_effect"></block>
+    <block type="set_by_effect"></block>
+    <block type="clear_sound_effects"></block>
+    <block type="change_volume_by"></block>
+    <block type="set_volume_to"></block>
+  </category>
+`;
+
+
 
 // Define the 'play_sound' block
 Blockly.Blocks["play_sound"] = {
@@ -7,17 +26,19 @@ Blockly.Blocks["play_sound"] = {
     this.appendDummyInput().appendField("Play Sound");
     this.appendDummyInput()
       .appendField("Sound Name:")
-      .appendField(new Blockly.FieldTextInput("meow"), "SOUND_NAME");
+      .appendField(new Blockly.FieldTextInput("defaultsound"), "SOUND_NAME");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setTooltip("Play a sound");
-  },
-  // Generator code for 'play_sound' block
-  generateCode: function (block) {
-    var soundName = block.getFieldValue("SOUND_NAME");
-    return `playSound("${soundName}");\n`;
-  },
+  }, 
+};
+// Generator code for 'play_sound' block
+javascriptGenerator["play_sound"] = function (block) {
+  var soundName = block.getFieldValue("SOUND_NAME");
+  var code = `store.dispatch(setIsPlaying(true));\n`;
+  console.log(code);
+  return code;
 };
 
 // Define the 'start_sound' block
@@ -32,11 +53,13 @@ Blockly.Blocks["start_sound"] = {
     this.setColour(230);
     this.setTooltip("Start playing a sound");
   },
-  // Generator code for 'start_sound' block
-  generateCode: function (block) {
-    var soundName = block.getFieldValue("SOUND_NAME");
-    return `startSound("${soundName}");\n`;
-  },
+};
+// Generator code for 'start_sound' block 
+javascriptGenerator["start_sound"] = function (block) {
+  var soundName = block.getFieldValue("SOUND_NAME");
+  var code = `store.dispatch(setIsPlaying(true));\n`;
+  console.log(code);
+  return code;
 };
 
 // Define the 'change_by_effect' block
@@ -138,15 +161,3 @@ Blockly.Blocks["set_volume_to"] = {
   },
 };
 
-// Category definition
-export const Sounds = `
-  <category name="Sounds" colour="">
-    <block type="play_sound"></block>
-    <block type="start_sound"></block>
-    <block type="change_by_effect"></block>
-    <block type="set_by_effect"></block>
-    <block type="clear_sound_effects"></block>
-    <block type="change_volume_by"></block>
-    <block type="set_volume_to"></block>
-  </category>
-`;

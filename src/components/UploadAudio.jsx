@@ -12,28 +12,20 @@ const UploadAudio = () => {
   const dispatch = useDispatch();
   const inputFile = useRef(null);
   const { fileURL, setFileURL } = useContext(FileContext);
-  const [file, setFile] = useState(null); 
+  const [file, setFile] = useState(null);
   const audioState = useSelector((state) => state.soundTab.audioState);
   const { showAudioWaveform, showDefaultAudioWaveform, fileName } = audioState;
 
   //For rendering default music
-  useEffect(() => {    
+  useEffect(() => {
     const handleBeforeUnload = (event) => {
       event.preventDefault();
-      setFile("defaultsound.wav");
-      
-    
-      // dispatch(setAudioState({
-      //   showAudioWaveform: false,
-      //   showDefaultAudioWaveform: true,
-      //   fileName: ''
-      // }));      
-    };
+    }
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (file) {
@@ -57,23 +49,23 @@ const UploadAudio = () => {
 
   const handleDelete = (args) => {
     // Reset the fileURL and hide the AudioWaveform
-    setFile(null);    
-    if(args === "default"){
+    setFile(null);
+    if (args === "default") {
       dispatch(setAudioState({
         ...audioState,
-        showDefaultAudioWaveform: false        
+        showDefaultAudioWaveform: false
       }))
     }
-    else{
+    else {
       dispatch(setAudioState({
         ...audioState,
-        showAudioWaveform: false        
+        showAudioWaveform: false
       }))
     }
   };
 
   return (
-    <div style={{ position: "relative" }}>      
+    <div style={{ position: "relative" }}>
       {showDefaultAudioWaveform && <AudioWaveform />}
 
       {showAudioWaveform && <AudioWaveform filename={fileName} />}
@@ -104,11 +96,11 @@ const UploadAudio = () => {
 
       {/* Upload audio button */}
       {!showAudioWaveform && !showDefaultAudioWaveform && (
-      <>
-        <i style={{ color: "#531A65" }} className="material-icons audio-icon">
-          library_music
-        </i>
-        <h1>Upload your audio file here</h1></>)}
+        <>
+          <i style={{ color: "#531A65" }} className="material-icons audio-icon">
+            library_music
+          </i>
+          <h1>Upload your audio file here</h1></>)}
       <button className="upload-btn" onClick={handleButtonClick}>
         Upload
       </button>
