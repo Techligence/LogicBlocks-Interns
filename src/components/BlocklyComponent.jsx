@@ -9,7 +9,15 @@ import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
+import { javascriptGenerator } from 'blockly/javascript';
+Blockly.JavaScript = javascriptGenerator;
+// import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
+import { Motion } from './BlockCategories/Motion';
+import { Control } from './BlockCategories/Control';
 import { store } from '../store/store';
+import {moveSprite} from '../features/motionSlice';
+
+import { waitSeconds } from '../features/controlSlice';
 import { 
   getVariable,
   clearFetchedVariable,
@@ -38,9 +46,10 @@ const BlocklyComponent = () => {
     javascriptGenerator.addReservedWords('code');
     var code = javascriptGenerator.workspaceToCode(workspace);
     setGeneratedCode(code);
+    eval(`(async () => { ${code} })();`);
     console.log(code);
     // try {
-    //   eval(code);
+    //    await eval(code);
     // } catch (e) {
     //   alert(e);
     // }
@@ -48,6 +57,8 @@ const BlocklyComponent = () => {
 
   useEffect(() => {
     if (!blocklyRef.current) {
+       // Initialize Blockly with English
+       Blockly.setLocale('en');
       // Construct the complete toolbox XML
       const toolboxXml = `
         <xml id="toolbox" style="display: none">
@@ -57,10 +68,13 @@ const BlocklyComponent = () => {
           ${Text}
           ${Variables}
           ${Events}
+          ${Motion}
+          ${Control}
         </xml>
       `;
       const newWorkspace = initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
       blocklyRef.current = newWorkspace;  // Assign the workspace to the ref
+      // blocklyRef.current = true;
     }
     
     // Attach the click event handler to the workspace

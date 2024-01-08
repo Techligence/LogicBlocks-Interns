@@ -50,7 +50,19 @@ const Canvas = () => {
 
   const dispatch = useDispatch(); //dispatch fore event click
 
-  // const curr_variable_value = useSelector(state => state.variable.value);
+  // const { position, angle } = useSelector((state) => ({
+  //   position: state.motion.position,
+  //   angle: state.motion.angle,
+  // }));
+
+
+  // useEffect(() => {
+  //   const spriteElement = document.getElementById('sprite');
+  //   if (spriteElement) {
+  //     spriteElement.style.transform = `translate(${position.x}px, ${position.y}px) rotate(${angle}deg)`;
+  //   }
+  // }, [position, angle]); 
+  
 
 
   const [imageSize, setImageSize] = useState(100); // useState for zooming in-out
@@ -249,8 +261,6 @@ useKeyPress('C', () => {
 });
 
 //key
-
-
 
 
 
