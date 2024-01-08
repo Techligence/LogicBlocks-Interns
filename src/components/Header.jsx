@@ -13,83 +13,7 @@ import Blockly from 'blockly';
 import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
 import BoardsSelectionModal from './BoardsSelectionModal';
-import GoogleButton from 'react-google-button'
 
-
-const formStyles = {
-  container: {
-    position: 'absolute',
-    zIndex: 1,
-    background: '#fff',
-    maxWidth: '450px',
-    width: '420px',
-    height: '500px',
-    padding: '45px',
-    textAlign: 'center',
-    boxShadow: '0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)',
-  },
-  input: {
-    appearance: 'none',
-    border: 'none',
-    outline: 'none',
-    borderBottom: '.2em solid #1977d3',
-    
-    borderRadius: '.2em .2em 0 0',
-    margin: '0',
-    fontSize: '14px',
-    padding: '.4em',
-    width: '60%',
-    color: '#1977d3',
-    '::placeholder': {
-      color: '#1977d3', 
-    },
-  },
-  
-  label: {
-    display: 'block',
-    textAlign: 'center', 
-    width: '60%',
-    marginTop: '30px', 
-    marginBottom: '0', 
-  },
-
-  icon: {
-    position: 'relative',
-    float: 'left',
-    width: '20px',
-    top: '2px',
-  },
-  button: {
-    fontFamily: 'Roboto, sans-serif',
-    textTransform: 'uppercase',
-    outline: '0',
-    background: '#1977d3',
-    width: '40%',
-    border: '0',
-    padding: '15px',
-    color: '#FFFFFF',
-
-    fontSize: '14px',
-    transition: 'all 0.3 ease',
-    cursor: 'pointer',
-    margin: '25px',
-  },
-  message: {
-    margin: '15px 0 0',
-    color: '#b3b3b3',
-    fontSize: '12px',
-  },
-  heading:{
-      fontFamily: 'Roboto, sans-serif',
-      fontSize:'30px',
-
-  },
-  
-  messageLink: {
-    color: '#4CAF50',
-    textDecoration: 'none',
-  },
-};
 
 const ProjectNameInput = styled(TextField)({
   maxWidth: '200px',
@@ -101,50 +25,70 @@ const ProjectNameInput = styled(TextField)({
     border: 'none',
   },
 });
+
+
+const formStyles = {
+  container: {
+    position: 'absolute',
+    zIndex: 1,
+    background: '#FFFFFF',
+    maxWidth: '360px',
+    margin: '0 auto 100px',
+    padding: '45px',
+    textAlign: 'center',
+    boxShadow: '0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)',
+  },
+  input: {
+    fontFamily: 'Roboto, sans-serif',
+    outline: '0',
+    background: '#f2f2f2',
+    width: '100%',
+    border: '0',
+    margin: '0 0 15px',
+    padding: '15px',
+    boxSizing: 'border-box',
+    fontSize: '14px',
+  },
+  button: {
+    fontFamily: 'Roboto, sans-serif',
+    textTransform: 'uppercase',
+    outline: '0',
+    background: '#1977d3',
+    width: '100%',
+    border: '0',
+    padding: '15px',
+    color: '#FFFFFF',
+    fontSize: '14px',
+    transition: 'all 0.3 ease',
+    cursor: 'pointer',
+  },
+  message: {
+    margin: '15px 0 0',
+    color: '#b3b3b3',
+    fontSize: '12px',
+  },
+  messageLink: {
+    color: '#4CAF50',
+    textDecoration: 'none',
+  },
+};
+
 const Header = () => {
   const [projectName, setProjectName] = useState('Project_Name');
   const [autoSaving, setAutoSaving] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openSignInModal, setOpenSignInModal] = useState(false);
+  const [openSignUpModal, setOpenSignUpModal] = useState(false);
   const fileInputRef = useRef(null);
+  const [signInUsername, setSignInUsername] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const [isBoardSelectionModalOpen, setIsBoardSelectionModalOpen] = useState(false);
   const navigateTo = useNavigate();
-  const [openSignInModal, setOpenSignInModal] = React.useState(false);
-  const [openSignUpModal, setOpenSignUpModal] = React.useState(false);
-  const [showSignUp, setShowSignUp] = React.useState(false);
+
   const handleProjectNameChange = (event) => {
     setProjectName(event.target.value);
   };
-  const handleOpenSignInModal = () => {
-    setOpenSignInModal(true);
-  };
-
-  const handleCloseSignInModal = () => {
-    setOpenSignInModal(false);
-  };
-  const handleOpenSignUpModal = () => {
-    setOpenSignUpModal(true);
-  };
-  const toggleSignUp = () => {
-    setShowSignUp(!showSignUp);
-  };
-  const handleCloseSignUpModal = () => {
-    setOpenSignUpModal(false);
-  };
-  const modalContainerStyles = {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: '100',
-    background: '#FFFFFF',
-    maxWidth: '360px',
-    width: '80%',
-    padding: '45px',
-    textAlign: 'center',
-    boxShadow: '0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)',
-  };
-
- 
 
   const toggleBoardSelectionModal = () => {
     setIsBoardSelectionModalOpen(!isBoardSelectionModalOpen);
@@ -160,22 +104,11 @@ const Header = () => {
   };
 
 
-  const handleAutoSave = () => {
-    const workspace = Blockly.getMainWorkspace();
-    const xmlDom = Blockly.Xml.workspaceToDom(workspace);
-    const workspaceXml = Blockly.Xml.domToText(xmlDom);
-
-    localStorage.setItem('autoSavedWorkspace', workspaceXml);
-    setAutoSaving(true);
-
-    setTimeout(() => setAutoSaving(false), 2000);
-  };
-
-  useEffect(() => {
-    const autoSaveInterval = setInterval(handleAutoSave, 30000);
-
-    return () => clearInterval(autoSaveInterval);
-  }, []);
+ 
+  
+  
+   
+  
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -185,117 +118,26 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  // const saveWorkspace = () => {
-  //   const workspace = Blockly.getMainWorkspace();
-  //   const xmlDom = Blockly.Xml.workspaceToDom(workspace);
-  //   const workspaceXml = Blockly.Xml.domToText(xmlDom);
-
-  //   const sb3Xml = `<xml xmlns="http://www.w3.org/1999/xhtml">
-  //     <variables></variables>
-  //     ${workspaceXml}
-  //   </xml>`;
-
-  //   const fileName = 'saved_workspace.xml';
-  //   const blob = new Blob([sb3Xml], { type: 'application/xml' });
-  //   const url = URL.createObjectURL(blob);
-  //   const link = document.createElement('a');
-  //   link.href = url;
-  //   link.download = fileName;
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-
-  //   alert('Workspace saved in XML format!');
-  // };
-
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const loadedData = e.target.result;
-
-  //       try {
-  //         const blocklyWorkspace = Blockly.getMainWorkspace();
-  //         blocklyWorkspace.clear();
-
-  //         const parser = new DOMParser();
-  //         const xmlDoc = parser.parseFromString(loadedData, 'text/xml');
-
-  //         Blockly.Xml.domToWorkspace(xmlDoc, blocklyWorkspace);
-
-  //         alert('Workspace loaded!');
-  //       } catch (error) {
-  //         alert('Error loading workspace: ' + error.message);
-  //       }
-  //     };
-  //     reader.readAsText(file);
-  //   } else {
-  //     alert('No file selected.');
-  //   }
-  // };
-
-  // const loadWorkspace = () => {
-  //   const fileInput = document.createElement('input');
-  //   fileInput.type = 'file';
-  //   fileInput.accept = '.xml';
-  //   fileInput.style.display = 'none';
-
-  //   document.body.appendChild(fileInput);
-
-  //   fileInput.addEventListener('change', async (event) => {
-  //     const file = event.target.files[0];
-  //     if (file) {
-  //       const reader = new FileReader();
-
-  //       reader.onload = async (e) => {
-  //         const loadedData = e.target.result;
-
-  //         try {
-  //           const parser = new DOMParser();
-  //           const xmlDoc = parser.parseFromString(loadedData, 'text/xml');
-
-  //           console.log('Loaded XML:', loadedData);
-
-  //           handleLoadedBlocks(xmlDoc);
-
-  //           alert('Workspace loaded!');
-  //         } catch (error) {
-  //           alert('Error loading workspace: ' + error.message);
-  //         }
-  //       };
-
-  //       reader.readAsText(file);
-  //     }
-
-  //     document.body.removeChild(fileInput);
-  //   });
-
-  //   fileInput.click();
-  // };
-
-  // const handleLoadedBlocks = (xmlDoc) => {
-  //   try {
-  //     Blockly.getMainWorkspace().clear();
-
-  //     Blockly.Xml.domToWorkspace(xmlDoc, Blockly.getMainWorkspace());
-
-  //     const projectName = xmlDoc.querySelector('projectName');
-  //     if (projectName) {
-  //       setProjectName(projectName.textContent);
-  //     }
-  //   } catch (error) {
-  //     alert('Error handling loaded blocks: ' + error.message);
-  //   }
-  // };
-
-
   
 
-  
+  const handleOpenSignInModal = () => {
+    setOpenSignInModal(true);
+  };
+
+  const handleCloseSignInModal = () => {
+    setOpenSignInModal(false);
+  };
+
+  const handleOpenSignUpModal = () => {
+    setOpenSignUpModal(true);
+  };
+
+  const handleCloseSignUpModal = () => {
+    setOpenSignUpModal(false);
+  };
+
   const handleSignIn = () => {
-    // Add your sign-in logic here (e.g., validate credentials)
-    // For demonstration purposes, let's assume a simple check
+    
     if (signInUsername === 'demo' && signInPassword === 'password') {
       setIsSignedIn(true);
       handleCloseSignInModal();
@@ -305,8 +147,7 @@ const Header = () => {
   };
 
   const handleSignUp = () => {
-    // Add your sign-up logic here (e.g., create a new user)
-    // For demonstration purposes, let's assume a simple success
+    
     alert('Account created successfully!');
     handleCloseSignUpModal();
   };
@@ -387,6 +228,9 @@ const Header = () => {
     }
   };
   
+  
+  
+  
 
   const handleSaveToFile = () => {
     try {
@@ -415,6 +259,7 @@ const Header = () => {
       workspace.getAllBlocks().forEach((block) => {
         processBlock(block);
       });
+      
   
       const fileName = projectName || 'UntitledProject';
       jsonData.setAttribute('block-positions', JSON.stringify(blockPositions));
@@ -434,6 +279,7 @@ const Header = () => {
     }
     handleCloseMenu();
   };
+  
   const handleReloadSite = () => {
     window.location.reload();
   };
@@ -482,9 +328,9 @@ const Header = () => {
 
           <Box sx={{ marginRight: '16px' }}>{autoSaving && 'Auto-saving...'}</Box>
 
-          
+          <Box sx={{ flexGrow: 1 }} />
 
-         
+          <img src="trial_sprite_nobkg.png" alt="Logo" style={{ height: '50px' }} />
           <input
             ref={fileInputRef}
             type="file"
@@ -493,75 +339,66 @@ const Header = () => {
             onChange={handleFileInputChange}
           />
 
-          {/* Spacing Element */}
-          <Box sx={{ flexGrow: 1 }} />
-
-          {/* Logo Placeholder */}
-          <img src="trial_sprite_nobkg.png" alt="Logo" style={{ height: '50px' }} />
-
-          <Button color="inherit" onClick={handleOpenSignInModal}>Sign In</Button><br/>
-
-          {/* Sign In Modal */}
+          <Button color="inherit" onClick={handleOpenSignInModal}>
+            {isSignedIn ? 'Sign Out' : 'Sign In'}
+          </Button>
+          
           <Modal
-            open={openSignInModal || openSignUpModal}
-            onClose={openSignInModal ? handleCloseSignInModal : handleCloseSignUpModal}
-            aria-labelledby={showSignUp ? 'signup-modal-title' : 'signin-modal-title'}
-            aria-describedby={showSignUp ? 'signup-modal-description' : 'signin-modal-description'}
+            open={openSignInModal}
+            onClose={handleCloseSignInModal}
+            aria-labelledby="signin-modal-title"
+            aria-describedby="signin-modal-description"
           >
             <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', ...formStyles.container }}>
-              <p id={showSignUp ? 'signup-modal-title' : 'signin-modal-title'} align="center" style={formStyles.heading}>
-                {showSignUp ? 'Sign Up' : 'Sign In'}
-              </p>
-              <div id={showSignUp ? 'signup-modal-description' : 'signin-modal-description'}>
-                {/* Conditionally render sign-in or sign-up content */}
-                {showSignUp ? (
-                <>
-                  {/* Sign Up content */}
-                  <div className="form__group">
-                    <label htmlFor="emailInput" className="form__label"style={formStyles.label}>Email Address</label>
-                    <input type="text" id="emailInput" className="form__field" style={formStyles.input} />
-                  </div>
-                  <div className="form__group">
-                    <label htmlFor="usernameInput" className="form__label"style={formStyles.label}>Enter Username</label>
-                    <input type="text" id="usernameInput" className="form__field" style={formStyles.input} />
-                  </div>
-                  <div className="form__group">
-                    <label htmlFor="password" className="form__label"style={formStyles.label}> New Password</label>
-                    <input type="password" id="passwordInput" className="form__field" style={formStyles.input} />
-                  </div>
-                  <Button variant="contained" style={formStyles.button}>Sign Up</Button><br/><center>
-                  <GoogleButton
-                    onClick={() => { console.log('Google button clicked') }}
-                  /></center>
-                  <div style={formStyles.message}>
-                    Already registered?{' '}
-                    <a href="#" style={formStyles.messageLink} onClick={toggleSignUp}>
-                      Sign In
-                    </a>
-                  </div>
-                </>
-              ) : (
-                <>
-                  {/* Sign In content */}
-                  <br/>
-                  <div className="form__group">
-                    <label htmlFor="usernameInput" className="form__label"style={formStyles.label}>Username</label>
-                    <input type="text" id="usernameInput" className="form__field" style={formStyles.input} />
-                  </div>
-                  <div className="form__group">
-                    <label htmlFor="passwordSignInInput" className="form__label"style={formStyles.label}>Password</label>
-                    <input type="password" id="passwordSignInInput" className="form__field" style={formStyles.input} />
-                  </div><br/>
-                  <Button variant="contained" style={formStyles.button}>Sign In</Button><br/><center>
-                  <GoogleButton onClick={() => { console.log('Google button clicked') }}/></center>
-                  <div style={formStyles.message}>
-                    Not registered?{' '}
-                    <a href="#" style={formStyles.messageLink} onClick={toggleSignUp}>
-                      Create an account
-                    </a>
-                  </div>
-                </>
-                )}
+              <h2 id="signin-modal-title" align="center">Sign In</h2>
+              <div id="signin-modal-description">
+                <input
+                  type="text"
+                  placeholder="Username"
+                  style={formStyles.input}
+                  value={signInUsername}
+                  onChange={(e) => setSignInUsername(e.target.value)}
+                />
+                <br />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  style={formStyles.input}
+                  value={signInPassword}
+                  onChange={(e) => setSignInPassword(e.target.value)}
+                />
+                <br />
+                <Button variant="contained" style={formStyles.button} onClick={handleSignIn}>
+                  {isSignedIn ? 'Sign Out' : 'Sign In'}
+                </Button>
+                <div style={formStyles.message}>
+                  Not registered? <a href="#" style={formStyles.messageLink} onClick={handleOpenSignUpModal}>Create an account</a>
+                </div>
+              </div>
+            </Box>
+          </Modal>
+
+          <Modal
+            open={openSignUpModal}
+            onClose={handleCloseSignUpModal}
+            aria-labelledby="signup-modal-title"
+            aria-describedby="signup-modal-description"
+          >
+            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', ...formStyles.container }}>
+              <h2 id="signup-modal-title" align="center">Sign Up</h2>
+              <div id="signup-modal-description">
+                <input type="text" placeholder="Enter Your Name" style={formStyles.input} />
+                <br />
+                <input type="password" placeholder="Enter New Password" style={formStyles.input} />
+                <br />
+                <input type="text" placeholder="email address" style={formStyles.input} />
+                <br />
+                <Button variant="contained" style={formStyles.button} onClick={handleSignUp}>
+                  Create
+                </Button>
+                <div style={formStyles.message}>
+                  Already registered? <a href="#" style={formStyles.messageLink} onClick={handleOpenSignInModal}>Sign In</a>
+                </div>
               </div>
             </Box>
           </Modal>

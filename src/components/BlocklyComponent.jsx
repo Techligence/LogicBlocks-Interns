@@ -7,9 +7,15 @@ import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
 import {Operators} from './BlockCategories/Operators'
+import { Motion } from './BlockCategories/Motion';
 import initializeBlockly from './InitializeBlockly';
 import BoardsSelectionModal from './BoardsSelectionModal';
 import { javascriptGenerator } from 'blockly/javascript';
+import {store} from '../store/store';
+import {moveSprite} from '../features/motionSlice';
+import { waitSeconds } from '../features/controlSlice';
+import { useDispatch } from 'react-redux';
+
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
@@ -35,6 +41,7 @@ const BlocklyComponent = () => {
           ${Math}
           ${Text}
           ${Operators}
+          ${Motion}
         </xml>
       `;
       workspaceRef.current = initializeBlockly(toolboxXml);

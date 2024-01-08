@@ -33,6 +33,10 @@ const BoardsSelectionModal = ({ isOpen, onClose, onSelectBoard }) => {
   const handleChooseAnotherBoard = () => {
     setShowOtherBoards(true);
   };
+  const handleReloadSite = () => {
+  window.location.reload();
+};
+
 
   return (
 
