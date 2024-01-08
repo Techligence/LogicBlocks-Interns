@@ -31,4 +31,11 @@ export const controlSlice = createSlice({
   reducers: {},
 });
 
+export const repeatTimes = (count, action) => async (dispatch) => {
+  for (let i = 0; i < count; i++) {
+    await dispatch(action);
+  }
+};
+
+
 export default controlSlice.reducer;
