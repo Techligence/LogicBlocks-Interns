@@ -9,8 +9,10 @@ import 'blockly/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 import { useSelector, useDispatch } from 'react-redux';
 import { spriteClickedEvent,flagClickedEvent } from './BlockCategories/Events';
-
-
+import { useEffect } from 'react';
+import { whenSpriteClicked } from '../features/eventSlice';  
+import { whenFlagClicked } from '../features/eventSlice';
+import { whenKeyPressed } from '../features/eventSlice'; // keypress
 
 // Import Image from src
 import Demo from '../Images/trial_sprite_nobkg.png'
@@ -25,12 +27,30 @@ import ZoomIn from './Canvas/ZoomIn';
 import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
+//Start of key press
+const useKeyPress = (targetKey, callback) => {
+  const handleKeyDown = (event) => {
+    if (event.key === targetKey) {
+      callback();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [targetKey, callback]);
+};
+  //End of key press
+
+
 const Canvas = () => {
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch(); //dispatch fore event click
 
   // const curr_variable_value = useSelector(state => state.variable.value);
-
 
 
   const [imageSize, setImageSize] = useState(100); // useState for zooming in-out
@@ -177,6 +197,8 @@ const handleFlagButtonClicked = () => {
   if (flagClickedBlock) {
     // Log the ID of the 'when flag clicked' block to the console
     // console.log(`Block ID: ${flagClickedBlock.id}`);
+    dispatch(whenFlagClicked());
+
     const generatedCode = flagClickedEvent(flagClickedBlock);  // Replace someBlock with your actual block
     console.log(generatedCode);
   } else {
@@ -194,6 +216,9 @@ const handleSpriteClicked = () => {
     // Log the ID of the 'sprite clicked' block to the console
     // console.log(`Block ID: ${spriteClickedBlock.id}`);
     
+    // Dispatch the action when the sprite is clicked
+    dispatch(whenSpriteClicked());
+    
     // Call the JavaScript code generator function for 'sprite clicked' block
     const generatedCode = spriteClickedEvent(spriteClickedBlock);  // Replace spriteClickedEvent with your actual function
     console.log(generatedCode);
@@ -202,7 +227,28 @@ const handleSpriteClicked = () => {
   }
 };
 
+//key
+useKeyPress(' ', () => {
+  dispatch(whenKeyPressed('KEY_SPACE'));
+  console.log('Key pressed: SPACE');
+});
 
+useKeyPress('A', () => {
+  dispatch(whenKeyPressed('KEY_A'));
+  console.log('Key pressed: A');
+});
+
+useKeyPress('B', () => {
+  dispatch(whenKeyPressed('KEY_B'));
+  console.log('Key pressed: B');
+});
+
+useKeyPress('C', () => {
+  dispatch(whenKeyPressed('KEY_C'));
+  console.log('Key pressed: C');
+});
+
+//key
 
 
 

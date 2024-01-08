@@ -21,6 +21,10 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { javascriptGenerator } from 'blockly/javascript';
+
+import { triggerEvent, whenKeyPressed, whenSpriteClicked } from '../features/eventSlice';
+
+
 Blockly.JavaScript = javascriptGenerator;
 // import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
@@ -58,12 +62,21 @@ const BlocklyComponent = () => {
       const newWorkspace = initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
       blocklyRef.current = newWorkspace;  // Assign the workspace to the ref
     }
-
+    
     // Attach the click event handler to the workspace
     blocklyRef.current.addChangeListener(handleBlockClick);
 
+    //press_key checking
+    // const handleKeyDown = (event) => {
+    //   // Handle keydown event here
+    //   console.log('Key pressed:', event.key);
+    // };
+
+    // window.addEventListener('keydown', handleKeyDown);
+
     // Clean up the event handler when the component is unmounted
     return () => {
+      // window.removeEventListener('keydown', handleKeyDown);
       if (blocklyRef.current) {
         blocklyRef.current.removeChangeListener(handleBlockClick);
       }
@@ -96,25 +109,32 @@ const BlocklyComponent = () => {
 
 
   const handleBlockClick = (event) => {
+
+    
+    
     if (event.type === Blockly.Events.CLICK) {
       const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
-      const connectedBlocks = getAllConnectedBlocks(clickedBlock);
-      connectedBlocks.forEach((block) => {
-        // console.log('Connected Block ID:', block.id);
-        const generatedCode = getBlockJavaScriptCode(block);
-        console.log(generatedCode);
-      });
+      // const connectedBlocks = getAllConnectedBlocks(clickedBlock);
+      // connectedBlocks.forEach((block) => {
+      //   // console.log('Connected Block ID:', block.id);
+      //   const generatedCode = getBlockJavaScriptCode(block);
+      //   console.log(generatedCode);
+      // });
 
       const blockType = clickedBlock?.type;
       if (blockType === 'variables_set') {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
-        const value = 0;
+        const valueInput = clickedBlock.inputList[1].fieldRow[0].getText(); // Get the value input
+        const value = parseInt(valueInput) || 0; // Convert value to integer, default to 0 if not a valid number
+  
         dispatch(setVariable({ variableName, value }));
       } 
       else if (blockType === 'variables_changeby') {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
-        const changeBy = 1; 
-        dispatch(changeVariableBy({ variableName, changeBy }));
+      const changeByInput = clickedBlock.inputList[0].fieldRow[3].getText(); // Get the changeBy input
+      const changeBy = parseInt(changeByInput) || 1; // Convert changeBy to integer, default to 1 if not a valid number
+
+      dispatch(changeVariableBy({ variableName, changeBy }));
       } 
       else if (blockType === 'variables_show') {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
@@ -123,6 +143,26 @@ const BlocklyComponent = () => {
       else if (blockType === 'variables_hide') {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
         dispatch(hideVariable(variableName));
+      }
+
+      //event 
+      else if (blockType === 'event_trigger') {
+        const eventName = clickedBlock.getFieldValue('EVENT_NAME');
+        dispatch(triggerEvent(eventName));
+      } 
+
+      // Handle key press event
+      if (blockType === 'key_press_event') {
+        const keyName = clickedBlock.getFieldValue('KEY_NAME');
+        console.log('Key pressed:', keyName);
+        dispatch(whenKeyPressed(keyName));
+      }
+      
+      else if (blockType === 'sprite_clicked_event') {
+        dispatch(whenSpriteClicked()); // Dispatch the sprite click action
+      }
+      else if (blockType === 'flag_clicked_event') {
+        dispatch(whenFlagClicked()); // Dispatch the flag click action
       }
     }
   };
