@@ -125,7 +125,7 @@ const BlocklyComponent = () => {
         dispatch(hideVariable(variableName));
       }
     }
-  };
+  };  
 
   const handleGenerateCode = () => {
     const code = Blockly.JavaScript.workspaceToCode(blocklyRef.current);

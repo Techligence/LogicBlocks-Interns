@@ -77,6 +77,7 @@ Blockly.Blocks['variables_show'] = {
 
   }
 };
+
 // JavaScript code generator for showing variable.
 javascriptGenerator['variables_show'] = function(block) {
   const variable = block.getField('SHOW_VARIABLE').getText();
@@ -103,6 +104,9 @@ javascriptGenerator['variables_hide'] = function(block) {
   const code = `hideVariable(${fieldName});\n`;
   return code;
 };
+
+
+
 
 
 export const Variables = `
