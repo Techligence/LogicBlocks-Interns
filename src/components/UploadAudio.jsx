@@ -5,6 +5,7 @@ import AudioWaveform from "./AudioWaveform"; // Import your AudioWaveform compon
 import "../index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setAudioState } from "../state/reducers/soundTabReducers.js";
+import { setIsPlaying } from "../state/reducers/audioSlice.js";
 
 
 
@@ -17,7 +18,7 @@ const UploadAudio = () => {
   const { showAudioWaveform, showDefaultAudioWaveform, fileName } = audioState;
 
   //For rendering default music
-  useEffect(() => {
+  useEffect(() => {    
     const handleBeforeUnload = (event) => {
       event.preventDefault();
     }
@@ -29,7 +30,7 @@ const UploadAudio = () => {
 
   useEffect(() => {
     if (file) {
-      setFileURL(file);
+      setFileURL(file);      
     }
   }, [file, setFileURL]);
 
@@ -40,11 +41,15 @@ const UploadAudio = () => {
   const handleFileUpload = (e) => {
     const name = e.target.files[0].name;
     setFile(URL.createObjectURL(e.target.files[0]));
+
+    
+
     dispatch(setAudioState({
       showAudioWaveform: true,
       showDefaultAudioWaveform: false,
       fileName: name.slice(0, name.length - 4)
     }))
+    dispatch(setIsPlaying(false));    
   };
 
   const handleDelete = (args) => {

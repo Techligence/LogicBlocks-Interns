@@ -3,13 +3,15 @@ import Blockly from "blockly";
 import { setIsPlaying, setVolume } from "../../state/reducers/audioSlice";
 import { useDispatch } from "react-redux";
 import { javascriptGenerator } from 'blockly/javascript';
+// import { FileContext } from "../../contexts/fileContext";
+// import { useContext } from "react";
 
 
 // Category definition
 export const Sounds = `
   <category name="Sounds" colour="">
     <block type="play_sound"></block>
-    <block type="start_sound"></block>
+    <block type="stop_sound"></block>
     <block type="change_by_effect"></block>
     <block type="set_by_effect"></block>
     <block type="clear_sound_effects"></block>
@@ -35,29 +37,30 @@ Blockly.Blocks["play_sound"] = {
 };
 // Generator code for 'play_sound' block
 javascriptGenerator["play_sound"] = function (block) {
-  var soundName = block.getFieldValue("SOUND_NAME");
-  var code = `store.dispatch(setIsPlaying(true));\n`;
+  var soundName = block.getFieldValue("SOUND_NAME");      
+  var code = `  
+    const audio = new Audio(fileURL);
+    audio.play();
+  `;
   console.log(code);
   return code;
 };
 
-// Define the 'start_sound' block
-Blockly.Blocks["start_sound"] = {
+
+
+Blockly.Blocks["stop_sound"] = {
   init: function () {
-    this.appendDummyInput().appendField("Start Sound");
-    this.appendDummyInput()
-      .appendField("Sound Name:")
-      .appendField(new Blockly.FieldTextInput("meow"), "SOUND_NAME");
+    this.appendDummyInput().appendField("Stop Sound");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Start playing a sound");
+    this.setTooltip("Stop the currently playing sound");
   },
 };
-// Generator code for 'start_sound' block 
-javascriptGenerator["start_sound"] = function (block) {
-  var soundName = block.getFieldValue("SOUND_NAME");
-  var code = `store.dispatch(setIsPlaying(true));\n`;
+
+// Generator code for 'stop_sound' block
+javascriptGenerator["stop_sound"] = function (block) {
+  var code = " audio.pause(); \n audio.currentTime = 0;";
   console.log(code);
   return code;
 };
@@ -77,12 +80,65 @@ Blockly.Blocks["change_by_effect"] = {
     this.setColour(230);
     this.setTooltip("Change the sound by a specified effect");
   },
-  // Generator code for 'change_by_effect' block
-  generateCode: function (block) {
-    var effectType = block.getFieldValue("EFFECT_TYPE");
-    var amount = block.getFieldValue("AMOUNT");
-    return `changeSoundByEffect("${effectType}", ${amount});\n`;
-  },
+};
+
+// Generator code for 'change_by_effect' block
+javascriptGenerator["change_by_effect"] = function (block) {
+  var effectType = block.getFieldValue("EFFECT_TYPE");
+  var amount = block.getFieldValue("AMOUNT");
+  var code = `
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  
+  function pan(direction, ${amount}) {
+    const panNode = audioContext.createStereoPanner();
+    
+    // Connect the panNode to the audioContext destination
+    panNode.connect(audioContext.destination);
+    
+    // Set the pan value based on the direction and amount
+    panNode.pan.value = direction === 'right' ? ${amount} : -${amount};
+    
+    // Connect the audioSource to the panNode
+    const audioSource = audioContext.createBufferSource();
+    audioSource.connect(panNode);
+
+    // Start playing the audio source (replace this with your actual audio source)
+    audioSource.start();
+
+    // Stop the audio source after a certain duration (adjust as needed)
+    audioSource.stop(audioContext.currentTime + 2);
+  }
+  function changePitch(${amount}) {
+    // Use the Web Audio API to change the pitch
+    var pitchEffect = audioContext.createPitchShift();
+    pitchEffect.pitch = ${amount}; // Set the pitch shift amount
+
+    // Connect the audio source to the pitch shifter
+    const sourceNode = audioContext.createBufferSource();
+    sourceNode.disconnect();
+    sourceNode.connect(pitchEffect);
+
+    // Connect the pitch shifter to the audio context destination
+    pitchEffect.connect(audioContext.destination);
+  }
+
+  switch (${effectType}) {
+    case 'pitch':
+      changePitch(${amount});
+      break;
+    case 'panRight':
+      pan('right', ${amount});
+      break;
+    case 'panLeft':
+      pan('left', ${amount});
+      break;
+    // Add more cases for other effects if needed
+    default:
+      console.error('Unknown effect type:', ${effectType});
+  }
+  `;
+  console.log(code);
+  return code;
 };
 
 // Define the 'set_by_effect' block

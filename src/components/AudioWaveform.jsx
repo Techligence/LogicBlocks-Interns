@@ -3,23 +3,30 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
 import { FileContext } from "../contexts/fileContext.jsx";
 import wavesurfer from "wavesurfer.js";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsPlaying, setVolume } from "../state/reducers/audioSlice.js";
+import { WaveSurferContext } from "../contexts/waveSurferContext.jsx";
+
 
 
 const AudioWaveform = (props) => {
   const wavesurferRef = useRef(null);
-  const timelineRef = useRef(null);
-
-  // const wavesurferRef = useRef(null);
-  // const timelineRef = useRef(null);
+  // const timelineRef = useRef(null);  
+  const dispatch = useDispatch();
+  const activeTab = useSelector(state => state.soundTab.activeTab);
 
   // fetch file url from the context
   const { fileURL, setFileURL } = useContext(FileContext);
 
   // crate an instance of the wavesurfer
-  const [wavesurferObj, setWavesurferObj] = useState();
+  // const [wavesurferObj, setWavesurferObj] = useState();
+  const {wavesurferObj, setWavesurferObj} = useContext(WaveSurferContext);
 
-  const [playing, setPlaying] = useState(true); // to keep track whether audio is currently playing or not
+  // const [playing, setPlaying] = useState(true); // to keep track whether audio is currently playing or not
   const [volume, setVolume] = useState(1); // to control volume level of the audio. 0-mute, 1-max
+  const isPlaying = useSelector(state => state.audio.isPlaying);
+  // const volume = useSelector(state => state.audio.volume);
+
   const [zoom, setZoom] = useState(1); // to control the zoom level of the waveform
   const [duration, setDuration] = useState(0); // duration is used to set the default region of selection for trimming the audio
   const [indexCopy, setIndexCopy] = useState({
@@ -29,20 +36,29 @@ const AudioWaveform = (props) => {
 	});
 
   useEffect(() => {
-    return () => {
+    return async () => {
       // Cleanup function when component is unmounted
       if (wavesurferObj) {
-        // Stop and destroy the wavesurfer instance
+        // Stop and destroy the wavesurfer instance        
         wavesurferObj.stop();
-        wavesurferObj.clearRegions();
-        wavesurferObj.destroy();
+        wavesurferObj.clearRegions();        
+        // wavesurferObj.destroy();
+        // await setWavesurferObj(null);
       }
+      console.log("Cleanup function called");
     };
   }, [wavesurferObj]);// Empty dependency array ensures this runs only on unmount
 
+  // useEffect(() => {
+  //   isUnmountingForTabSwitch.current = false;
+  //   return () => {
+  //     isUnmountingForTabSwitch.current = true;
+  //   }
+  // }, [activeTab]);
+
   // create the waveform inside the correct component
   useEffect(() => {
-    if (wavesurferRef.current && !wavesurferObj) {
+    if (wavesurferRef.current ) {
       setWavesurferObj(
         wavesurfer.create({
           container: "#waveform",
@@ -61,8 +77,12 @@ const AudioWaveform = (props) => {
           ],
         })
       );
+      console.log("Wavesurfer object initialized: " + wavesurferObj);
+      console.log("wavesurferREF value: ");
+      console.log(wavesurferRef.current);
+      localStorage.setItem("music", fileURL);
     }
-  }, [wavesurferRef, wavesurferObj]);
+  }, [wavesurferRef]);
 
   // once the file URL is ready, load the file to produce the waveform
   useEffect(() => {
@@ -82,12 +102,14 @@ const AudioWaveform = (props) => {
 
       // once audio starts playing, set the state variable to true
       wavesurferObj.on("play", () => {
-        setPlaying(true);
+        // setPlaying(true);                
+        // dispatch(setIsPlaying(true));
       });
 
       // once audio starts playing, set the state variable to false
       wavesurferObj.on("finish", () => {
-        setPlaying(false);
+        // setPlaying(false);
+        dispatch(setIsPlaying(true));
       });
 
       // if multiple regions are created, then remove all the previous regions so that only 1 is present at any given time
@@ -123,16 +145,30 @@ const AudioWaveform = (props) => {
     }
   }, [duration, wavesurferObj]);
 
+  // useEffect(() => {
+  //   if (wavesurferObj) {
+  //     console.log("isplaying status: " + isPlaying);
+  //     if (isPlaying) {
+  //       wavesurferObj.play();
+  //     } else {
+  //       wavesurferObj.pause();
+  //     }
+  //   }
+  // }, [isPlaying, wavesurferObj]);
+
+  
   const handlePlayPause = (e) => {
     wavesurferObj.playPause();
-    setPlaying(!playing);
+    // setPlaying(!playing);    
+    dispatch(setIsPlaying(!isPlaying));
   };
 
   const handleReload = (e) => {
     // stop will return the audio to 0s, then play it again
     wavesurferObj.stop();
     wavesurferObj.play();
-    setPlaying(true); // to toggle the play/pause button icon
+    // setPlaying(true); // to toggle the play/pause button icon
+    dispatch(setIsPlaying(true));
   };
 
   const handleVolumeSlider = (e) => {
@@ -157,7 +193,7 @@ const AudioWaveform = (props) => {
 				const end = region.end;
 				
 				// obtain the original array of the audio
-				const original_buffer = wavesurferObj.backend.buffer;
+				const original_buffer = wavesurferObj.backend.buffer;        
 
 				// create 2 indices:
 				// left & right to the part to be copied
@@ -397,10 +433,10 @@ const AudioWaveform = (props) => {
             className="controls"
             onClick={handlePlayPause}
           >
-            {playing ? (
-              <i className="material-icons">play_arrow</i>
-            ) : (
+            {isPlaying ? (
               <i className="material-icons">pause</i>
+            ) : (
+              <i className="material-icons">play_arrow</i>
             )}
           </button>
           <button title="reload" className="controls" onClick={handleReload}>

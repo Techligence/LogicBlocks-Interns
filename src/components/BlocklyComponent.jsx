@@ -10,9 +10,23 @@ import { Sounds } from "./BlockCategories/Sounds";
 import { javascriptGenerator } from "blockly/javascript";
 import { store } from "../store/store";
 import { setIsPlaying, setVolume } from "../state/reducers/audioSlice";
+import { WaveSurferContext } from "../contexts/waveSurferContext";
+import { useContext } from "react";
+const audioContext = new (window.AudioContext)();
+import { FileContext } from "../contexts/fileContext.jsx";
 
+function arrayBufferToDataURL(buffer) {
+  const blob = new Blob([buffer], { type: 'audio/wav' }); // Adjust the MIME type if needed
+  const url = URL.createObjectURL(blob);
+  return url;
+}
 
 const BlocklyComponent = () => {
+  const {wavesurferObj, setWavesurferObj} = useContext(WaveSurferContext);
+  const [isWavesurferReady, setIsWavesurferReady] = useState(false);
+
+  const {fileURL, setFileURL} = useContext(FileContext);
+
   const blocklyRef = useRef(null);
   const [generatedCode, setGeneratedCode] = useState("");
   const workspace = Blockly.getMainWorkspace();
@@ -23,6 +37,51 @@ const BlocklyComponent = () => {
     setGeneratedCode(code);
     await eval(`(async () => { ${code} })();`);
   };
+
+  // To handle Wavesurfer object
+  useEffect(() => {
+    if(wavesurferObj){
+      setIsWavesurferReady(true);
+    }
+  },[wavesurferObj]);
+
+  // function playSound(){
+  //   if(isWavesurferReady){
+  //     console.log(wavesurferObj.backend.buffer);
+
+  //     // const oldAudioBuffer = wavesurferObj.backend.buffer;
+  //     // const newBuffer = audioContext.createBuffer(
+  //     //   oldAudioBuffer.numberOfChannels,
+  //     //   oldAudioBuffer.length / oldAudioBuffer.numberOfChannels,
+  //     //   oldAudioBuffer.sampleRate
+  //     // )
+      
+
+  //     // for(let channel = 0; channel < newBuffer.numberOfChannels; channel++){
+  //     //   const channelData = newBuffer.getChannelData(channel);
+  //     //   for(let i = 0; i < newBuffer.length; i++){
+  //     //     channelData[i] = oldAudioBuffer[i * oldAudioBuffer.numberOfChannels + channel];
+  //     //   }
+  //     // }
+
+  //     // const source = audioContext.createBufferSource();
+  //     // source.buffer = newBuffer;
+
+  //     // source.connect(audioContext.destination);
+  //     // console.log("I am playing");
+  //     // source.start();  
+
+  //     // source.onerror = function (event) {
+  //     //   console.error('Error playing audio:', event);
+  //     // };
+      
+  //     const audio = new Audio(fileURL);
+  //     audio.play();
+  //   }
+  //   else
+  //     console.log("Wavesurfer not ready");
+  // }  
+  
 
   useEffect(() => {    
       // Initialize Blockly with English
