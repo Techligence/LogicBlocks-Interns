@@ -28,7 +28,6 @@ import {
 } from '../features/variableSlice';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { javascriptGenerator } from 'blockly/javascript';
 
 import { triggerEvent, whenKeyPressed, whenSpriteClicked } from '../features/eventSlice';
 
