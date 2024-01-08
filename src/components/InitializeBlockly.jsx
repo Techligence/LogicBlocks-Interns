@@ -43,6 +43,7 @@ const InitializeBlockly = (toolboxXml) => {
   const customResetButton = createResetButton(workspace, 30);
 
   // Append custom controls to Blockly's div
+  // const blocklyDiv = workspace.getParentSvg().parentNode;
   blocklyDiv.appendChild(customZoomInButton.button);
   blocklyDiv.appendChild(customResetButton.button);
   blocklyDiv.appendChild(customZoomOutButton.button);

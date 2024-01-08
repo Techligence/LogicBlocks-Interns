@@ -21,7 +21,7 @@ const AnchorMenu = () => {
   };
 
   return (
-    <Box sx={{ position: 'absolute', top: 70, right: 16 }}>
+    <Box sx={{ position: 'absolute', top: 70, right: 16, zIndex: '1002' }}>
       <Button variant="contained" color="primary" onClick={handleClick}>
         <AnchorIcon />
       </Button>
