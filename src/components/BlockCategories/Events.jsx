@@ -19,22 +19,30 @@ Blockly.JavaScript['event_trigger'] = function (block) {
   return code;
 };
 
-// Block for KEY_PRESSED event trigger.
+// Blockly block definition for 'key_press_event'
 Blockly.Blocks['key_press_event'] = {
-    init: function () {
-      this.appendDummyInput()
-        .appendField("When")
-        .appendField(new Blockly.FieldDropdown([
-          ['SPACE', 'KEY_SPACE'],
-          ['A', 'KEY_A'],
-          ['B', 'KEY_B'],
-          ['C', 'KEY_C'],
-          
-        ]), 'KEY_NAME')
-      .appendField("key is pressed");
+  init: function () {
+    this.appendDummyInput()
+      .appendField("When key is pressed")
+      .appendField(new Blockly.FieldDropdown([
+        ['SPACE', 'KEY_SPACE'],
+        ['A', 'KEY_A'],
+        ['B', 'KEY_B'],
+        ['C', 'KEY_C'],
+        // Add more keys as needed...
+      ]), 'KEY_NAME');
     this.setNextStatement(true, null);
     this.setColour(300);
   }
+};
+
+
+// JavaScript code generator for 'key_press_event' block
+Blockly.JavaScript['key_press_event'] = function (block) {
+  const keyName = block.getFieldValue('KEY_NAME');
+  const code = `whenKeyPressed("${keyName}");\n`;
+  console.log('Generated Code:', code);
+  return code;
 };
   
 // Block for SPRITE_CLICK event trigger.
@@ -214,18 +222,22 @@ Blockly.JavaScript['key_press_event'] = function (block) {
 };
 
 // JavaScript code generator for 'sprite_clicked_event' block
-Blockly.JavaScript['sprite_clicked_event'] = function (block) {
+const spriteClickedEvent = function (block) {
   const code = `whenSpriteClicked();\n`;
   // console.log(code);
   return code;
 };
+Blockly.JavaScript['sprite_clicked_event'] = spriteClickedEvent;
+export { spriteClickedEvent };
 
 // JavaScript code generator for 'flag_clicked_event' block
-Blockly.JavaScript['flag_clicked_event'] = function (block) {
+const flagClickedEvent = function (block) {
   const code = `whenFlagClicked();\n`;
   // console.log(code);
   return code;
 };
+Blockly.JavaScript['flag_clicked_event'] = flagClickedEvent;
+export {flagClickedEvent}
 
 // JavaScript code generator for 'when_backdrop_switches_to' block
 Blockly.JavaScript['when_backdrop_switches_to'] = function (block) {
@@ -282,4 +294,4 @@ export const Events = `
       <block type="broadcast_message_and_wait"></block>
       <!-- Other event blocks go here... -->
   </category>
-  `;
+  `;

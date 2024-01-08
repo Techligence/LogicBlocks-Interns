@@ -8,7 +8,11 @@ import 'blockly/javascript';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { spriteClickedEvent,flagClickedEvent } from './BlockCategories/Events';
+import { useEffect } from 'react';
+import { whenSpriteClicked } from '../features/eventSlice';  
+import { whenFlagClicked } from '../features/eventSlice';
+import { whenKeyPressed } from '../features/eventSlice'; // keypress
 
 // Import Image from src
 import Demo from '../Images/trial_sprite_nobkg.png'
@@ -23,12 +27,42 @@ import ZoomIn from './Canvas/ZoomIn';
 import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
+//Start of key press
+const useKeyPress = (targetKey, callback) => {
+  const handleKeyDown = (event) => {
+    if (event.key === targetKey) {
+      callback();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [targetKey, callback]);
+};
+  //End of key press
+
+
 const Canvas = () => {
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch(); //dispatch fore event click
 
-  // const curr_variable_value = useSelector(state => state.variable.value);
+  // const { position, angle } = useSelector((state) => ({
+  //   position: state.motion.position,
+  //   angle: state.motion.angle,
+  // }));
 
+
+  // useEffect(() => {
+  //   const spriteElement = document.getElementById('sprite');
+  //   if (spriteElement) {
+  //     spriteElement.style.transform = `translate(${position.x}px, ${position.y}px) rotate(${angle}deg)`;
+  //   }
+  // }, [position, angle]); 
+  
 
 
   const [imageSize, setImageSize] = useState(100); // useState for zooming in-out
@@ -149,7 +183,7 @@ const handleExecuteBlocks = (event) => {
   workspace.getAllBlocks().forEach((block) => {
     // Print the ID of each block to the console
 
-    console.log(`Block ID: ${block.id}`);
+    // console.log(`Block ID: ${block.id}`);
   });
 
   
@@ -166,24 +200,67 @@ const handleExecuteBlocks = (event) => {
 };
 
 const handleFlagButtonClicked = () => {
-  console.log('When flag clicked block is triggered');
+  // console.log('When flag clicked block is triggered');
 
-  // Get the main workspace
   const workspace = Blockly.getMainWorkspace();
 
-  // Find the 'when flag clicked' block
   const flagClickedBlock = workspace.getAllBlocks().find((block) => block.type === 'flag_clicked_event');
 
   if (flagClickedBlock) {
     // Log the ID of the 'when flag clicked' block to the console
-    console.log(`Block ID: ${flagClickedBlock.id}`);
+    // console.log(`Block ID: ${flagClickedBlock.id}`);
+    dispatch(whenFlagClicked());
+
+    const generatedCode = flagClickedEvent(flagClickedBlock);  // Replace someBlock with your actual block
+    console.log(generatedCode);
   } else {
     console.warn("No 'when flag clicked' block found in the workspace");
   }
 };
 
+const handleSpriteClicked = () => {
+  const workspace = Blockly.getMainWorkspace();
 
+  // Find the 'sprite clicked' block in the workspace
+  const spriteClickedBlock = workspace.getAllBlocks().find((block) => block.type === 'sprite_clicked_event');
 
+  if (spriteClickedBlock) {
+    // Log the ID of the 'sprite clicked' block to the console
+    // console.log(`Block ID: ${spriteClickedBlock.id}`);
+    
+    // Dispatch the action when the sprite is clicked
+    dispatch(whenSpriteClicked());
+    
+    // Call the JavaScript code generator function for 'sprite clicked' block
+    const generatedCode = spriteClickedEvent(spriteClickedBlock);  // Replace spriteClickedEvent with your actual function
+    console.log(generatedCode);
+  } else {
+    console.warn("No 'sprite clicked' block found in the workspace");
+  }
+};
+
+//key
+useKeyPress(' ', () => {
+  dispatch(whenKeyPressed('KEY_SPACE'));
+  console.log('Key pressed: SPACE');
+});
+
+useKeyPress('A', () => {
+  dispatch(whenKeyPressed('KEY_A'));
+  console.log('Key pressed: A');
+});
+
+useKeyPress('B', () => {
+  dispatch(whenKeyPressed('KEY_B'));
+  console.log('Key pressed: B');
+});
+
+useKeyPress('C', () => {
+  dispatch(whenKeyPressed('KEY_C'));
+  console.log('Key pressed: C');
+});
+
+//key
 
 
 
@@ -208,6 +285,7 @@ const handleFlagButtonClicked = () => {
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
           draggable="false"
+          onClick={handleSpriteClicked} 
         />
 
 

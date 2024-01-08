@@ -25,22 +25,30 @@ javascriptGenerator['variables_get'] = function(block) {
 // Block for variable setter.
 Blockly.Blocks['variables_set'] = {
   init: function () {
-    this.appendValueInput("NAME")
-      .setCheck(null)
+    this.appendDummyInput()
       .appendField("set")
       .appendField(new Blockly.FieldVariable("VAR_NAME"), "FIELD_NAME")
       .appendField("to");
-    this.setOutput(true, null);
-    this.setColour(350)
 
+    this.appendValueInput("VALUE")
+      .setCheck(null)  // Set the check to null for general value input
+      .appendField(new Blockly.FieldTextInput("0"), "TEXT_VALUE");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(350);
+
+    // Align inputs horizontally
+    this.setInputsInline(true);
   }
 };
 
-// JavaScript code generator for variable setter.
+// JavaScript code generator for the modified variable setter.
 javascriptGenerator['variables_set'] = function(block) {
   const fieldName = block.getField('FIELD_NAME').getText();
-  const value = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  const code = `${fieldName} = ${value};\n`;
+  const textValue = block.getFieldValue('TEXT_VALUE');
+  const valueCode = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC);
+  const code = `${fieldName} = ${valueCode || textValue};\n`;
   return code;
 };
 
@@ -50,18 +58,21 @@ Blockly.Blocks['variables_changeby'] = {
     this.appendDummyInput()
       .appendField("change")
       .appendField(new Blockly.FieldVariable("VAR_NAME"), "FIELD_NAME")
-      .appendField("by 1");
+      .appendField("by")
+      .appendField(new Blockly.FieldTextInput("1", Blockly.FieldTextInput.numberValidator), "CHANGE_VALUE")
+      .appendField("units");
+    
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(350)
-
   }
 };
 
-// JavaScript code generator for changing variable by 1.
+// JavaScript code generator for changing variable by a dynamic value.
 javascriptGenerator['variables_changeby'] = function(block) {
   const fieldName = block.getField('FIELD_NAME').getText();
-  const code = `${fieldName} += 1;\n`;
+  const changeValue = block.getFieldValue('CHANGE_VALUE');
+  const code = `${fieldName} += ${changeValue};\n`;
   return code;
 };
 
