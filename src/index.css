@@ -125,6 +125,19 @@ body {
   width: 443px;
 }
 
+/* GenrateCodeBox */
+.GenrateCodeBox{
+    width: 449px;
+    height: 315px;
+    border-radius: 6px;
+    margin-top: 10px;
+    border: solid rgb(70, 70, 70) 2px;
+    /* background-color: lightcoral; */
+
+    
+}
+
+
 
 /* Responsive */
 

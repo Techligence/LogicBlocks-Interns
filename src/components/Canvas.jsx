@@ -5,6 +5,7 @@ import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
 import Blockly from 'blockly';
 import 'blockly/javascript';
+import GenerateCodeBox from './GenrateCodeBox';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import { useSelector, useDispatch } from 'react-redux';
@@ -262,7 +263,12 @@ useKeyPress('C', () => {
 
 //key
 
+//GenrateCodeBox button
+const [isGenerateCodeBoxVisible, setGenerateCodeBoxVisible] = useState(true);
 
+const toggleGenerateCodeBox = () => {
+  setGenerateCodeBoxVisible(!isGenerateCodeBoxVisible);
+};
 
 
 
@@ -310,8 +316,14 @@ useKeyPress('C', () => {
             <FullScreen onClick={handleFullScreen} />
           </div>
         </div>
+        
       </Card>
+      <button onClick={toggleGenerateCodeBox}>
+            {isGenerateCodeBoxVisible ? 'Hide Code Box' : 'Show Code Box'}
+      </button>
+      {isGenerateCodeBoxVisible && <GenerateCodeBox />}
     </div>
+    
   );
 };
 
