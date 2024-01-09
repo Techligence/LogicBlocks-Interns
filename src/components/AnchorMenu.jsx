@@ -5,7 +5,6 @@ import CameraToggle from './AnchorMenu/CameraToggle';
 import MicToggle from './AnchorMenu/MicToggle';
 import ModeToggle from './AnchorMenu/ModeToggle';
 
-
 const AnchorMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mode, setMode] = useState(null);
