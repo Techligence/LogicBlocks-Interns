@@ -46,7 +46,7 @@ const BlocklyComponent = () => {
     javascriptGenerator.addReservedWords('code');
     var code = javascriptGenerator.workspaceToCode(workspace);
     setGeneratedCode(code);
-    eval(`(async () => { ${code} })();`);
+    // eval(`(async () => { ${code} })();`);
     console.log(code);
     // try {
     //    await eval(code);
@@ -179,7 +179,7 @@ const BlocklyComponent = () => {
         dispatch(whenFlagClicked()); // Dispatch the flag click action
       }
     }
-  };
+  };  
 
   const handleGenerateCode = () => {
     const code = Blockly.JavaScript.workspaceToCode(blocklyRef.current);

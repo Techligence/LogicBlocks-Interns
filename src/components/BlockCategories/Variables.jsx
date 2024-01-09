@@ -17,9 +17,9 @@ Blockly.Blocks['variables_get'] = {
 javascriptGenerator.forBlock['variables_get'] = function(block) {
   const getVariable = block.getField('GET_VARIABLE').getText();
   const code = `${getVariable}`;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
   // console.log(code);
   // return code;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 // Block for variable setter.
@@ -88,6 +88,7 @@ Blockly.Blocks['variables_show'] = {
 
   }
 };
+
 // JavaScript code generator for showing variable.
 javascriptGenerator['variables_show'] = function(block) {
   const variable = block.getField('SHOW_VARIABLE').getText();
@@ -114,6 +115,9 @@ javascriptGenerator['variables_hide'] = function(block) {
   const code = `hideVariable(${fieldName});\n`;
   return code;
 };
+
+
+
 
 
 export const Variables = `
