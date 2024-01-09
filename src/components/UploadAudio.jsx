@@ -40,10 +40,7 @@ const UploadAudio = () => {
 
   const handleFileUpload = (e) => {
     const name = e.target.files[0].name;
-    setFile(URL.createObjectURL(e.target.files[0]));
-
-    
-
+    setFile(URL.createObjectURL(e.target.files[0]));  
     dispatch(setAudioState({
       showAudioWaveform: true,
       showDefaultAudioWaveform: false,

@@ -11,6 +11,7 @@ import { javascriptGenerator } from 'blockly/javascript';
 export const Sounds = `
   <category name="Sounds" colour="">
     <block type="play_sound"></block>
+    <block type="start_sound"></block>
     <block type="stop_sound"></block>
     <block type="change_by_effect"></block>
     <block type="set_by_effect"></block>
@@ -25,7 +26,7 @@ export const Sounds = `
 // Define the 'play_sound' block
 Blockly.Blocks["play_sound"] = {
   init: function () {
-    this.appendDummyInput().appendField("Play Sound");
+    this.appendDummyInput().appendField("Set Sound");
     this.appendDummyInput()
       .appendField("Sound Name:")
       .appendField(new Blockly.FieldTextInput("defaultsound"), "SOUND_NAME");
@@ -33,20 +34,39 @@ Blockly.Blocks["play_sound"] = {
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setTooltip("Play a sound");
-  }, 
+  },
 };
 // Generator code for 'play_sound' block
 javascriptGenerator["play_sound"] = function (block) {
-  var soundName = block.getFieldValue("SOUND_NAME");      
+  var soundName = block.getFieldValue("SOUND_NAME");
   var code = `  
-    const audio = new Audio(fileURL);
-    audio.play();
+    const audio = new Audio(fileURL);    
   `;
   console.log(code);
   return code;
 };
 
 
+// Define the 'start_sound' block
+Blockly.Blocks["start_sound"] = {
+  init: function () {
+    this.appendDummyInput().appendField("Start Sound");
+    this.appendDummyInput()
+      .appendField("Sound Name:")
+      .appendField(new Blockly.FieldTextInput("meow"), "SOUND_NAME");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Start playing a sound");
+  },
+};
+// Generator code for 'start_sound' block 
+javascriptGenerator["start_sound"] = function (block) {
+  var soundName = block.getFieldValue("SOUND_NAME");
+  var code = `audio.play();`;
+  console.log(code);
+  return code;
+};
 
 Blockly.Blocks["stop_sound"] = {
   init: function () {
@@ -86,45 +106,16 @@ Blockly.Blocks["change_by_effect"] = {
 javascriptGenerator["change_by_effect"] = function (block) {
   var effectType = block.getFieldValue("EFFECT_TYPE");
   var amount = block.getFieldValue("AMOUNT");
-  var code = `
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  
-  function pan(direction, ${amount}) {
-    const panNode = audioContext.createStereoPanner();
-    
-    // Connect the panNode to the audioContext destination
-    panNode.connect(audioContext.destination);
-    
-    // Set the pan value based on the direction and amount
-    panNode.pan.value = direction === 'right' ? ${amount} : -${amount};
-    
-    // Connect the audioSource to the panNode
-    const audioSource = audioContext.createBufferSource();
-    audioSource.connect(panNode);
-
-    // Start playing the audio source (replace this with your actual audio source)
-    audioSource.start();
-
-    // Stop the audio source after a certain duration (adjust as needed)
-    audioSource.stop(audioContext.currentTime + 2);
-  }
-  function changePitch(${amount}) {
-    // Use the Web Audio API to change the pitch
-    var pitchEffect = audioContext.createPitchShift();
-    pitchEffect.pitch = ${amount}; // Set the pitch shift amount
-
-    // Connect the audio source to the pitch shifter
-    const sourceNode = audioContext.createBufferSource();
-    sourceNode.disconnect();
-    sourceNode.connect(pitchEffect);
-
-    // Connect the pitch shifter to the audio context destination
-    pitchEffect.connect(audioContext.destination);
-  }
-
-  switch (${effectType}) {
+  var code = `  
+  var effectType = '${effectType}';
+  switch (effectType) {
     case 'pitch':
-      changePitch(${amount});
+      // changePitch(audio, ${amount});
+      audio.crossOrigin = 'anonymous'; // Enable cross-origin requests if needed
+      audio.addEventListener('loadeddata', () => {
+        // Trigger pitch change when the audio is loaded
+        changePitch(audio, 2); // Change the pitch by a factor of 2 (an octave up)
+      });
       break;
     case 'panRight':
       pan('right', ${amount});
@@ -185,7 +176,7 @@ Blockly.Blocks["change_volume_by"] = {
     this.appendDummyInput().appendField("Change Volume by");
     this.appendDummyInput()
       .appendField("Amount:")
-      .appendField(new Blockly.FieldNumber(10), "AMOUNT");
+      .appendField(new Blockly.FieldNumber(-10), "AMOUNT");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -196,6 +187,18 @@ Blockly.Blocks["change_volume_by"] = {
     var amount = block.getFieldValue("AMOUNT");
     return `changeVolumeBy(${amount});\n`;
   },
+};
+javascriptGenerator["change_volume_by"] = function (block) {
+  var amount = block.getFieldValue("AMOUNT");
+  var code = `
+  let volume = 1 < audio.volume + ${amount}/100 ? 1 : audio.volume + ${amount}/100;
+  volume = 0 < volume ? volume : 0;
+
+  // Set the volume of the audioElement
+  audio.volume = volume;
+  `;
+  console.log(code);
+  return code;
 };
 
 // Define the 'set_volume_to' block
@@ -210,10 +213,18 @@ Blockly.Blocks["set_volume_to"] = {
     this.setColour(230);
     this.setTooltip("Set the volume to a specified value");
   },
-  // Generator code for 'set_volume_to' block
-  generateCode: function (block) {
-    var volume = block.getFieldValue("VOLUME");
-    return `setVolumeTo(${volume});\n`;
-  },
+ 
+};
+javascriptGenerator["set_volume_to"] = function (block) {
+  var volume = block.getFieldValue("VOLUME");
+  var code = `
+    let volume = 100 < ${volume} ? 100 : ${volume};
+    volume = 0 < ${volume} ? ${volume} : 0;
+
+    // Set the volume of the audioElement
+    audio.volume = volume / 100;
+  `;
+  console.log(code);
+  return code;
 };
 

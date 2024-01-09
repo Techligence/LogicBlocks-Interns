@@ -15,14 +15,9 @@ import { useContext } from "react";
 const audioContext = new (window.AudioContext)();
 import { FileContext } from "../contexts/fileContext.jsx";
 
-function arrayBufferToDataURL(buffer) {
-  const blob = new Blob([buffer], { type: 'audio/wav' }); // Adjust the MIME type if needed
-  const url = URL.createObjectURL(blob);
-  return url;
-}
 
 const BlocklyComponent = () => {
-  const {wavesurferObj, setWavesurferObj} = useContext(WaveSurferContext);
+  const { wavesurferObj, setWavesurferObj } = useContext(WaveSurferContext);
   const [isWavesurferReady, setIsWavesurferReady] = useState(false);
 
   const {fileURL, setFileURL} = useContext(FileContext);
@@ -40,10 +35,10 @@ const BlocklyComponent = () => {
 
   // To handle Wavesurfer object
   useEffect(() => {
-    if(wavesurferObj){
+    if (wavesurferObj) {
       setIsWavesurferReady(true);
     }
-  },[wavesurferObj]);
+  }, [wavesurferObj]);
 
   // function playSound(){
   //   if(isWavesurferReady){
@@ -55,7 +50,7 @@ const BlocklyComponent = () => {
   //     //   oldAudioBuffer.length / oldAudioBuffer.numberOfChannels,
   //     //   oldAudioBuffer.sampleRate
   //     // )
-      
+
 
   //     // for(let channel = 0; channel < newBuffer.numberOfChannels; channel++){
   //     //   const channelData = newBuffer.getChannelData(channel);
@@ -74,20 +69,39 @@ const BlocklyComponent = () => {
   //     // source.onerror = function (event) {
   //     //   console.error('Error playing audio:', event);
   //     // };
-      
-  //     const audio = new Audio(fileURL);
-  //     audio.play();
+  // 
   //   }
   //   else
   //     console.log("Wavesurfer not ready");
   // }  
+
+
+  function pan(direction, value) {
+    const panNode = audioContext.createStereoPanner();
+
+    // Connect the panNode to the audioContext destination
+    panNode.connect(audioContext.destination);
+
+    // Set the pan value based on the direction and amount
+    panNode.pan.value = direction === 'right' ? value : - value;
+
+    // Connect the audioSource to the panNode
+    const audioSource = audioContext.createBufferSource();
+    audioSource.connect(panNode);
+
+    // Start playing the audio source (replace this with your actual audio source)
+    audioSource.start();
+
+    // Stop the audio source after a certain duration (adjust as needed)
+    audioSource.stop(audioContext.currentTime + 2);
+  }
   
 
-  useEffect(() => {    
-      // Initialize Blockly with English
-      Blockly.setLocale("en");
-      // Construct the complete toolbox XML
-      const toolboxXml = `
+  useEffect(() => {
+    // Initialize Blockly with English
+    Blockly.setLocale("en");
+    // Construct the complete toolbox XML
+    const toolboxXml = `
         <xml id="toolbox" style="display: none">
           ${Logic}
           ${Loops}
@@ -97,12 +111,12 @@ const BlocklyComponent = () => {
         </xml>
       `;
 
-      if(!blocklyRef.current){
-        initializeBlockly(toolboxXml); // Initialize Blockly using the separate function
-        blocklyRef.current = true;
-      }
+    if (!blocklyRef.current) {
+      initializeBlockly(toolboxXml); // Initialize Blockly using the separate function
+      blocklyRef.current = true;
+    }
 
-      // Ensure that the workspace is ready before adding the change listener
+    // Ensure that the workspace is ready before adding the change listener
     const workspaceReadyInterval = setInterval(() => {
       const currentWorkspace = Blockly.getMainWorkspace();
       if (currentWorkspace) {
@@ -120,7 +134,7 @@ const BlocklyComponent = () => {
         });
       }
     }, 100);
-    
+
   }, [blocklyRef]);
 
   return (

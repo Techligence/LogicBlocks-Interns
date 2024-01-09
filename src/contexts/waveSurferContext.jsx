@@ -11,7 +11,3 @@ export const WaveSurferProvider = ({ children }) => {
         </WaveSurferContext.Provider>
     );
 };
-
-export const useWaveSurfer = () => {
-    return useContext(WaveSurferContext);
-}

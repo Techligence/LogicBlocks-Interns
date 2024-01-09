@@ -44,17 +44,10 @@ const AudioWaveform = (props) => {
         wavesurferObj.clearRegions();        
         // wavesurferObj.destroy();
         // await setWavesurferObj(null);
-      }
-      console.log("Cleanup function called");
+      }      
     };
   }, [wavesurferObj]);// Empty dependency array ensures this runs only on unmount
 
-  // useEffect(() => {
-  //   isUnmountingForTabSwitch.current = false;
-  //   return () => {
-  //     isUnmountingForTabSwitch.current = true;
-  //   }
-  // }, [activeTab]);
 
   // create the waveform inside the correct component
   useEffect(() => {
@@ -76,11 +69,7 @@ const AudioWaveform = (props) => {
             RegionsPlugin.create({}),
           ],
         })
-      );
-      console.log("Wavesurfer object initialized: " + wavesurferObj);
-      console.log("wavesurferREF value: ");
-      console.log(wavesurferRef.current);
-      localStorage.setItem("music", fileURL);
+      );      
     }
   }, [wavesurferRef]);
 
@@ -144,18 +133,6 @@ const AudioWaveform = (props) => {
       });
     }
   }, [duration, wavesurferObj]);
-
-  // useEffect(() => {
-  //   if (wavesurferObj) {
-  //     console.log("isplaying status: " + isPlaying);
-  //     if (isPlaying) {
-  //       wavesurferObj.play();
-  //     } else {
-  //       wavesurferObj.pause();
-  //     }
-  //   }
-  // }, [isPlaying, wavesurferObj]);
-
   
   const handlePlayPause = (e) => {
     wavesurferObj.playPause();
