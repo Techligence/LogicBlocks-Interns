@@ -29,11 +29,10 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-
 import { triggerEvent, whenKeyPressed, whenSpriteClicked } from '../features/eventSlice';
 
 
-
+Blockly.JavaScript = javascriptGenerator;
 // import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
 const BlocklyComponent = () => {
