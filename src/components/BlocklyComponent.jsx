@@ -45,7 +45,7 @@ const BlocklyComponent = () => {
     javascriptGenerator.addReservedWords('code');
     var code = javascriptGenerator.workspaceToCode(workspace);
     setGeneratedCode(code);
-    eval(`(async () => { ${code} })();`);
+    // eval(`(async () => { ${code} })();`);
     console.log(code);
     // try {
     //    await eval(code);

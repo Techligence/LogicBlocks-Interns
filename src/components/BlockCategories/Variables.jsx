@@ -7,19 +7,19 @@ Blockly.JavaScript = javascriptGenerator;
 Blockly.Blocks['variables_get'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldVariable("VAR_NAME"), "GET_VARIABLE"),
+      .appendField(new Blockly.FieldTextInput("VAR_NAME"), "GET_VARIABLE"),
     this.setOutput(true, null);
     this.setColour(350);
   }
 };
 
 // JavaScript code generator for variable getter.
-javascriptGenerator['variables_get'] = function(block) {
+javascriptGenerator.forBlock['variables_get'] = function(block) {
   const getVariable = block.getField('GET_VARIABLE').getText();
   const code = `${getVariable}`;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
   // console.log(code);
-  return code;
-  // return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  // return code;
 };
 
 // Block for variable setter.
@@ -44,7 +44,7 @@ Blockly.Blocks['variables_set'] = {
 };
 
 // JavaScript code generator for the modified variable setter.
-javascriptGenerator['variables_set'] = function(block) {
+javascriptGenerator.forBlock['variables_set'] = function(block) {
   const fieldName = block.getField('FIELD_NAME').getText();
   const textValue = block.getFieldValue('TEXT_VALUE');
   const valueCode = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC);
