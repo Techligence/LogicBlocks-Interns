@@ -52,7 +52,6 @@ const BlocklyComponent = () => {
         javascriptGenerator.addReservedWords('code');
         code = javascriptGenerator.workspaceToCode(workspace);
         setGeneratedCodeJS(code);
-        console.log(`${chosenLanguage}`, code)
         // eval(`(async () => { ${code} })();`);
         // console.log(`${chosenLanguage}`, code)
         // try {
