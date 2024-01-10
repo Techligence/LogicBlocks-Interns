@@ -1,7 +1,9 @@
 // Variables.jsx
 import Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
+import {pythonGenerator} from 'blockly/python';
 Blockly.JavaScript = javascriptGenerator;
+Blockly.Python = pythonGenerator
 
 // Block for variable getter.
 Blockly.Blocks['variables_get'] = {
@@ -21,6 +23,16 @@ javascriptGenerator.forBlock['variables_get'] = function(block) {
   // console.log(code);
   // return code;
 };
+
+// JavaScript code generator for variable getter.
+pythonGenerator.forBlock['variables_get'] = function(block) {
+  const getVariable = block.getField('GET_VARIABLE').getText();
+  const code = `${getVariable}`;
+  return [code, Blockly.Python.ORDER_ATOMIC];
+  // console.log(code);
+  // return code;
+};
+
 
 // Block for variable setter.
 Blockly.Blocks['variables_set'] = {
@@ -52,6 +64,15 @@ javascriptGenerator.forBlock['variables_set'] = function(block) {
   return code;
 };
 
+// JavaScript code generator for the modified variable setter.
+pythonGenerator.forBlock['variables_set'] = function(block) {
+  const fieldName = block.getField('FIELD_NAME').getText();
+  const textValue = block.getFieldValue('TEXT_VALUE');
+  const valueCode = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_ATOMIC);
+  const code = `${fieldName} = ${valueCode || textValue};\n`;
+  return code;
+};
+
 // Block to change variable by 1.
 Blockly.Blocks['variables_changeby'] = {
   init: function () {
@@ -76,6 +97,14 @@ javascriptGenerator['variables_changeby'] = function(block) {
   return code;
 };
 
+// Python code generator for changing variable by a dynamic value.
+pythonGenerator['variables_changeby'] = function(block) {
+  var fieldName = block.getField('FIELD_NAME').getText();
+  var changeValue = block.getFieldValue('CHANGE_VALUE');
+  var code = fieldName + ' += ' + changeValue + '\n';
+  return code;
+};
+
 // Block to show variable.
 Blockly.Blocks['variables_show'] = {
   init: function () {
@@ -96,6 +125,13 @@ javascriptGenerator['variables_show'] = function(block) {
   return code;
 };
 
+// JavaScript code generator for showing variable.
+pythonGenerator['variables_show'] = function(block) {
+  const variable = block.getField('SHOW_VARIABLE').getText();
+  const code = `showVariable(${variable});\n`;
+  return code;
+};
+
 // Block to hide variable.
 Blockly.Blocks['variables_hide'] = {
   init: function () {
@@ -111,6 +147,13 @@ Blockly.Blocks['variables_hide'] = {
 
 // JavaScript code generator for hiding variable.
 javascriptGenerator['variables_hide'] = function(block) {
+  const fieldName = block.getField('FIELD_NAME').getText();
+  const code = `hideVariable(${fieldName});\n`;
+  return code;
+};
+
+// JavaScript code generator for hiding variable.
+pythonGenerator['variables_hide'] = function(block) {
   const fieldName = block.getField('FIELD_NAME').getText();
   const code = `hideVariable(${fieldName});\n`;
   return code;
