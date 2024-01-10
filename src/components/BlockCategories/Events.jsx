@@ -1,4 +1,35 @@
 import Blockly from 'blockly';
+import { javascriptGenerator } from 'blockly/javascript';
+Blockly.JavaScript = javascriptGenerator;
+
+
+// Block for FLAG_CLICKED event trigger.
+Blockly.Blocks['flag_clicked_event'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("When flag clicked");
+    this.setNextStatement(true, null);
+    this.setColour(300);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+// JavaScript code generator for 'flag_clicked_event' block
+const flagClickedEvent = function (block) {
+  const code = `whenFlagClicked();\n`;
+  // console.log(code);
+  return code;
+};
+javascriptGenerator.forBlock['flag_clicked_event'] = function(block, generator) {
+  // TODO: Assemble javascript into code variable.
+  var code = `whenFlagClicked();\n`;
+  return code;
+};
+Blockly.JavaScript['flag_clicked_event'] = flagClickedEvent;
+export {flagClickedEvent}
+
+
+
 
 // Block for event trigger.
 Blockly.Blocks['event_trigger'] = {
@@ -55,15 +86,7 @@ Blockly.Blocks['sprite_clicked_event'] = {
   }
 };
 
-// Block for FLAG_CLICKED event trigger.
-Blockly.Blocks['flag_clicked_event'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField("When flag clicked");
-    this.setNextStatement(true, null);
-    this.setColour(300);
-  }
-};
+
 
 
 // Block for BACKDROP_SWITCH event trigger.
@@ -230,14 +253,8 @@ const spriteClickedEvent = function (block) {
 Blockly.JavaScript['sprite_clicked_event'] = spriteClickedEvent;
 export { spriteClickedEvent };
 
-// JavaScript code generator for 'flag_clicked_event' block
-const flagClickedEvent = function (block) {
-  const code = `whenFlagClicked();\n`;
-  // console.log(code);
-  return code;
-};
-Blockly.JavaScript['flag_clicked_event'] = flagClickedEvent;
-export {flagClickedEvent}
+
+
 
 // JavaScript code generator for 'when_backdrop_switches_to' block
 Blockly.JavaScript['when_backdrop_switches_to'] = function (block) {

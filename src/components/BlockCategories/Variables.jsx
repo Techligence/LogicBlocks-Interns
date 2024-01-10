@@ -9,7 +9,7 @@ Blockly.Python = pythonGenerator
 Blockly.Blocks['variables_get'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldTextInput("VAR_NAME"), "GET_VARIABLE"),
+      .appendField(new Blockly.FieldVariable("VAR_NAME"), "GET_VARIABLE"),
     this.setOutput(true, null);
     this.setColour(350);
   }
@@ -35,6 +35,18 @@ pythonGenerator.forBlock['variables_get'] = function(block) {
 
 
 // Block for variable setter.
+// Blockly.Blocks['variables_set'] = {
+//   init: function() {
+//     this.appendValueInput("VALUE")
+//         .setCheck(null)
+//         .appendField("set")
+//         .appendField(new Blockly.FieldVariable("VAR_NAME"), "FIELD_NAME")
+//         .appendField("to");
+//     this.setOutput(true, null);
+//     this.setColour(350);
+//   }
+// };
+
 Blockly.Blocks['variables_set'] = {
   init: function () {
     this.appendDummyInput()
@@ -54,6 +66,10 @@ Blockly.Blocks['variables_set'] = {
     this.setInputsInline(true);
   }
 };
+
+
+
+
 
 // JavaScript code generator for the modified variable setter.
 javascriptGenerator.forBlock['variables_set'] = function(block) {
