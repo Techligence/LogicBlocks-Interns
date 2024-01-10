@@ -1,7 +1,7 @@
 // BlocklyBlocksAndCategory.js
 import Blockly from "blockly";
 import { setIsPlaying, setVolume } from "../../state/reducers/audioSlice";
-import { useDispatch } from "react-redux";
+// import { useSelector } from "react-redux";
 import { javascriptGenerator } from 'blockly/javascript';
 // import { FileContext } from "../../contexts/fileContext";
 // import { useContext } from "react";
@@ -26,7 +26,7 @@ export const Sounds = `
 // Define the 'play_sound' block
 Blockly.Blocks["play_sound"] = {
   init: function () {
-    this.appendDummyInput().appendField("Set Sound");
+    this.appendDummyInput().appendField("Set Sound");   
     this.appendDummyInput()
       .appendField("Sound Name:")
       .appendField(new Blockly.FieldTextInput("defaultsound"), "SOUND_NAME");
@@ -39,8 +39,9 @@ Blockly.Blocks["play_sound"] = {
 // Generator code for 'play_sound' block
 javascriptGenerator["play_sound"] = function (block) {
   var soundName = block.getFieldValue("SOUND_NAME");
-  var code = `  
-    const audio = new Audio(fileURL);    
+  var code = `      
+    const audioUrl = playSound(); 
+    const audio = new Audio(audioUrl);    
   `;
   console.log(code);
   return code;
@@ -53,7 +54,7 @@ Blockly.Blocks["start_sound"] = {
     this.appendDummyInput().appendField("Start Sound");
     this.appendDummyInput()
       .appendField("Sound Name:")
-      .appendField(new Blockly.FieldTextInput("meow"), "SOUND_NAME");
+      .appendField(new Blockly.FieldTextInput("defaultsound"), "SOUND_NAME");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);

@@ -6,6 +6,7 @@ import wavesurfer from "wavesurfer.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsPlaying, setVolume } from "../state/reducers/audioSlice.js";
 import { WaveSurferContext } from "../contexts/waveSurferContext.jsx";
+import { bufferToWave } from "./bufferToWave.jsx";
 
 
 
@@ -48,6 +49,15 @@ const AudioWaveform = (props) => {
     };
   }, [wavesurferObj]);// Empty dependency array ensures this runs only on unmount
 
+  useEffect(() => {    
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [])
 
   // create the waveform inside the correct component
   useEffect(() => {
@@ -69,8 +79,8 @@ const AudioWaveform = (props) => {
             RegionsPlugin.create({}),
           ],
         })
-      );      
-    }
+      );           
+    }    
   }, [wavesurferRef]);
 
   // once the file URL is ready, load the file to produce the waveform
@@ -255,6 +265,11 @@ const AudioWaveform = (props) => {
 
           // load the new_buffer, to restart the wavesurfer's waveform display
           wavesurferObj.loadDecodedBuffer(new_buffer);
+
+          var abuffer = wavesurferObj.backend.buffer;
+          var length = abuffer.length;
+          const audioUrl = bufferToWave(abuffer, 0, length);
+          setFileURL(audioUrl);
       }
 		}
 	};
@@ -316,6 +331,11 @@ const AudioWaveform = (props) => {
 
         // load the new_buffer, to restart the wavesurfer's waveform display
         wavesurferObj.loadDecodedBuffer(new_buffer);
+
+        var abuffer = wavesurferObj.backend.buffer;
+        var length = abuffer.length;
+        const audioUrl = bufferToWave(abuffer, 0, length);
+        setFileURL(audioUrl);
       }
     }
   };
@@ -419,7 +439,7 @@ const AudioWaveform = (props) => {
           <button title="reload" className="controls" onClick={handleReload}>
             <i className="material-icons">replay</i>
           </button>
-          <button className="controls" onClick={handleTrim}>
+          <button title="Trim" className="controls" onClick={handleTrim}>
             <i              
               className="material-icons"
             >
@@ -428,14 +448,14 @@ const AudioWaveform = (props) => {
             
           </button>
 
-          <button className='controls' onClick={handleCopy}>
+          <button title="copy" className='controls' onClick={handleCopy}>
 						<i							
 							className='material-icons'>
 							content_copy
 						</i>
 						
 					</button>
-					<button className='controls' onClick={handlePaste}>
+					<button title="paste" className='controls' onClick={handlePaste}>
 						<i							
 							className='material-icons'>
 							content_paste
@@ -443,17 +463,17 @@ const AudioWaveform = (props) => {
 						
 					</button>
 
-          <button className="controls" onClick={handleBackward}>
+          <button title="backward" className="controls" onClick={handleBackward}>
             <i className="material-icons">fast_rewind</i>            
           </button>
-          <button className="controls" onClick={handleForward}>
+          <button title="forward" className="controls" onClick={handleForward}>
             <i className="material-icons">fast_forward</i>            
           </button>    
 
 
         </div>
         <div className="right-container">             
-          <button className="controls" onClick={handleFadeIn}>    
+          <button title="Fade In" className="controls" onClick={handleFadeIn}>    
             {/* <i
 							// style={{
 							// 	fontSize: '1.2em',
@@ -465,7 +485,7 @@ const AudioWaveform = (props) => {
             FadeIn */}
             <i class="fa-solid fa-signal"></i>
 					</button>
-					<button className='controls' onClick={handleFadeOut}>						
+					<button title="Fade Out" className='controls' onClick={handleFadeOut}>						
             <i class="fa-solid fa-signal fa-flip-horizontal" ></i>
 					</button>      
           <div className="volume-slide-container">

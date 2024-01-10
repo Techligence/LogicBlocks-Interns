@@ -8,13 +8,21 @@ import { Text } from "./BlockCategories/Text";
 import initializeBlockly from "./InitializeBlockly"; // import the function
 import { Sounds } from "./BlockCategories/Sounds";
 import { javascriptGenerator } from "blockly/javascript";
-import { store } from "../store/store";
-import { setIsPlaying, setVolume } from "../state/reducers/audioSlice";
 import { WaveSurferContext } from "../contexts/waveSurferContext";
 import { useContext } from "react";
 const audioContext = new (window.AudioContext)();
 import { FileContext } from "../contexts/fileContext.jsx";
+import { bufferToWave } from "./bufferToWave.jsx";
+import { useSelector } from "react-redux";
 
+function getFileName(){
+  const audioState = useSelector((state) => state.soundTab.audioState);
+  const { showAudioWaveform, showDefaultAudioWaveform, fileName } = audioState;
+  if(fileName == "")
+    return "Default sound"
+  else
+    return fileName;
+}
 
 const BlocklyComponent = () => {
   const { wavesurferObj, setWavesurferObj } = useContext(WaveSurferContext);
@@ -37,43 +45,47 @@ const BlocklyComponent = () => {
   useEffect(() => {
     if (wavesurferObj) {
       setIsWavesurferReady(true);
+      console.log(wavesurferObj);
     }
   }, [wavesurferObj]);
 
-  // function playSound(){
-  //   if(isWavesurferReady){
-  //     console.log(wavesurferObj.backend.buffer);
+  function playSound(){
+    if(isWavesurferReady){
+      console.log(wavesurferObj.backend.buffer);
 
-  //     // const oldAudioBuffer = wavesurferObj.backend.buffer;
-  //     // const newBuffer = audioContext.createBuffer(
-  //     //   oldAudioBuffer.numberOfChannels,
-  //     //   oldAudioBuffer.length / oldAudioBuffer.numberOfChannels,
-  //     //   oldAudioBuffer.sampleRate
-  //     // )
+      // const oldAudioBuffer = wavesurferObj.backend.buffer;
+      // const newBuffer = audioContext.createBuffer(
+      //   oldAudioBuffer.numberOfChannels,
+      //   oldAudioBuffer.length / oldAudioBuffer.numberOfChannels,
+      //   oldAudioBuffer.sampleRate
+      // )
 
 
-  //     // for(let channel = 0; channel < newBuffer.numberOfChannels; channel++){
-  //     //   const channelData = newBuffer.getChannelData(channel);
-  //     //   for(let i = 0; i < newBuffer.length; i++){
-  //     //     channelData[i] = oldAudioBuffer[i * oldAudioBuffer.numberOfChannels + channel];
-  //     //   }
-  //     // }
+      // for(let channel = 0; channel < newBuffer.numberOfChannels; channel++){
+      //   const channelData = newBuffer.getChannelData(channel);
+      //   for(let i = 0; i < newBuffer.length; i++){
+      //     channelData[i] = oldAudioBuffer[i * oldAudioBuffer.numberOfChannels + channel];
+      //   }
+      // }
 
-  //     // const source = audioContext.createBufferSource();
-  //     // source.buffer = newBuffer;
+      // const source = audioContext.createBufferSource();
+      // source.buffer = newBuffer;
 
-  //     // source.connect(audioContext.destination);
-  //     // console.log("I am playing");
-  //     // source.start();  
+      // source.connect(audioContext.destination);
+      // console.log("I am playing");
+      // source.start();  
 
-  //     // source.onerror = function (event) {
-  //     //   console.error('Error playing audio:', event);
-  //     // };
-  // 
-  //   }
-  //   else
-  //     console.log("Wavesurfer not ready");
-  // }  
+      // source.onerror = function (event) {
+      //   console.error('Error playing audio:', event);
+      // };
+      var abuffer = wavesurferObj.backend.buffer;
+      var length = abuffer.length;
+      const audioUrl = bufferToWave(abuffer, 0, length);
+      return audioUrl;     
+    }
+    else
+      console.log("Wavesurfer not ready");
+  }  
 
 
   function pan(direction, value) {
@@ -95,8 +107,66 @@ const BlocklyComponent = () => {
     // Stop the audio source after a certain duration (adjust as needed)
     audioSource.stop(audioContext.currentTime + 2);
   }
-  
 
+  const name = getFileName();
+  useEffect(() => {
+    // Wait for the Blockly workspace to be ready    
+    const intervalId = setInterval(() => {
+      
+      const workspace = Blockly.getMainWorkspace();
+      if (workspace) {
+        // Blockly workspace is ready
+        clearInterval(intervalId);
+
+        // Get the current block definition
+        const oldDefinition_play = Blockly.Blocks['play_sound'];
+        const oldDefinition_start = Blockly.Blocks['start_sound'];
+        
+
+        // Create a new block definition with the updated field value
+        const newDefinition_play = {
+          ...oldDefinition_play,
+          init: function () {
+            this.appendDummyInput().appendField("Set Sound");
+            this.appendDummyInput()
+              .appendField("Sound Name:")
+              .appendField(new Blockly.FieldTextInput(`${name}`), "SOUND_NAME");
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setColour(230);
+            this.setTooltip("Play a sound");
+          },
+        };
+        const newDefinition_start = {
+          ...oldDefinition_start,
+          init: function () {
+            this.appendDummyInput().appendField("Start Sound");
+            this.appendDummyInput()
+              .appendField("Sound Name:")
+              .appendField(new Blockly.FieldTextInput(`${name}`), "SOUND_NAME");
+            this.setPreviousStatement(true, null);
+            this.setNextStatement(true, null);
+            this.setColour(230);
+            this.setTooltip("Start playing a sound");
+          },
+        }
+
+        // Unregister the old block
+        delete Blockly.Blocks['play_sound'];
+        delete Blockly.Blocks['start_sound'];
+        Blockly.Blocks['play_sound'] = newDefinition_play;
+        Blockly.Blocks['start_sound'] = newDefinition_start;
+
+        // Clear the workspace and add the new block
+        workspace.clear();        
+      }
+    }, 100); // Check every 100 milliseconds
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  
   useEffect(() => {
     // Initialize Blockly with English
     Blockly.setLocale("en");
@@ -133,9 +203,10 @@ const BlocklyComponent = () => {
           }
         });
       }
-    }, 100);
+    }, 100);    
 
   }, [blocklyRef]);
+
 
   return (
     <div style={{ width: "100%", height: "480px" }}>
