@@ -5,7 +5,7 @@ import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
 import Blockly from 'blockly';
 import 'blockly/javascript';
-import GenerateCodeBox from './GenrateCodeBox';
+import GenerateCodeBox from './GenerateCodeBox';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import { useSelector, useDispatch } from 'react-redux';

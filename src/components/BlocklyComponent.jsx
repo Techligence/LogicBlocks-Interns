@@ -10,9 +10,7 @@ import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
 import { javascriptGenerator } from 'blockly/javascript';
-import {pythonGenerator} from 'blockly/python';
 Blockly.JavaScript = javascriptGenerator;
-Blockly.Python = pythonGenerator
 // import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 import { Motion } from './BlockCategories/Motion';
 import { Control } from './BlockCategories/Control';
@@ -39,35 +37,21 @@ Blockly.JavaScript = javascriptGenerator;
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
-  const [generatedCodeJS, setGeneratedCodeJS] = useState('');
-  const [generatedCodePython, setGeneratedCodePython] = useState('');
+  const [generatedCode, setGeneratedCode] = useState('');
   const workspace = Blockly.getMainWorkspace();
   const dispatch = useDispatch();
 
   const generateCode = () => {
-    const chosenLanguage = prompt('Choose a language (1.JavaScript or 2.Python)');
-    if (chosenLanguage == '1' || chosenLanguage == '2') {
-      let code;
-      if (chosenLanguage == '1') {
-        javascriptGenerator.addReservedWords('code');
-        code = javascriptGenerator.workspaceToCode(workspace);
-        setGeneratedCodeJS(code);
-        // eval(`(async () => { ${code} })();`);
-        // console.log(`${chosenLanguage}`, code)
-        // try {
-        //    await eval(code);
-        // } catch (e) {
-        //   alert(e);
-        // }
-      } else {
-        pythonGenerator.addReservedWords('code');
-        code = pythonGenerator.workspaceToCode(workspace);
-        setGeneratedCodePython(code)
-        console.log(`${chosenLanguage}`, code)
-      }
-    }
-    
-    
+    javascriptGenerator.addReservedWords('code');
+    var code = javascriptGenerator.workspaceToCode(workspace);
+    setGeneratedCode(code);
+    // eval(`(async () => { ${code} })();`);
+    console.log(code);
+    // try {
+    //    await eval(code);
+    // } catch (e) {
+    //   alert(e);
+    // }
   };
 
   useEffect(() => {
