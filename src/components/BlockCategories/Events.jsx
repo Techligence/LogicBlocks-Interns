@@ -1,6 +1,7 @@
 import Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
 Blockly.JavaScript = javascriptGenerator;
+import {pythonGenerator} from 'blockly/python';
 
 
 // Block for FLAG_CLICKED event trigger.
@@ -14,19 +15,29 @@ Blockly.Blocks['flag_clicked_event'] = {
  this.setHelpUrl("");
   }
 };
+
 // JavaScript code generator for 'flag_clicked_event' block
+javascriptGenerator.forBlock['flag_clicked_event'] = function(block, generator) {
+  // TODO: Assemble javascript into code variable.
+  var code = `JavaScript=whenFlagClicked();\n`;
+  return code;
+};
+
+// Python code generator 
+pythonGenerator.forBlock['flag_clicked_event'] = function(block, generator) {
+  var code = 'Python=whenFlagClicked();\n';
+  return code;
+};
+
+// flag clidked Event
 const flagClickedEvent = function (block) {
   const code = `whenFlagClicked();\n`;
   // console.log(code);
   return code;
 };
-javascriptGenerator.forBlock['flag_clicked_event'] = function(block, generator) {
-  // TODO: Assemble javascript into code variable.
-  var code = `whenFlagClicked();\n`;
-  return code;
-};
 Blockly.JavaScript['flag_clicked_event'] = flagClickedEvent;
 export {flagClickedEvent}
+
 
 
 

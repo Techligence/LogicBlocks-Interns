@@ -10,15 +10,16 @@ import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';  // import the function
 import { javascriptGenerator } from 'blockly/javascript';
+import { pythonGenerator } from 'blockly/python';
 Blockly.JavaScript = javascriptGenerator;
 // import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 import { Motion } from './BlockCategories/Motion';
 import { Control } from './BlockCategories/Control';
 import { store } from '../store/store';
-import {moveSprite} from '../features/motionSlice';
+import { moveSprite } from '../features/motionSlice';
 
 import { waitSeconds } from '../features/controlSlice';
-import { 
+import {
   getVariable,
   clearFetchedVariable,
   setVariable,
@@ -30,34 +31,46 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { triggerEvent, whenKeyPressed, whenSpriteClicked } from '../features/eventSlice';
+import GenerateCodeBox from './GenerateCodeBox';
 
 
 Blockly.JavaScript = javascriptGenerator;
 // import generateCodeForBlock  from './Canvas/generateCodeForBlock ';
 
 const BlocklyComponent = () => {
-  const blocklyRef = useRef(null);
   const [generatedCode, setGeneratedCode] = useState('');
   const workspace = Blockly.getMainWorkspace();
   const dispatch = useDispatch();
+  const blocklyRef = useRef(null);
 
+  // const generateCode = () => {
+  //   javascriptGenerator.addReservedWords('code');
+  //   var code = javascriptGenerator.workspaceToCode(workspace);
+  //   setGeneratedCode(code);
+  //   // dispatch(setGeneratedCode(code));
+  //   // eval(`(async () => { ${code} })();`);
+  //   console.log(code);
+  // };
   const generateCode = () => {
     javascriptGenerator.addReservedWords('code');
-    var code = javascriptGenerator.workspaceToCode(workspace);
-    setGeneratedCode(code);
-    // eval(`(async () => { ${code} })();`);
-    console.log(code);
-    // try {
-    //    await eval(code);
-    // } catch (e) {
-    //   alert(e);
-    // }
+    var jsCode = javascriptGenerator.workspaceToCode(workspace);
+
+    // You need to replace 'pythonGenerator' with the actual name of your Python generator instance
+    var pythonCode = pythonGenerator.workspaceToCode(workspace);
+
+    // Set the generated codes to their respective states
+    setGeneratedCode({ js: jsCode, python: pythonCode });
+
+    // Display both JavaScript and Python code
+    console.log('JavaScript Code:', jsCode);
+    console.log('Python Code:', pythonCode);
   };
+
 
   useEffect(() => {
     if (!blocklyRef.current) {
-       // Initialize Blockly with English
-       Blockly.setLocale('en');
+      // Initialize Blockly with English
+      Blockly.setLocale('en');
       // Construct the complete toolbox XML
       const toolboxXml = `
         <xml id="toolbox" style="display: none">
@@ -75,9 +88,12 @@ const BlocklyComponent = () => {
       blocklyRef.current = newWorkspace;  // Assign the workspace to the ref
       // blocklyRef.current = true;
     }
-    
+
     // Attach the click event handler to the workspace
     blocklyRef.current.addChangeListener(handleBlockClick);
+
+    // Call generateCode after Blockly is initialized
+    generateCode();
 
     //press_key checking
     // const handleKeyDown = (event) => {
@@ -123,8 +139,8 @@ const BlocklyComponent = () => {
 
   const handleBlockClick = (event) => {
 
-    
-    
+
+
     if (event.type === Blockly.Events.CLICK) {
       const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
       // const connectedBlocks = getAllConnectedBlocks(clickedBlock);
@@ -139,20 +155,20 @@ const BlocklyComponent = () => {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
         const valueInput = clickedBlock.inputList[1].fieldRow[0].getText(); // Get the value input
         const value = parseInt(valueInput) || 0; // Convert value to integer, default to 0 if not a valid number
-  
+
         dispatch(setVariable({ variableName, value }));
-      } 
+      }
       else if (blockType === 'variables_changeby') {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
-      const changeByInput = clickedBlock.inputList[0].fieldRow[3].getText(); // Get the changeBy input
-      const changeBy = parseInt(changeByInput) || 1; // Convert changeBy to integer, default to 1 if not a valid number
+        const changeByInput = clickedBlock.inputList[0].fieldRow[3].getText(); // Get the changeBy input
+        const changeBy = parseInt(changeByInput) || 1; // Convert changeBy to integer, default to 1 if not a valid number
 
-      dispatch(changeVariableBy({ variableName, changeBy }));
-      } 
+        dispatch(changeVariableBy({ variableName, changeBy }));
+      }
       else if (blockType === 'variables_show') {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
         dispatch(showVariable(variableName));
-      } 
+      }
       else if (blockType === 'variables_hide') {
         const variableName = clickedBlock.inputList[0].fieldRow[1].getText();
         dispatch(hideVariable(variableName));
@@ -162,7 +178,7 @@ const BlocklyComponent = () => {
       else if (blockType === 'event_trigger') {
         const eventName = clickedBlock.getFieldValue('EVENT_NAME');
         dispatch(triggerEvent(eventName));
-      } 
+      }
 
       // Handle key press event
       if (blockType === 'key_press_event') {
@@ -170,7 +186,7 @@ const BlocklyComponent = () => {
         console.log('Key pressed:', keyName);
         dispatch(whenKeyPressed(keyName));
       }
-      
+
       else if (blockType === 'sprite_clicked_event') {
         dispatch(whenSpriteClicked()); // Dispatch the sprite click action
       }
@@ -178,12 +194,12 @@ const BlocklyComponent = () => {
         dispatch(whenFlagClicked()); // Dispatch the flag click action
       }
     }
-  };  
+  };
 
   const handleGenerateCode = () => {
     const code = Blockly.JavaScript.workspaceToCode(blocklyRef.current);
     dispatch(generateCode(code)); // Dispatch the code to Redux store
-    console.log('Generated Code:', code);
+    console.log('Generated Code:', code);
   };
 
   return (
@@ -202,6 +218,8 @@ const BlocklyComponent = () => {
         style={{ height: '100%', width: '100%' }}
         onClick={handleBlockClick}  // Add the click handler directly to the blocklyDiv
       ></div>
+      {/* <GenerateCodeBox generatedCode={generatedCode} /> */}
+      <GenerateCodeBox jsCode={generatedCode.js} pythonCode={generatedCode.python} />
     </div>
   );
 };
