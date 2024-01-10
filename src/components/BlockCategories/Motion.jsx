@@ -291,14 +291,12 @@ javascriptGenerator['go_to_menu'] = function (block) {
   if (destination === 'mouse_pointer') {
     // Dispatch followMousePointer() if the destination is the mouse pointer
     code = 
-    `
-ore.dispatch(goTo('${destination}'));
+    `store.dispatch(goTo('${destination}'));
 `;
   } else {
     // Otherwise, dispatch goTo with the specified destination
     code = 
-    `
-ore.dispatch(goTo('${destination}'));
+    `store.dispatch(goTo('${destination}'));
 `;
   }
   console.log(code);

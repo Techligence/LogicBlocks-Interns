@@ -13,10 +13,10 @@ import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 import { useSprite,useBackdrop } from '../pages/Home';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedSpriteIndex } from '../features/motionSlice';
+import { goToXY, setSelectedSpriteIndex } from '../features/motionSlice';
 const Canvas = () => {
   const dispatch = useDispatch();
-  const { sprites,removeSprite } = useSprite();
+  const { removeSprite } = useSprite();
   const { selectedBackdrop } = useBackdrop();
   const {sprites:storesprites} = useSelector((state) => state.motion) ;
   const [selectedSprite, setSelectedSprite] = useState(null);
@@ -42,7 +42,18 @@ const Canvas = () => {
     return () => {
       window.removeEventListener('keydown', handleDelete);
     };
-  }, [selectedSprite, removeSprite]);
+
+  }, [selectedSprite,removeSprite,dispatch]);
+
+  useEffect(() => {
+    storesprites.forEach((sprite, index) => {
+      if(index !== selectedSprite) return;
+      const spriteElement = document.getElementById(`sprite-${index}`);
+      if (spriteElement) {
+        spriteElement.style.transform = `translate(${sprite.position.x}px, ${sprite.position.y}px) rotate(${sprite.angle}deg)`;
+      }
+    });
+  }, [storesprites[selectedSprite]?.position, storesprites[selectedSprite]?.angle]);
 
   return (
     <Card className="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden' }}>
@@ -63,12 +74,14 @@ const Canvas = () => {
 
         {/* Sprite Div */}
         {storesprites.map((sprite, index) => (
-          <Draggable key={index} bounds="parent" position={sprite.position} >
+          <Draggable key={index} bounds="parent" defaultPosition={sprite.position} position={sprite.position} 
+          onStart={() => {handleSpriteClick(index),console.log(sprite);}}
+          onDrag={(e, data) => {dispatch(goToXY(data.x, data.y))}}
+          >
             <Resizable
-              onClick={() => {handleSpriteClick(index),console.log(sprite);}}
+              id={`sprite-${index}`}
               style={{
-                transform: `rotate(${sprite.angle}deg)`,
-                rotate: `${sprite.angle}deg`,
+                // rotate: `${sprite.angle}deg`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
