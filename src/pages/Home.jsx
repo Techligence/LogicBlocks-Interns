@@ -5,7 +5,8 @@ import AnchorMenu from '../components/AnchorMenu';
 import FloatingActionButton from '../components/FloatingActionButton';
 import Header from '../components/Header';
 import { Box } from '@mui/material';
-
+import {addSprite as addSpriteToStore,removeSprite as removeSpriteFromStore} from '../features/motionSlice';
+import { useDispatch, useSelector } from 'react-redux';
 // Context for Sprite
 const SpriteContext = createContext();
 
@@ -29,16 +30,20 @@ export const useBackdrop = () => {
 };
 
 const Home = () => {
+  const dispatch = useDispatch(); 
   const [selectedBackdrop, setSelectedBackdrop] = useState(null);
 
   const [sprites, setSprites] = useState([]);
 
   const addSprite = (sprite) => {
     setSprites((prevSprites) => [...prevSprites, sprite]);
+    // console.log("in home",sprite);
+    dispatch(addSpriteToStore({sprite}));
   };
 
   const removeSprite = (index) => {
     setSprites((prevSprites) => prevSprites.filter((_, i) => i !== index));
+    dispatch(removeSpriteFromStore(index));
   };
 
   const spriteContextValue = {
