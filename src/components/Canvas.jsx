@@ -5,7 +5,7 @@ import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
 import Blockly from 'blockly';
 import 'blockly/javascript';
-import GenerateCodeBox from './GenrateCodeBox';
+import GenerateCodeBox from './GenerateCodeBox';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,6 +14,8 @@ import { useEffect } from 'react';
 import { whenSpriteClicked } from '../features/eventSlice';  
 import { whenFlagClicked } from '../features/eventSlice';
 import { whenKeyPressed } from '../features/eventSlice'; // keypress
+
+
 
 // Import Image from src
 import Demo from '../Images/trial_sprite_nobkg.png'
@@ -50,6 +52,7 @@ const useKeyPress = (targetKey, callback) => {
 const Canvas = () => {
 
   const dispatch = useDispatch(); //dispatch fore event click
+  const generatedCode = useSelector((state) => state.variables.generatedCode);
 
   // const { position, angle } = useSelector((state) => ({
   //   position: state.motion.position,
@@ -321,6 +324,7 @@ const toggleGenerateCodeBox = () => {
       <button onClick={toggleGenerateCodeBox}>
             {isGenerateCodeBoxVisible ? 'Hide Code Box' : 'Show Code Box'}
       </button>
+      {/* <pre style={{ whiteSpace: 'pre-wrap' }}>{generatedCode}</pre> */}
       {isGenerateCodeBoxVisible && <GenerateCodeBox />}
     </div>
     
