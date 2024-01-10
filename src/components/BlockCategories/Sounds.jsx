@@ -2,10 +2,9 @@
 import Blockly from "blockly";
 import { setIsPlaying, setVolume } from "../../state/reducers/audioSlice";
 import { useDispatch } from "react-redux";
-import { javascriptGenerator } from 'blockly/javascript';
+import { javascriptGenerator } from "blockly/javascript";
 // import { FileContext } from "../../contexts/fileContext";
 // import { useContext } from "react";
-
 
 // Category definition
 export const Sounds = `
@@ -20,8 +19,6 @@ export const Sounds = `
     <block type="set_volume_to"></block>
   </category>
 `;
-
-
 
 // Define the 'play_sound' block
 Blockly.Blocks["play_sound"] = {
@@ -40,12 +37,11 @@ Blockly.Blocks["play_sound"] = {
 javascriptGenerator["play_sound"] = function (block) {
   var soundName = block.getFieldValue("SOUND_NAME");
   var code = `  
-    const audio = new Audio(fileURL);    
+    const audio = new Audio(fileURL); \n   
   `;
   console.log(code);
   return code;
 };
-
 
 // Define the 'start_sound' block
 Blockly.Blocks["start_sound"] = {
@@ -60,10 +56,10 @@ Blockly.Blocks["start_sound"] = {
     this.setTooltip("Start playing a sound");
   },
 };
-// Generator code for 'start_sound' block 
+// Generator code for 'start_sound' block
 javascriptGenerator["start_sound"] = function (block) {
   var soundName = block.getFieldValue("SOUND_NAME");
-  var code = `audio.play();`;
+  var code = `audio.play(); \n`;
   console.log(code);
   return code;
 };
@@ -107,26 +103,8 @@ javascriptGenerator["change_by_effect"] = function (block) {
   var effectType = block.getFieldValue("EFFECT_TYPE");
   var amount = block.getFieldValue("AMOUNT");
   var code = `  
-  var effectType = '${effectType}';
-  switch (effectType) {
-    case 'pitch':
-      // changePitch(audio, ${amount});
-      audio.crossOrigin = 'anonymous'; // Enable cross-origin requests if needed
-      audio.addEventListener('loadeddata', () => {
-        // Trigger pitch change when the audio is loaded
-        changePitch(audio, 2); // Change the pitch by a factor of 2 (an octave up)
-      });
-      break;
-    case 'panRight':
-      pan('right', ${amount});
-      break;
-    case 'panLeft':
-      pan('left', ${amount});
-      break;
-    // Add more cases for other effects if needed
-    default:
-      console.error('Unknown effect type:', ${effectType});
-  }
+  const pitchFactor = ${amount}; \n
+  audio.playbackRate = 2 ** (pitchFactor / 120); \n
   `;
   console.log(code);
   return code;
@@ -213,7 +191,6 @@ Blockly.Blocks["set_volume_to"] = {
     this.setColour(230);
     this.setTooltip("Set the volume to a specified value");
   },
- 
 };
 javascriptGenerator["set_volume_to"] = function (block) {
   var volume = block.getFieldValue("VOLUME");
@@ -227,4 +204,3 @@ javascriptGenerator["set_volume_to"] = function (block) {
   console.log(code);
   return code;
 };
-

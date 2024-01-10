@@ -6,58 +6,59 @@ import wavesurfer from "wavesurfer.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsPlaying, setVolume } from "../state/reducers/audioSlice.js";
 import { WaveSurferContext } from "../contexts/waveSurferContext.jsx";
-
-
+import { colors } from "@mui/material";
 
 const AudioWaveform = (props) => {
   const wavesurferRef = useRef(null);
-  // const timelineRef = useRef(null);  
+  // const timelineRef = useRef(null);
   const dispatch = useDispatch();
-  const activeTab = useSelector(state => state.soundTab.activeTab);
+  const activeTab = useSelector((state) => state.soundTab.activeTab);
 
   // fetch file url from the context
   const { fileURL, setFileURL } = useContext(FileContext);
 
   // crate an instance of the wavesurfer
   // const [wavesurferObj, setWavesurferObj] = useState();
-  const {wavesurferObj, setWavesurferObj} = useContext(WaveSurferContext);
+  const { wavesurferObj, setWavesurferObj } = useContext(WaveSurferContext);
 
   // const [playing, setPlaying] = useState(true); // to keep track whether audio is currently playing or not
   const [volume, setVolume] = useState(1); // to control volume level of the audio. 0-mute, 1-max
-  const isPlaying = useSelector(state => state.audio.isPlaying);
+  const isPlaying = useSelector((state) => state.audio.isPlaying);
   // const volume = useSelector(state => state.audio.volume);
 
   const [zoom, setZoom] = useState(1); // to control the zoom level of the waveform
   const [duration, setDuration] = useState(0); // duration is used to set the default region of selection for trimming the audio
   const [indexCopy, setIndexCopy] = useState({
-		firstIndexCopy: null,
-		secondIndexCopy: null,
-		secondListMemAlloc: null
-	});
+    firstIndexCopy: null,
+    secondIndexCopy: null,
+    secondListMemAlloc: null,
+  });
 
   useEffect(() => {
     return async () => {
       // Cleanup function when component is unmounted
       if (wavesurferObj) {
-        // Stop and destroy the wavesurfer instance        
+        // Stop and destroy the wavesurfer instance
         wavesurferObj.stop();
-        wavesurferObj.clearRegions();        
+        wavesurferObj.clearRegions();
         // wavesurferObj.destroy();
         // await setWavesurferObj(null);
-      }      
+      }
     };
-  }, [wavesurferObj]);// Empty dependency array ensures this runs only on unmount
-
+  }, [wavesurferObj]); // Empty dependency array ensures this runs only on unmount
 
   // create the waveform inside the correct component
   useEffect(() => {
-    if (wavesurferRef.current ) {
+    if (wavesurferRef.current) {
       setWavesurferObj(
         wavesurfer.create({
           container: "#waveform",
           scrollParent: true,
           autoCenter: true,
           cursorColor: "blue",
+          barGap: 2,
+          barRadius: 3,
+          barWidth: 3,
           loopSelection: true,
           waveColor: "#1976d2",
           progressColor: "#04315e",
@@ -69,7 +70,7 @@ const AudioWaveform = (props) => {
             RegionsPlugin.create({}),
           ],
         })
-      );      
+      );
     }
   }, [wavesurferRef]);
 
@@ -77,6 +78,7 @@ const AudioWaveform = (props) => {
   useEffect(() => {
     if (fileURL && wavesurferObj) {
       wavesurferObj.load(fileURL);
+      wavesurferRef.current.style.width = "100%";
     }
   }, [fileURL, wavesurferObj]);
 
@@ -91,7 +93,7 @@ const AudioWaveform = (props) => {
 
       // once audio starts playing, set the state variable to true
       wavesurferObj.on("play", () => {
-        // setPlaying(true);                
+        // setPlaying(true);
         // dispatch(setIsPlaying(true));
       });
 
@@ -133,10 +135,10 @@ const AudioWaveform = (props) => {
       });
     }
   }, [duration, wavesurferObj]);
-  
+
   const handlePlayPause = (e) => {
     wavesurferObj.playPause();
-    // setPlaying(!playing);    
+    // setPlaying(!playing);
     dispatch(setIsPlaying(!isPlaying));
   };
 
@@ -157,107 +159,105 @@ const AudioWaveform = (props) => {
   };
 
   const handleCopy = (e) => {
-		console.log("copied");
-		if(wavesurferObj){
-			// get start and end points of the selected region
-			const region =
-				wavesurferObj.regions.list[
-					Object.keys(wavesurferObj.regions.list)[0]
-				];
-			
-			if (region) {
-				const start = region.start;
-				const end = region.end;
-				
-				// obtain the original array of the audio
-				const original_buffer = wavesurferObj.backend.buffer;        
+    console.log("copied");
+    if (wavesurferObj) {
+      // get start and end points of the selected region
+      const region =
+        wavesurferObj.regions.list[Object.keys(wavesurferObj.regions.list)[0]];
 
-				// create 2 indices:
-				// left & right to the part to be copied
-				setIndexCopy(prevIndex => {
-					return {
-                        ...prevIndex,
-						firstIndexCopy: start * original_buffer.sampleRate,
-						secondIndexCopy: end * original_buffer.sampleRate,
-						secondListMemAlloc: (end - start) * original_buffer.sampleRate
-					}
-				})
-			}
-		}
-	};
+      if (region) {
+        const start = region.start;
+        const end = region.end;
 
-	const handlePaste = (e) => {
-		console.log("pasted");
-		if(wavesurferObj) {
-            // get start and end points of the selected region
-			const region =
-        wavesurferObj.regions.list[
-            Object.keys(wavesurferObj.regions.list)[0]
-        ];
+        // obtain the original array of the audio
+        const original_buffer = wavesurferObj.backend.buffer;
 
-        if (region) {
-          const start = region.start;
-          const end = region.end;
-
-          // obtain the original array of the audio
-          const original_buffer = wavesurferObj.backend.buffer;
-
-          // create 2 indices:
-          // left & right to the part to be trimmed
-          const trimmedstart = start * original_buffer.sampleRate;
-          const trimmedend = end * original_buffer.sampleRate;
-			
-          // create a temporary new buffer array with the new length, sample rate and no of channels as the original audio
-          const new_buffer = wavesurferObj.backend.ac.createBuffer(
-              original_buffer.numberOfChannels,
-              original_buffer.length + indexCopy.secondListMemAlloc - (trimmedend-trimmedstart),
-              original_buffer.sampleRate
-          );
-
-          // create a new array upto the region to be trimmed
-          const leftcopied = new Float32Array(parseInt(trimmedstart));
-
-          // create a new array of region for the copied region 
-          const copied = new Float32Array(original_buffer.getChannelData(0).subarray(indexCopy.firstIndexCopy, indexCopy.secondIndexCopy));
-
-          const rightcopied = new Float32Array(parseInt(original_buffer.length-trimmedend))
-
-          // create an array to combine the 2 parts
-          const combined = new Float32Array(original_buffer.length + indexCopy.secondListMemAlloc);
-
-          // 2 channels: 1-right, 0-left
-          // copy the buffer values for the 2 regions from the original buffer
-
-          // for the region to the left of the trimmed section
-          original_buffer.copyFromChannel(leftcopied, 1);
-          original_buffer.copyFromChannel(leftcopied, 0);
-
-          // for the region to the right of the trimmed section
-          original_buffer.copyFromChannel(
-              rightcopied,
-              1,
-              trimmedend
-          )
-          original_buffer.copyFromChannel(
-              rightcopied,
-              0,
-              trimmedend
-          )
-
-          // create the combined buffer for the trimmed audio
-          combined.set(leftcopied);
-          combined.set(copied, trimmedstart);
-          combined.set(rightcopied, trimmedstart+indexCopy.secondListMemAlloc)
-
-          // copy the combined array to the new_buffer
-          new_buffer.copyToChannel(combined, 1);
-          new_buffer.copyToChannel(combined, 0);
-
-          // load the new_buffer, to restart the wavesurfer's waveform display
-          wavesurferObj.loadDecodedBuffer(new_buffer);
+        // create 2 indices:
+        // left & right to the part to be copied
+        setIndexCopy((prevIndex) => {
+          return {
+            ...prevIndex,
+            firstIndexCopy: start * original_buffer.sampleRate,
+            secondIndexCopy: end * original_buffer.sampleRate,
+            secondListMemAlloc: (end - start) * original_buffer.sampleRate,
+          };
+        });
       }
-		}
-	};
+    }
+  };
+
+  const handlePaste = (e) => {
+    console.log("pasted");
+    if (wavesurferObj) {
+      // get start and end points of the selected region
+      const region =
+        wavesurferObj.regions.list[Object.keys(wavesurferObj.regions.list)[0]];
+
+      if (region) {
+        const start = region.start;
+        const end = region.end;
+
+        // obtain the original array of the audio
+        const original_buffer = wavesurferObj.backend.buffer;
+
+        // create 2 indices:
+        // left & right to the part to be trimmed
+        const trimmedstart = start * original_buffer.sampleRate;
+        const trimmedend = end * original_buffer.sampleRate;
+
+        // create a temporary new buffer array with the new length, sample rate and no of channels as the original audio
+        const new_buffer = wavesurferObj.backend.ac.createBuffer(
+          original_buffer.numberOfChannels,
+          original_buffer.length +
+            indexCopy.secondListMemAlloc -
+            (trimmedend - trimmedstart),
+          original_buffer.sampleRate
+        );
+
+        // create a new array upto the region to be trimmed
+        const leftcopied = new Float32Array(parseInt(trimmedstart));
+
+        // create a new array of region for the copied region
+        const copied = new Float32Array(
+          original_buffer
+            .getChannelData(0)
+            .subarray(indexCopy.firstIndexCopy, indexCopy.secondIndexCopy)
+        );
+
+        const rightcopied = new Float32Array(
+          parseInt(original_buffer.length - trimmedend)
+        );
+
+        // create an array to combine the 2 parts
+        const combined = new Float32Array(
+          original_buffer.length + indexCopy.secondListMemAlloc
+        );
+
+        // 2 channels: 1-right, 0-left
+        // copy the buffer values for the 2 regions from the original buffer
+
+        // for the region to the left of the trimmed section
+        original_buffer.copyFromChannel(leftcopied, 1);
+        original_buffer.copyFromChannel(leftcopied, 0);
+
+        // for the region to the right of the trimmed section
+        original_buffer.copyFromChannel(rightcopied, 1, trimmedend);
+        original_buffer.copyFromChannel(rightcopied, 0, trimmedend);
+
+        // create the combined buffer for the trimmed audio
+        combined.set(leftcopied);
+        combined.set(copied, trimmedstart);
+        combined.set(rightcopied, trimmedstart + indexCopy.secondListMemAlloc);
+
+        // copy the combined array to the new_buffer
+        new_buffer.copyToChannel(combined, 1);
+        new_buffer.copyToChannel(combined, 0);
+
+        // load the new_buffer, to restart the wavesurfer's waveform display
+        wavesurferObj.loadDecodedBuffer(new_buffer);
+      }
+    }
+  };
 
   const handleTrim = (e) => {
     if (wavesurferObj) {
@@ -351,8 +351,7 @@ const AudioWaveform = (props) => {
     setFileURL(null);
     setShowAudioWaveform(false);
   };
-  
-  
+
   const handleFadeIn = () => {
     if (wavesurferObj) {
       const fadeInDuration = 5; // Adjust the fade-in duration (in seconds) as needed
@@ -400,8 +399,18 @@ const AudioWaveform = (props) => {
 
   return (
     <section className="waveform-container">
-      {props.filename ? (<h1>{props.filename}</h1>) : (<h1>Default_music</h1>)}
-      <div ref={wavesurferRef} id="waveform" />
+      <div className="wrapper">
+        {props.filename ? (
+          <h1 className="effect-shine" style={{ marginBottom: "-4.5em" }}>
+            Sound - {props.filename}
+          </h1>
+        ) : (
+          <h1 className="effect-shine" style={{ marginBottom: "-4.5em" }}>
+            Sound - Default_music
+          </h1>
+        )}
+      </div>
+      <div ref={wavesurferRef} id="waveform" style={{ width: "100%" }} />
       {/* <div ref={timelineRef} id="wave-timeline" /> */}
       <div className="all-controls">
         <div className="left-container">
@@ -411,49 +420,40 @@ const AudioWaveform = (props) => {
             onClick={handlePlayPause}
           >
             {isPlaying ? (
-              <i className="material-icons">pause</i>
+              <i class="fa-solid fa-circle-pause  fa-2xl custom-icon-color"></i>
             ) : (
-              <i className="material-icons">play_arrow</i>
+              <i class="fa-solid fa-circle-play fa-2xl custom-icon-color"></i>
             )}
           </button>
           <button title="reload" className="controls" onClick={handleReload}>
             <i className="material-icons">replay</i>
+            <span>Replay</span>
           </button>
           <button className="controls" onClick={handleTrim}>
-            <i              
-              className="material-icons"
-            >
-              content_cut
-            </i>
-            
+            <i className="material-icons">content_cut</i>
+            <span>Cut</span>
           </button>
 
-          <button className='controls' onClick={handleCopy}>
-						<i							
-							className='material-icons'>
-							content_copy
-						</i>
-						
-					</button>
-					<button className='controls' onClick={handlePaste}>
-						<i							
-							className='material-icons'>
-							content_paste
-						</i>
-						
-					</button>
+          <button className="controls" onClick={handleCopy}>
+            <i className="material-icons">content_copy</i>
+            <span>Copy</span>
+          </button>
+          <button className="controls" onClick={handlePaste}>
+            <i className="material-icons">content_paste</i>
+            <span>Paste</span>
+          </button>
 
           <button className="controls" onClick={handleBackward}>
-            <i className="material-icons">fast_rewind</i>            
+            <i className="material-icons">fast_rewind</i>
+            <span>Backward</span>
           </button>
           <button className="controls" onClick={handleForward}>
-            <i className="material-icons">fast_forward</i>            
-          </button>    
-
-
+            <i className="material-icons">fast_forward</i>
+            <span>Forward</span>
+          </button>
         </div>
-        <div className="right-container">             
-          <button className="controls" onClick={handleFadeIn}>    
+        <div className="right-container">
+          <button className="controls fade-in" onClick={handleFadeIn}>
             {/* <i
 							// style={{
 							// 	fontSize: '1.2em',
@@ -464,10 +464,12 @@ const AudioWaveform = (props) => {
 						</i>        
             FadeIn */}
             <i class="fa-solid fa-signal"></i>
-					</button>
-					<button className='controls' onClick={handleFadeOut}>						
-            <i class="fa-solid fa-signal fa-flip-horizontal" ></i>
-					</button>      
+            <span>Fade In</span>
+          </button>
+          <button className="controls fade-out" onClick={handleFadeOut}>
+            <i class="fa-solid fa-signal fa-flip-horizontal"></i>
+            <span>Fade Out</span>
+          </button>
           <div className="volume-slide-container">
             {volume > 0 ? (
               <i className="material-icons">volume_up</i>
