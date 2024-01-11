@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
-
+@import url("https://fonts.googleapis.com/css?family=Dosis:300,400");
 * {
   padding: 0;
   margin: 0;
@@ -16,6 +16,74 @@ body {
   /* font-family: "Poppins", sans-serif; */
 }
 
+h1 a {
+  color: #fff;
+  font-size: 2em;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  font-family: "Dosis", sans-serif;
+}
+.wrapper {
+  display: block;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+/* effect-shine */
+h1.effect-shine:hover {
+  -webkit-mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  -moz-mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  -ms-mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  mask-size: 200%;
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  from {
+    mask-position: 150%;
+  }
+
+  to {
+    mask-position: -50%;
+  }
+}
+
+@-webkit-keyframes shine {
+  from {
+    -webkit-mask-position: 150%;
+  }
+
+  to {
+    -webkit-mask-position: -50%;
+  }
+}
+
 /* style for the upload audio component */
 .upload-audio {
   width: 100%;
@@ -28,15 +96,22 @@ body {
 
 /* the container where wavesurfer adds the audio waveform */
 .waveform-container {
-  margin: 0 auto;  
+  width: 100%; /* Ensure the container takes up 100% of the width */
 }
 
-div#soundBlocklyDiv.highlighted > div{
+/* Add a border to the waveform */
+
+div#soundBlocklyDiv.highlighted > div {
   width: 90%;
 }
 
-#waveform:nth-child(2) > canvas{
-  width: 90%;
+#waveform {
+  width: 100%; /* Ensure the waveform takes up 100% of the width */
+}
+
+/* Remove the following styles */
+#waveform:nth-child(2) > canvas {
+  width: 100%;
 }
 
 /* style for the navbar */
@@ -65,7 +140,7 @@ nav a {
 /* all icons */
 i.material-icons {
   font-size: 1.5em;
-  color: #04315e;
+  color: #1976d2;
 }
 
 h1 {
@@ -82,7 +157,7 @@ i.material-icons.audio-icon {
 button.upload-btn {
   width: 10em;
   font-size: 1em;
-  padding: 0.5em;  
+  padding: 0.5em;
   background: #1976d2;
   border-radius: 999px;
   color: white;
@@ -93,6 +168,25 @@ button.upload-btn {
 
 button.upload-btn:hover {
   filter: brightness(1.1);
+}
+
+/* Container for the upload and delete buttons */
+div.upload-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* style for the delete button */
+button.controls.delete-btn {
+  width: 2em; /* Adjust the width as needed */
+  font-size: 1em;
+  padding: 0.5em;
+  background: #fbfbfb;
+  border-radius: 999px;
+  color: #1976d2;
+  border-color: #b32b0a;
+  cursor: pointer;
 }
 
 /* style for the trim button */
@@ -110,7 +204,7 @@ button.upload-btn:hover {
   border: 1px solid rebeccapurple;
 }
 
-.fade{
+.fade {
   width: 20px;
   height: 20px;
   background: transparent;
@@ -118,7 +212,8 @@ button.upload-btn:hover {
   cursor: pointer;
 }
 
-/* all the button controls */
+/* CSS Started all the button controls */
+/* Container for all the button controls */
 div.all-controls {
   margin: 2em auto;
   max-width: 60vw;
@@ -127,6 +222,7 @@ div.all-controls {
   justify-content: space-around;
 }
 
+/* Container for the left and right sections */
 .all-controls .right-container,
 .all-controls .left-container {
   display: flex;
@@ -134,12 +230,51 @@ div.all-controls {
   justify-content: space-around;
   width: 50%;
 }
+.all-controls .right-container button.controls.fade-in {
+  margin-right: 2px; /* Adjust this value as needed */
+}
 
+/* Target the Fade Out button and reduce the left margin */
+.all-controls .right-container button.controls.fade-out {
+  margin-left: 2px; /* Adjust this value as needed */
+}
+/* Styling for the individual buttons */
 button.controls {
   border: none;
   background: transparent;
   cursor: pointer;
   font-size: 1.2em;
+  position: relative;
+}
+
+/* Styling for the icons */
+button.controls i {
+  /* Add any common styling for the icons here */
+  color: #1976d2;
+}
+
+.custom-icon-color {
+  color: #1976d2;
+}
+/* Styling for the names below the icons */
+button.controls span {
+  font-size: 0.6em;
+  font-style: italic;
+  display: block;
+  text-align: center;
+}
+
+/*CSS End 
+
+/* Volume slider container styling */
+.volume-slide-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Styling for the volume icon */
+.volume-slide-container i {
+  margin-right: 0.5em;
 }
 
 /* style for both sliders */
@@ -298,7 +433,7 @@ input:checked + .toggle .off {
   /* smaller icon for zoom slider */
   i.zoom-icon {
     font-size: 1em;
-  }  
+  }
 }
 
 .highlighted {
@@ -306,8 +441,8 @@ input:checked + .toggle .off {
 }
 
 .blocklyTreeRow {
-  border: 2px solid #333;  /* Add border */
-  margin: 5px 0;          /* Space between categories */
-  border-radius: 5px;     /* Optional rounded corners */
-  padding: 5px;           /* Some padding */
+  border: 2px solid #333; /* Add border */
+  margin: 5px 0; /* Space between categories */
+  border-radius: 5px; /* Optional rounded corners */
+  padding: 5px; /* Some padding */
 }
