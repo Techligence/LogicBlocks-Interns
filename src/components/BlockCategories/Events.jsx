@@ -26,7 +26,7 @@ javascriptGenerator.forBlock["flag_clicked_event"] = function (
 
 // Python code generator
 pythonGenerator.forBlock["flag_clicked_event"] = function (block, generator) {
-  var code = "Python=whenFlagClicked();\n";
+  var code = "whenFlagClicked();\n";
   return code;
 };
 
@@ -61,7 +61,7 @@ Blockly.JavaScript["event_trigger"] = function (block) {
 };
 pythonGenerator.forBlock["event_trigger"] = function (block, generator) {
   const eventName = block.getFieldValue("EVENT_NAME");
-  const code = `Python=whenEventTriggered("${eventName}");\n`;
+  const code = `whenEventTriggered("${eventName}");\n`;
   return code;
 };
 
@@ -94,7 +94,7 @@ Blockly.JavaScript["key_press_event"] = function (block) {
 };
 pythonGenerator.forBlock["key_press_event"] = function (block, generator) {
   const keyName = block.getFieldValue("KEY_NAME");
-  const code = `Python=whenKeyPressed("${keyName}");\n`;
+  const code = `whenKeyPressed("${keyName}");\n`;
   return code;
 };
 
@@ -116,7 +116,7 @@ Blockly.JavaScript["sprite_clicked_event"] = spriteClickedEvent;
 export { spriteClickedEvent };
 
 pythonGenerator.forBlock["sprite_clicked_event"] = function (block, generator) {
-  const code = `Python=whenSpriteClicked();\n`;
+  const code = `whenSpriteClicked();\n`;
   // console.log(code);
   return code;
 };
@@ -152,7 +152,7 @@ pythonGenerator.forBlock["when_backdrop_switches_to"] = function (
   generator
 ) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Python=whenBackdropSwitchesTo("${backdropName}");\n`;
+  const code = `whenBackdropSwitchesTo("${backdropName}");\n`;
   // console.log(code);
   return code;
 };
@@ -190,7 +190,7 @@ pythonGenerator.forBlock["when_dropdown_greater_than_input"] = function (
 ) {
   const dropdownName = block.getFieldValue("DROPDOWN_NAME");
   const inputValue = block.getFieldValue("INPUT_VALUE");
-  const code = `Python=whenDropdownGreaterThanInput("${dropdownName}", ${inputValue});\n`;
+  const code = `whenDropdownGreaterThanInput("${dropdownName}", ${inputValue});\n`;
   // console.log(code);
   return code;
 };
@@ -244,7 +244,7 @@ pythonGenerator.forBlock["when_i_receive_dropdown"] = function (
   generator
 ) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Python=whenIReceive("${backdropName}");\n`;
+  const code = `whenIReceive("${backdropName}");\n`;
   // console.log(code);
   return code;
 };
@@ -297,7 +297,7 @@ Blockly.JavaScript["broadcast"] = function (block) {
 };
 pythonGenerator.forBlock["broadcast"] = function (block, generator) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Python=broadcast("${backdropName}");\n`;
+  const code = `broadcast("${backdropName}");\n`;
   // console.log(code);
   return code;
 };
@@ -354,7 +354,7 @@ pythonGenerator.forBlock["broadcast_message_and_wait"] = function (
   generator
 ) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Python=broadcastAndWait("${backdropName}");\n`;
+  const code = `broadcastAndWait("${backdropName}");\n`;
   // console.log(code);
   return code;
 };

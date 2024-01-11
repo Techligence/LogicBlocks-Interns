@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import Blockly from 'blockly';
 
 import { Logic } from './BlockCategories/Logic';
+import { setCode } from '../features/codeSlice';
+
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
@@ -73,11 +75,13 @@ const BlocklyComponent = () => {
     );
 
     // Set the generated codes to their respective states
-    setGeneratedCode({ js: jsCode, python: pythonCode });
+    // setGeneratedCode({ js: jsCode, python: pythonCode });
+    dispatch(setCode({ jsCode, pythonCode }));
+
 
     // Display both JavaScript and Python code
-    // console.log('JavaScript Code:', jsCode);
-    // console.log('Python Code:', pythonCode);
+    console.log('JavaScript Code:', jsCode);
+    console.log('Python Code:', pythonCode);
   };
 
 
@@ -235,7 +239,7 @@ const BlocklyComponent = () => {
         onClick={handleBlockClick}  // Add the click handler directly to the blocklyDiv
       ></div>
       {/* <GenerateCodeBox generatedCode={generatedCode} /> */}
-      <GenerateCodeBox jsCode={generatedCode.js} pythonCode={generatedCode.python} />
+      {/* <GenerateCodeBox jsCode={generatedCode.js} pythonCode={generatedCode.python} /> */}
     </div>
   );
 };
