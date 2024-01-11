@@ -13,7 +13,7 @@ const GenerateCodeBox = ({ jsCode, pythonCode }) => {
       <div style={{ flex: 1 }}>
         <div className="Title" style={{ backgroundColor: 'grey', padding: '8px', marginBottom: '8px' }}>
           Generated Code
-          <label htmlFor="languageDropdown" style={{ marginLeft: '100px', marginBottom: '8px', padding: '8px' }}>
+          <label htmlFor="languageDropdown" style={{ marginLeft: '80px', marginBottom: '8px', padding: '8px' }}>
             Choose:
           </label>
           <select

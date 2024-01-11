@@ -318,10 +318,10 @@ const toggleGenerateCodeBox = () => {
         </div>
         
       </Card>
-      <button onClick={toggleGenerateCodeBox}>
+      {/* <button onClick={toggleGenerateCodeBox}>
             {isGenerateCodeBoxVisible ? 'Hide Code Box' : 'Show Code Box'}
-      </button>
-      {isGenerateCodeBoxVisible && <GenerateCodeBox />}
+      </button> */}
+      {/* {isGenerateCodeBoxVisible && <GenerateCodeBox />} */}
     </div>
     
   );
