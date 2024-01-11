@@ -53,17 +53,31 @@ const BlocklyComponent = () => {
   // };
   const generateCode = () => {
     javascriptGenerator.addReservedWords('code');
-    var jsCode = javascriptGenerator.workspaceToCode(workspace);
-
-    // You need to replace 'pythonGenerator' with the actual name of your Python generator instance
-    var pythonCode = pythonGenerator.workspaceToCode(workspace);
+    // const jsCode = javascriptGenerator.workspaceToCode(
+    //   blocklyRef.current,
+    //   'JavaScript'
+    // );
+  
+    // const pythonCode = pythonGenerator.workspaceToCode(
+    //   blocklyRef.current,
+    //   'Python'
+    // );
+    const jsCode = javascriptGenerator.workspaceToCode(
+      blocklyRef.current,
+      { blockToCode: (block) => javascriptGenerator[block.type].call(block, block) }
+    );
+  
+    const pythonCode = pythonGenerator.workspaceToCode(
+      blocklyRef.current,
+      { blockToCode: (block) => pythonGenerator[block.type].call(block, block) }
+    );
 
     // Set the generated codes to their respective states
     setGeneratedCode({ js: jsCode, python: pythonCode });
 
     // Display both JavaScript and Python code
-    console.log('JavaScript Code:', jsCode);
-    console.log('Python Code:', pythonCode);
+    // console.log('JavaScript Code:', jsCode);
+    // console.log('Python Code:', pythonCode);
   };
 
 

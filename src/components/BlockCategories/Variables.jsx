@@ -26,7 +26,7 @@ javascriptGenerator.forBlock['variables_get'] = function(block) {
 pythonGenerator.forBlock['variables_get'] = function(block, generator) {
   const getVariable = block.getField('GET_VARIABLE').getText();
   const code = `${getVariable}`;
-  return [code, Blockly.Python.ORDER_ATOMIC];
+  return [code, pythonGenerator.ORDER_ATOMIC];
 };
 
 // Block for variable setter.
@@ -39,7 +39,7 @@ Blockly.Blocks['variables_set'] = {
 
     this.appendValueInput("VALUE")
       .setCheck(null)
-      .appendField(new Blockly.FieldTextInput("0"), "TEXT_VALUE");
+      // .appendField(new Blockly.FieldTextInput("0"), "TEXT_VALUE");
 
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -49,6 +49,8 @@ Blockly.Blocks['variables_set'] = {
     this.setInputsInline(true);
   }
 };
+
+
 
 // JavaScript code generator for variable setter.
 javascriptGenerator.forBlock['variables_set'] = function(block) {
@@ -63,7 +65,7 @@ javascriptGenerator.forBlock['variables_set'] = function(block) {
 pythonGenerator.forBlock['variables_set'] = function(block, generator) {
   const fieldName = block.getField('FIELD_NAME').getText();
   const textValue = block.getFieldValue('TEXT_VALUE');
-  const valueCode = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_ATOMIC);
+  const valueCode = pythonGenerator.valueToCode(block, 'VALUE', pythonGenerator.ORDER_ATOMIC);
   const code = `${fieldName} = ${valueCode || textValue}\n`;
   return code;
 };
@@ -153,7 +155,7 @@ pythonGenerator.forBlock['variables_hide'] = function(block, generator) {
 };
 
 export const Variables = `
-  <category name="Variables" colour="#5C81A6" categorystyle="variable_category">
+  <category name="Variables" colour="#5C81A6">
     <block type="variables_get"></block>
     <block type="variables_set"></block>
     <block type="variables_changeby"></block>

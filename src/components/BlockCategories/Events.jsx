@@ -20,7 +20,7 @@ javascriptGenerator.forBlock["flag_clicked_event"] = function (
   generator
 ) {
   // TODO: Assemble javascript into code variable.
-  var code = `JavaScript=whenFlagClicked();\n`;
+  var code = `whenFlagClicked();\n`;
   return code;
 };
 
@@ -32,7 +32,7 @@ pythonGenerator.forBlock["flag_clicked_event"] = function (block, generator) {
 
 // flag clidked Event
 const flagClickedEvent = function (block) {
-  const code = `Javascript=whenFlagClicked();\n`;
+  const code = `whenFlagClicked();\n`;
   // console.log(code);
   return code;
 };
@@ -55,7 +55,7 @@ Blockly.Blocks["event_trigger"] = {
 // JavaScript code generator for 'event_trigger' block
 Blockly.JavaScript["event_trigger"] = function (block) {
   const eventName = block.getFieldValue("EVENT_NAME");
-  const code = `JavaScript=whenEventTriggered("${eventName}");\n`;
+  const code = `whenEventTriggered("${eventName}");\n`;
   // console.log(code);
   return code;
 };
@@ -88,7 +88,7 @@ Blockly.Blocks["key_press_event"] = {
 // JavaScript code generator for 'key_press_event' block
 Blockly.JavaScript["key_press_event"] = function (block) {
   const keyName = block.getFieldValue("KEY_NAME");
-  const code = `Javascript=whenKeyPressed("${keyName}");\n`;
+  const code = `whenKeyPressed("${keyName}");\n`;
   console.log("Generated Code:", code);
   return code;
 };
@@ -108,7 +108,7 @@ Blockly.Blocks["sprite_clicked_event"] = {
 };
 // JavaScript code generator for 'sprite_clicked_event' block
 const spriteClickedEvent = function (block) {
-  const code = `Javascript=whenSpriteClicked();\n`;
+  const code = `whenSpriteClicked();\n`;
   // console.log(code);
   return code;
 };
@@ -142,7 +142,7 @@ Blockly.Blocks["when_backdrop_switches_to"] = {
 // JavaScript code generator for 'when_backdrop_switches_to' block
 Blockly.JavaScript["when_backdrop_switches_to"] = function (block) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Javascript=whenBackdropSwitchesTo("${backdropName}");\n`;
+  const code = `whenBackdropSwitchesTo("${backdropName}");\n`;
   // console.log(code);
   return code;
 };
@@ -180,7 +180,7 @@ Blockly.Blocks["when_dropdown_greater_than_input"] = {
 Blockly.JavaScript["when_dropdown_greater_than_input"] = function (block) {
   const dropdownName = block.getFieldValue("DROPDOWN_NAME");
   const inputValue = block.getFieldValue("INPUT_VALUE");
-  const code = `Javascript=whenDropdownGreaterThanInput("${dropdownName}", ${inputValue});\n`;
+  const code = `whenDropdownGreaterThanInput("${dropdownName}", ${inputValue});\n`;
   // console.log(code);
   return code;
 };
@@ -235,7 +235,7 @@ Blockly.Blocks["when_i_receive_dropdown"] = {
 // JavaScript code generator for 'when_i_receive_dropdown' block
 Blockly.JavaScript["when_i_receive_dropdown"] = function (block) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Javascript=whenIReceive("${backdropName}");\n`;
+  const code = `whenIReceive("${backdropName}");\n`;
   // console.log(code);
   return code;
 };
@@ -291,7 +291,7 @@ Blockly.Blocks["broadcast"] = {
 
 Blockly.JavaScript["broadcast"] = function (block) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Javascript=broadcast("${backdropName}");\n`;
+  const code = `broadcast("${backdropName}");\n`;
   // console.log(code);
   return code;
 };
@@ -345,7 +345,7 @@ Blockly.Blocks["broadcast_message_and_wait"] = {
 // JavaScript code generator for 'broadcast_message_and_wait' block
 Blockly.JavaScript["broadcast_message_and_wait"] = function (block) {
   const backdropName = block.getFieldValue("BACKDROP_NAME");
-  const code = `Javascript=broadcastAndWait("${backdropName}");\n`;
+  const code = `broadcastAndWait("${backdropName}");\n`;
   // console.log(code);
   return code;
 };
@@ -361,7 +361,7 @@ pythonGenerator.forBlock["broadcast_message_and_wait"] = function (
 
 // JavaScript code for generating category XML
 export const Events = `
-  <category name="Events" colour="#FFD600" categorystyle="event_category">
+  <category name="Events" colour="#FFD600">
       <block type="flag_clicked_event"></block>
       <block type="event_trigger"></block>
       <block type="key_press_event"></block>
