@@ -11,17 +11,21 @@ import { Control } from './BlockCategories/Control';
 import { javascriptGenerator } from 'blockly/javascript';
 import {store} from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import {moveSteps, setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
+import {moveSteps,setWorkspace, setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
 } from '../features/motionSlice';
 
 import { waitSeconds , repeatTimes} from '../features/controlSlice';
 import { setCodeString} from '../features/codeSlice';
+import InitializeBlockly from './InitializeBlockly';
 const BlocklyComponent = () => {
   const dispatch = useDispatch();
+  const [prevSelectedSpriteIndex, setPrevSelectedSpriteIndex] = useState(null);
   const blocklyRef = useRef(null);
   const workspace = Blockly.getMainWorkspace();
-  const {codeString} = useSelector((state) => ({
+  const {sprites,codeString,selectedSpriteIndex} = useSelector((state) => ({
     codeString: state.code.codeString,
+    selectedSpriteIndex: state.motion.selectedSpriteIndex,
+    sprites: state.motion.sprites,
   }))
 
   const generateCode = async () => {
@@ -30,6 +34,7 @@ const BlocklyComponent = () => {
     dispatch(setCodeString(code));
     await eval(`(async () => { ${code} })();`);
   };
+  
 
   const displayCodeString = () => {
     const copyString = codeString;
@@ -38,11 +43,11 @@ const BlocklyComponent = () => {
     // Use the below rather than the above to debug the code if required as it displays perfect code
     // return copyString;
   };
+  
+  
 
   useEffect(() => {
-    if (blocklyRef.current === null) {
-      Blockly.setLocale('en');
-      const toolboxXml = `
+    const toolboxXml = `
         <xml id="toolbox" style="display: none">
           ${Logic}
           ${Loops}
@@ -52,10 +57,26 @@ const BlocklyComponent = () => {
           ${Control}
         </xml>
       `;
+    if (blocklyRef.current === null) {
+      Blockly.setLocale('en');
       initializeBlockly(toolboxXml);
       blocklyRef.current = true;
     }
-  }, []);
+
+    if (selectedSpriteIndex !== null) {
+      const sprite = sprites[selectedSpriteIndex];
+      if (sprite) {
+        if (!sprite.workspace) {
+          workspace.clear();
+          const workspaceText = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
+          dispatch(setWorkspace({ index: selectedSpriteIndex, workspace: workspaceText }));
+        } else if (prevSelectedSpriteIndex !== selectedSpriteIndex && prevSelectedSpriteIndex !== null) {
+            Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(sprite.workspace),workspace);
+        }
+        setPrevSelectedSpriteIndex(selectedSpriteIndex);
+      }
+    }
+  }, [selectedSpriteIndex, sprites]);
 
   return (
     <div style={{ width: '100%', height: '480px' }}>

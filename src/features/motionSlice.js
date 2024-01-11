@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 const initialState = {
   sprites: [], // Initial state with an empty array for sprites
   selectedSpriteIndex: null,
+  mainWorkspace: null,
 };
 
 // Create the slice
@@ -24,10 +25,12 @@ export const motionSlice = createSlice({
             y: Math.floor(Math.random() * 400), // Random position between 0 and 400 for y
           },
           angle: 0,
+          workspace:null,
         });
       }
       // console.log(state.sprites[0]);
     },
+    
     removeSprite: (state, action) => {
       const index = action.payload; // Ensure action.payload is an object
       console.log("INDEXXXXXX", index);
@@ -35,6 +38,10 @@ export const motionSlice = createSlice({
         state.sprites.splice(index, 1); // Remove one element at the specified index
       }
       // console.log(state.sprites);
+    },
+    setWorkspace: (state, action) => {
+      const { index,workspace } = action.payload;
+      state.sprites[index].workspace = workspace;
     },
     setSelectedSpriteIndex: (state, action) => {
       const index = action.payload;
@@ -240,7 +247,8 @@ export const motionSlice = createSlice({
 
 export const { moveSteps, setX, setY, goTo, goToXY, changeX, changeY,
   setSpritePosition, turnRight, turnLeft,
-  pointInDirection, setSelectedSpriteIndex, addSprite, removeSprite, rotateSprite } = motionSlice.actions;
+  pointInDirection, setWorkspace,
+   setSelectedSpriteIndex, addSprite, removeSprite, rotateSprite } = motionSlice.actions;
 
 export default motionSlice.reducer;
 

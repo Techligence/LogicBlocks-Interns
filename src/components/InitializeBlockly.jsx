@@ -1,13 +1,14 @@
 import Blockly from 'blockly';
 import { javascriptGenerator } from "blockly/javascript";
 import {store} from "../store/store.js";
-import {moveSteps, setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
+import {moveSteps, setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY, setWorkspace
 } from '../features/motionSlice';
 
 import { waitSeconds , repeatTimes} from '../features/controlSlice';
 import { setCodeString } from "../features/codeSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const InitializeBlockly = (toolboxXml) => {
+  
   const workspace = Blockly.inject('blocklyDiv', {
     toolbox: toolboxXml,
     zoom: {
@@ -65,6 +66,7 @@ const InitializeBlockly = (toolboxXml) => {
   }
   
   workspace.addChangeListener(onBlockClick);
+
   return workspace;
 };
 

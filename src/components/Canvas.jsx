@@ -1,4 +1,5 @@
 import React, { useEffect, useState }  from 'react';
+import Blockly from 'blockly';
 import { Card } from '@mui/material';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
@@ -13,7 +14,7 @@ import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 import { useSprite,useBackdrop } from '../pages/Home';
 import { useDispatch, useSelector } from 'react-redux';
-import { goToXY, setSelectedSpriteIndex } from '../features/motionSlice';
+import { goToXY, setSelectedSpriteIndex, setWorkspace } from '../features/motionSlice';
 const Canvas = () => {
   const dispatch = useDispatch();
   const { removeSprite } = useSprite();
@@ -21,7 +22,16 @@ const Canvas = () => {
   const {sprites:storesprites} = useSelector((state) => state.motion) ;
   const [selectedSprite, setSelectedSprite] = useState(null);
   const handleSpriteClick = (index) => {
+    if(index === selectedSprite) return;
+    if (selectedSprite !== null) {
+      // Save the current state of the main workspace to the Redux store
+      const currentWorkspaceDom = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+      const currentWorkspaceXml = Blockly.Xml.domToText(currentWorkspaceDom);
+      dispatch(setWorkspace({ index: selectedSprite, workspace: currentWorkspaceXml }));
+    }
+    Blockly.getMainWorkspace().clear();
     setSelectedSprite(index);
+    
     dispatch(setSelectedSpriteIndex(index));
     console.log("in canvahes",storesprites[0].sprite);
 
