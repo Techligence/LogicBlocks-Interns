@@ -207,10 +207,8 @@ const BlocklyComponent = () => {
       <div className="highlghted-text">
         <h1>Blockly Toolbox</h1>
         <h1>Blockly Workspace</h1>
-        <button onClick={generateCode}>Generate Code</button>
-        {/* <pre style={{ whiteSpace: 'pre-wrap', marginTop: '20px' }}>
-        <br></br>{generatedCode}
-      </pre> */}
+        {/* Dynamic Updation of code with workspace events  */}
+        {workspace.addChangeListener(generateCode)}  
       </div>
       <div
         className="highlighted"
