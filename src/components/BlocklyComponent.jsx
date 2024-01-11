@@ -87,13 +87,16 @@ const BlocklyComponent = () => {
       const newWorkspace = initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
       blocklyRef.current = newWorkspace;  // Assign the workspace to the ref
       // blocklyRef.current = true;
+
+      // dynamic generation of code with event changes in workspace
+      {blocklyRef.current.addChangeListener(generateCode)}  
     }
 
     // Attach the click event handler to the workspace
     blocklyRef.current.addChangeListener(handleBlockClick);
 
     // Call generateCode after Blockly is initialized
-    generateCode();
+    generateCode(); 
 
     //press_key checking
     // const handleKeyDown = (event) => {
@@ -208,7 +211,8 @@ const BlocklyComponent = () => {
         <h1>Blockly Toolbox</h1>
         <h1>Blockly Workspace</h1>
         {/* Dynamic Updation of code with workspace events  */}
-        {workspace.addChangeListener(generateCode)}  
+        <button onClick={generateCode} >Generate code</button>
+        {/* {workspace.addChangeListener(generateCode)}   */}
       </div>
       <div
         className="highlighted"
