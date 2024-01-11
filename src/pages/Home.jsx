@@ -4,6 +4,7 @@ import Canvas from '../components/Canvas';
 import AnchorMenu from '../components/AnchorMenu';
 import FloatingActionButton from '../components/FloatingActionButton';
 import Header from '../components/Header';
+import SidePanel from '../components/SidePanel';
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <div className="home-box">
         <BlocklyComponent />
         <Canvas />
+        <SidePanel />
       </div>
       <AnchorMenu />
       <FloatingActionButton />

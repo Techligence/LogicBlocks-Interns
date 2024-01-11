@@ -137,6 +137,57 @@ body {
     
 }
 
+/* Side Panel */
+.panel-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  display: flex;
+}
+
+.side-panel {
+  width: 250px;
+  background-color: #f0f0f0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: width 0.3s ease;
+}
+
+.side-panel.visible {
+  width: 250px;
+}
+
+.side-panel.hidden {
+  width: 0;
+}
+
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.panel-content {
+  padding: 10px;
+}
+
+.outside-button {
+  position: absolute;
+  top: 50%;
+  left: -17px;
+  transform: translateY(-50%);
+  padding: 5px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 2; /* Ensure it's above the side panel */
+}
 
 
 /* Responsive */
