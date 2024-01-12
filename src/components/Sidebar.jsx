@@ -60,11 +60,11 @@ const Sidebar = (props) => {
               onClick={props.triggerFileUpload}
               style={{
                 margin: "6px 8px",
-                backgroundColor: "#6bb3fa",
+
                 animation: "comeIn 0.5s ease-in-out",
               }}
             >
-              <i className="fas fa-upload fa-lg fa-xl"></i>
+              <i className="fas fa-upload fa-lg fa-xl custom-icon-color"></i>
             </span>
             <span
               onClick={props.onRecordClick}
@@ -73,7 +73,7 @@ const Sidebar = (props) => {
                 animation: "comeIn 0.5s ease-in-out",
               }}
             >
-              <i className="fa-solid fa-microphone fa-xl"></i>
+              <i className="fa-solid fa-microphone fa-xl custom-icon-color"></i>
             </span>
           </>
         )}

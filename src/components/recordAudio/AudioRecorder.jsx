@@ -4,14 +4,13 @@ import RecordButton from "./RecordButton.jsx";
 import WaveSurfer from "wavesurfer.js";
 
 export default class AudioRecorder extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
       status: "",
       audioType: "audio/mp3",
       audioSrc: null, // Initialize audioSrc to null
-      saveAudio: false
+      saveAudio: false,
     };
 
     this.waveSurfer = null;
@@ -27,16 +26,14 @@ export default class AudioRecorder extends Component {
           this.props.onSaveAudio(this.state.audioSrc);
         }
       }
-    );    
+    );
   };
-
 
   controlAudio(status) {
     this.setState({
-      status
+      status,
     });
   }
-
 
   // stopCallback = (e) => {
   //   const audioSrc = window.URL.createObjectURL(e);
@@ -45,7 +42,6 @@ export default class AudioRecorder extends Component {
   //   });
   //   console.log("succ stop", e);
   // };
-  
 
   componentDidMount() {
     // this.setState({
@@ -67,24 +63,24 @@ export default class AudioRecorder extends Component {
       status,
       audioSrc,
       timeslice: 1000, // timeslice（https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start#Parameters）
-      startCallback: e => {
+      startCallback: (e) => {
         console.log("succ start", e);
       },
-      pauseCallback: e => {
+      pauseCallback: (e) => {
         console.log("succ pause", e);
       },
-      stopCallback: e => {
+      stopCallback: (e) => {
         this.setState({
-          audioSrc: window.URL.createObjectURL(e)
+          audioSrc: window.URL.createObjectURL(e),
         });
         console.log("succ stop", e);
       },
-      onRecordCallback: e => {
+      onRecordCallback: (e) => {
         console.log("recording", e);
       },
-      errorCallback: err => {
+      errorCallback: (err) => {
         console.log("error", err);
-      }
+      },
     };
     return (
       <div>
@@ -99,9 +95,30 @@ export default class AudioRecorder extends Component {
             />
           </div>
         </AudioAnalyser>
-        {audioSrc && <button onClick={this.handleSaveAudioClick}>Save Audio</button>}
-        
-        
+        {audioSrc && (
+          <button
+            style={{
+              fontFamily:
+                "PlusJakartaSans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Cantarell, Helvetica Neue, Ubuntu, sans-serif",
+              fontSize: "1rem",
+              alignItems: "center",
+              height: "30px",
+              marginTop: "10px",
+              borderRadius: "0.4rem",
+              fontWeight: "600",
+              padding: "0 1.2rem",
+              color: "#ddd",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 0.5rem 1rem rgba(143, 142, 142, 0.15) !important",
+              background: "#000000",
+            }}
+            onClick={this.handleSaveAudioClick}
+          >
+            Save Audio
+          </button>
+        )}
+
         {/* <select
           name=""
           id=""
