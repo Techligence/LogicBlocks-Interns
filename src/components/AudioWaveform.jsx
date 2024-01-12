@@ -17,9 +17,9 @@ const AudioWaveform = (props) => {
   const activeTab = useSelector((state) => state.soundTab.activeTab);
   // const audioState = useSelector((state) => state.soundTab.audioState);
   // const { showAudioWaveform, fileName } = audioState;
-  const audioArray = useSelector(state => state.soundTab.audioArray);
-  const activeWaveform = useSelector(state => state.soundTab.activeWaveform);
-  const {id, fileName, audioUrl} = activeWaveform;
+  const audioArray = useSelector((state) => state.soundTab.audioArray);
+  const activeWaveform = useSelector((state) => state.soundTab.activeWaveform);
+  const { id, fileName, audioUrl } = activeWaveform;
 
   // fetch file url from the context
   const { fileURL, setFileURL } = useContext(FileContext);
@@ -52,17 +52,17 @@ const AudioWaveform = (props) => {
         // await setWavesurferObj(null);
       }
     };
-  }, [wavesurferObj]);// Empty dependency array ensures this runs only on unmount
+  }, [wavesurferObj]); // Empty dependency array ensures this runs only on unmount
 
-  useEffect(() => {    
+  useEffect(() => {
     const handleBeforeUnload = (event) => {
       event.preventDefault();
-    }
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [])
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   // create the waveform inside the correct component
   useEffect(() => {
@@ -87,8 +87,8 @@ const AudioWaveform = (props) => {
             RegionsPlugin.create({}),
           ],
         })
-      );           
-    }    
+      );
+    }
   }, [wavesurferRef]);
 
   // once the file URL is ready, load the file to produce the waveform
@@ -270,20 +270,20 @@ const AudioWaveform = (props) => {
         new_buffer.copyToChannel(combined, 1);
         new_buffer.copyToChannel(combined, 0);
 
-          // load the new_buffer, to restart the wavesurfer's waveform display
-          wavesurferObj.loadDecodedBuffer(new_buffer);
+        // load the new_buffer, to restart the wavesurfer's waveform display
+        wavesurferObj.loadDecodedBuffer(new_buffer);
 
-          var abuffer = wavesurferObj.backend.buffer;
-          var length = abuffer.length;
-          const newAudioUrl = bufferToWave(abuffer, 0, length);
-          // setFileURL(audioUrl);
-          const updateArray = audioArray.map((audioItem) => {
-            if (audioItem.id === id) {              
-              return { ...audioItem, audioUrl: newAudioUrl };
-            }            
-            return audioItem;
-          });
-          dispatch(setAudioArray(updateArray));
+        var abuffer = wavesurferObj.backend.buffer;
+        var length = abuffer.length;
+        const newAudioUrl = bufferToWave(abuffer, 0, length);
+        // setFileURL(audioUrl);
+        const updateArray = audioArray.map((audioItem) => {
+          if (audioItem.id === id) {
+            return { ...audioItem, audioUrl: newAudioUrl };
+          }
+          return audioItem;
+        });
+        dispatch(setAudioArray(updateArray));
       }
     }
   };
@@ -351,9 +351,9 @@ const AudioWaveform = (props) => {
         const newAudioUrl = bufferToWave(abuffer, 0, length);
         // setFileURL(audioUrl);
         const updateArray = audioArray.map((audioItem) => {
-          if (audioItem.id === id) {              
+          if (audioItem.id === id) {
             return { ...audioItem, audioUrl: newAudioUrl };
-          }            
+          }
           return audioItem;
         });
         dispatch(setAudioArray(updateArray));

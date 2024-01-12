@@ -17,6 +17,51 @@ body {
   /* font-family: "Poppins", sans-serif; */
 }
 
+/* animation Floating action button */
+
+@keyframes comeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  margin-left: 25px;
+  margin-top: 10px;
+  width: 120px;
+  height: 120px;
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 17px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  font-weight: bolder;
+  color: black;
+}
+
+.card:hover {
+  border: 1px solid black;
+  transform: scale(1.05);
+}
+
+.card:active {
+  transform: scale(0.95) rotateZ(1.7deg);
+}
+
 h1 a {
   color: #fff;
   font-size: 2em;
@@ -98,6 +143,7 @@ h1.effect-shine:hover {
 /* the container where wavesurfer adds the audio waveform */
 .waveform-container {
   width: 100%; /* Ensure the container takes up 100% of the width */
+  overflow-x: hidden;
 }
 
 /* Add a border to the waveform */
