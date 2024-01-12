@@ -38,6 +38,11 @@ const Sidebar = (props) => {
                 bottom: "10px",
                 margin: "5px auto"
             }}>Upload</button>
+            <button onClick={props.onRecordClick} style={{
+                position: "absolute", 
+                bottom: "40px",
+                margin: "0px auto"
+            }}>Record</button>
         </div>
     );
 };

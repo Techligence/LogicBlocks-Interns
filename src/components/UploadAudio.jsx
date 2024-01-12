@@ -49,7 +49,9 @@ const UploadAudio = () => {
   const handleButtonClick = () => {
     inputFile.current.click();
   };
-
+  const handleRecordClick = () => {
+    openPopup(); // Assuming `openPopup` handles opening the recording popup
+};
   //   const triggerFileUpload = () => {
   //     inputFile.current.click();
   // };
@@ -134,7 +136,7 @@ const UploadAudio = () => {
 
   return (
     <div className="main-container">
-      <Sidebar triggerFileUpload={handleButtonClick} onDelete={handleDelete} /> {/* Add the Sidebar component here */}
+      <Sidebar triggerFileUpload={handleButtonClick} onDelete={handleDelete} onRecordClick={handleRecordClick}/> {/* Add the Sidebar component here */}
       <div className="content-container">
         {showAudioWaveform && <AudioWaveform />}
 
@@ -153,9 +155,9 @@ const UploadAudio = () => {
             </>
           )}
         </div>
-        <button className="upload-btn" onClick={handleButtonClick}>
+        {/* <button className="upload-btn" onClick={handleButtonClick}>
           Upload
-        </button>
+        </button> */}
 
         <input
           type="file"
@@ -165,7 +167,7 @@ const UploadAudio = () => {
           accept="audio/*"
           onChange={handleFileUpload}
         />
-        <button className="upload-btn" onClick={openPopup}>Record</button>
+        {/* <button className="upload-btn" onClick={openPopup}>Record</button> */}
         {isPopupOpen && <RecordAudio onClose={closePopup} onSaveAudio={handleSaveAudio} />}
       </div>
     </div>
