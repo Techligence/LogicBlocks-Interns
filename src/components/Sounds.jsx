@@ -20,8 +20,7 @@ export default function Books({ history }) {
           fontSize: "14px",
           marginRight: "500px",
         }}
-      ></h1>
-
+      ></h1>      
       <div
         className="highlighted"
         id="soundBlocklyDiv"
@@ -29,7 +28,7 @@ export default function Books({ history }) {
           width: "100%",
           position: "absolute",
           top: 22.5,
-          left: 0,
+          right: 0,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -39,7 +38,7 @@ export default function Books({ history }) {
         }}
       >
         <UploadAudio history={history} />
-      </div>
+      </div>      
     </div>
   );
 }
