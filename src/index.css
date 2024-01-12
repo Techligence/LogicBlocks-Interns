@@ -9,6 +9,7 @@ body {
   width: 100vw;
   padding: 0;
   margin: 0;
+  overflow: hidden;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -175,6 +176,7 @@ div.upload-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
 }
 
 /* style for the delete button */
@@ -445,4 +447,21 @@ input:checked + .toggle .off {
   margin: 5px 0; /* Space between categories */
   border-radius: 5px; /* Optional rounded corners */
   padding: 5px; /* Some padding */
+}
+
+.content-container {
+  flex: 1;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  padding-left: 20px; /* Adjust the value as needed */
+  margin-left: 127px;
+  overflow: hidden !important; /* Hide any content that overflows the container */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent; /* Firefox */
+}
+
+.content-container::-webkit-scrollbar {
+  display: none;
+}
+.container-inside-content {
+  overflow: hidden; /* or auto, depending on your design */
 }

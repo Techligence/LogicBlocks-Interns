@@ -8,12 +8,18 @@ import { setIsPlaying, setVolume } from "../state/reducers/audioSlice.js";
 import { WaveSurferContext } from "../contexts/waveSurferContext.jsx";
 import { bufferToWave } from "./bufferToWave.jsx";
 import { colors } from "@mui/material";
+import { setAudioArray } from "../state/reducers/soundTabReducers.js";
 
 const AudioWaveform = (props) => {
   const wavesurferRef = useRef(null);
   // const timelineRef = useRef(null);
   const dispatch = useDispatch();
   const activeTab = useSelector((state) => state.soundTab.activeTab);
+  // const audioState = useSelector((state) => state.soundTab.audioState);
+  // const { showAudioWaveform, fileName } = audioState;
+  const audioArray = useSelector(state => state.soundTab.audioArray);
+  const activeWaveform = useSelector(state => state.soundTab.activeWaveform);
+  const {id, fileName, audioUrl} = activeWaveform;
 
   // fetch file url from the context
   const { fileURL, setFileURL } = useContext(FileContext);
@@ -87,11 +93,11 @@ const AudioWaveform = (props) => {
 
   // once the file URL is ready, load the file to produce the waveform
   useEffect(() => {
-    if (fileURL && wavesurferObj) {
-      wavesurferObj.load(fileURL);
+    if (audioUrl && wavesurferObj) {
+      wavesurferObj.load(audioUrl);
       wavesurferRef.current.style.width = "100%";
     }
-  }, [fileURL, wavesurferObj]);
+  }, [audioUrl, wavesurferObj]);
 
   useEffect(() => {
     if (wavesurferObj) {
@@ -269,8 +275,15 @@ const AudioWaveform = (props) => {
 
           var abuffer = wavesurferObj.backend.buffer;
           var length = abuffer.length;
-          const audioUrl = bufferToWave(abuffer, 0, length);
-          setFileURL(audioUrl);
+          const newAudioUrl = bufferToWave(abuffer, 0, length);
+          // setFileURL(audioUrl);
+          const updateArray = audioArray.map((audioItem) => {
+            if (audioItem.id === id) {              
+              return { ...audioItem, audioUrl: newAudioUrl };
+            }            
+            return audioItem;
+          });
+          dispatch(setAudioArray(updateArray));
       }
     }
   };
@@ -335,8 +348,15 @@ const AudioWaveform = (props) => {
 
         var abuffer = wavesurferObj.backend.buffer;
         var length = abuffer.length;
-        const audioUrl = bufferToWave(abuffer, 0, length);
-        setFileURL(audioUrl);
+        const newAudioUrl = bufferToWave(abuffer, 0, length);
+        // setFileURL(audioUrl);
+        const updateArray = audioArray.map((audioItem) => {
+          if (audioItem.id === id) {              
+            return { ...audioItem, audioUrl: newAudioUrl };
+          }            
+          return audioItem;
+        });
+        dispatch(setAudioArray(updateArray));
       }
     }
   };
@@ -421,9 +441,9 @@ const AudioWaveform = (props) => {
   return (
     <section className="waveform-container">
       <div className="wrapper">
-        {props.filename ? (
+        {fileName !== "" ? (
           <h1 className="effect-shine" style={{ marginBottom: "-4.5em" }}>
-            Sound - {props.filename}
+            Sound - {fileName}
           </h1>
         ) : (
           <h1 className="effect-shine" style={{ marginBottom: "-4.5em" }}>
