@@ -13,6 +13,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.14.15",
     "@mui/material": "^5.14.15",
@@ -20,10 +21,12 @@
     "blockly": "^10.2.2",
     "re-resizable": "^6.9.11",
     "react": "^18.2.0",
+    "react-audio-analyser": "^1.0.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-redux": "^8.1.3",
     "react-router-dom": "^6.17.0",
+    "styled-components": "^6.1.8",
     "wavesurfer.js": "^4.5.0"
   },
   "devDependencies": {
