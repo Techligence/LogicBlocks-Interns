@@ -1,12 +1,12 @@
 // UploadAudio.jsx
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { FileContext } from "../contexts/fileContext.jsx";
-import AudioWaveform from "./AudioWaveform"; // Import your AudioWaveform component
+import AudioWaveform from "./AudioWaveform.jsx"; // Import your AudioWaveform component
 import "../index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setAudioState } from "../state/reducers/soundTabReducers.js";
 import { setIsPlaying } from "../state/reducers/audioSlice.js";
-
+import RecordAudio from "./recordAudio/RecordAudio.jsx";
 
 
 const UploadAudio = () => {
@@ -16,6 +16,15 @@ const UploadAudio = () => {
   const [file, setFile] = useState(null);
   const audioState = useSelector((state) => state.soundTab.audioState);
   const { showAudioWaveform, showDefaultAudioWaveform, fileName } = audioState;
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   //For rendering default music
   useEffect(() => {    
@@ -66,6 +75,17 @@ const UploadAudio = () => {
     }
   };
 
+  const handleSaveAudio = (audioSrc) => {
+    setFileURL(audioSrc);
+    dispatch(setAudioState({
+      showAudioWaveform: true,
+      showDefaultAudioWaveform: false,
+      fileName: "RecordedAudio", // You may set a default name for the recorded audio
+    }));
+    dispatch(setIsPlaying(false));
+    closePopup();
+  };
+
   return (
     <div style={{ position: "relative" }}>
       {showDefaultAudioWaveform && <AudioWaveform />}
@@ -114,6 +134,8 @@ const UploadAudio = () => {
         accept="audio/*"
         onChange={handleFileUpload}
       />
+      <button className="upload-btn" onClick={openPopup}>Record</button>
+      {isPopupOpen && <RecordAudio onClose={closePopup} onSaveAudio={handleSaveAudio} />}
     </div>
   );
 };
