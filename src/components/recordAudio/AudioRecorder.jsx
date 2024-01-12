@@ -27,8 +27,7 @@ export default class AudioRecorder extends Component {
           this.props.onSaveAudio(this.state.audioSrc);
         }
       }
-    );
-    this.initWaveSurfer();
+    );    
   };
 
 
@@ -46,18 +45,7 @@ export default class AudioRecorder extends Component {
   //   });
   //   console.log("succ stop", e);
   // };
-
-  initWaveSurfer() {
-    // Initialize the WaveSurfer instance
-    this.waveSurfer = WaveSurfer.create({
-      container: "#waveform", // Replace with the ID or class of the container where you want to display the waveform
-      waveColor: "violet",
-      progressColor: "purple",
-    });
-
-    // Load the recorded audio into WaveSurfer
-    this.waveSurfer.load(this.state.audioSrc);
-  }
+  
 
   componentDidMount() {
     // this.setState({
