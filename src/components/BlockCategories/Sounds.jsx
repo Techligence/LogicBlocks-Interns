@@ -1,10 +1,9 @@
 // BlocklyBlocksAndCategory.js
 import Blockly from "blockly";
-import { setIsPlaying, setVolume } from "../../state/reducers/audioSlice";
+import { setIsPlaying, setVolume } from "../../features/audioSlice";
 import { useDispatch } from "react-redux";
 import { javascriptGenerator } from "blockly/javascript";
-// import { FileContext } from "../../contexts/fileContext";
-// import { useContext } from "react";
+
 
 // Category definition
 export const Sounds = `
@@ -19,6 +18,7 @@ export const Sounds = `
     <block type="set_volume_to"></block>
   </category>
 `;
+
 
 // Define the 'play_sound' block
 Blockly.Blocks["play_sound"] = {
@@ -35,10 +35,11 @@ Blockly.Blocks["play_sound"] = {
 };
 // Generator code for 'play_sound' block
 javascriptGenerator["play_sound"] = function (block) {
-  var soundName = block.getFieldValue("SOUND_NAME");
+  var soundName = block.getFieldValue("SOUND_NAME");  
   var code = `      
-    const audioUrl = playSound(); 
-    const audio = new Audio(audioUrl);    
+  const audioUrl = playSound(); 
+  const audio = new Audio(audioUrl);     
+  dispatch(setAudioObj(audio));
   `;
   console.log(code);
   return code;
@@ -60,7 +61,9 @@ Blockly.Blocks["start_sound"] = {
 // Generator code for 'start_sound' block
 javascriptGenerator["start_sound"] = function (block) {
   var soundName = block.getFieldValue("SOUND_NAME");
-  var code = `audio.play(); \n`;
+  var code = `  
+  audio.play();
+  `;
   console.log(code);
   return code;
 };
@@ -77,7 +80,12 @@ Blockly.Blocks["stop_sound"] = {
 
 // Generator code for 'stop_sound' block
 javascriptGenerator["stop_sound"] = function (block) {
-  var code = " audio.pause(); \n audio.currentTime = 0;";
+  var code = `
+  const audio = getSound();  
+  audio.pause();
+  audio.currentTime = 0;  
+  dispatch(setAudioObj(null));
+  `;
   console.log(code);
   return code;
 };

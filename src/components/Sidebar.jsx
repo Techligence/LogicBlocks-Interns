@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import AudioCard from "./AudioCard";
 import { useSelector, useDispatch } from "react-redux";
-import { setAudioArray } from "../state/reducers/soundTabReducers.js";
+import { setAudioArray } from "../features/soundTabReducers.js";
 
 const Sidebar = (props) => {
   const [isFabHovered, setIsFabHovered] = useState(false);
@@ -21,8 +21,7 @@ const Sidebar = (props) => {
         position: "absolute",
         top: 0,
         left: 0,
-        height: "480px",
-        overflowY: "scroll",
+        height: "480px",        
         width: "18%" /* Adjust the width as needed */,
         minWidth: "120px",
         zIndex: "1",
@@ -60,7 +59,7 @@ const Sidebar = (props) => {
               onClick={props.triggerFileUpload}
               style={{
                 margin: "6px 8px",
-
+                cursor: "pointer",
                 animation: "comeIn 0.5s ease-in-out",
               }}
             >
@@ -71,6 +70,7 @@ const Sidebar = (props) => {
               style={{
                 margin: "18px 12px",
                 animation: "comeIn 0.5s ease-in-out",
+                cursor: "pointer",
               }}
             >
               <i className="fa-solid fa-microphone fa-xl custom-icon-color"></i>
@@ -84,8 +84,7 @@ const Sidebar = (props) => {
             color: "white",
             border: "none",
             padding: "12px 17px",
-            borderRadius: "50%",
-            cursor: "pointer",
+            borderRadius: "50%",            
             transition: "background-color 0.9s ease-in-out",
           }}
         >

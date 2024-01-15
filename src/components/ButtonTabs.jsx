@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveTab } from "../state/reducers/soundTabReducers";
+import { setActiveTab } from "../features/soundTabReducers";
+
+
 
 function ButtonTabs(props) {
   const dispatch = useDispatch();

@@ -10,74 +10,64 @@ import { Sounds } from "./BlockCategories/Sounds";
 import { javascriptGenerator } from "blockly/javascript";
 import { WaveSurferContext } from "../contexts/waveSurferContext";
 import { useContext } from "react";
-const audioContext = new (window.AudioContext)();
 import { FileContext } from "../contexts/fileContext.jsx";
 import { bufferToWave } from "./bufferToWave.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import { Motion } from './BlockCategories/Motion';
+import { Control } from './BlockCategories/Control';
+import {store} from '../store/store';
+import {moveSteps, setX, setY, goTo, goToXY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
+} from '../features/motionSlice';
+
+import { waitSeconds , repeatTimes} from '../features/controlSlice';
+import { setCodeString} from '../features/codeSlice';
+import { setAudioObj } from "../features/audioSlice.js";
 
 function getFileName(){
-  const audioState = useSelector((state) => state.soundTab.audioState);
-  const { showAudioWaveform, showDefaultAudioWaveform, fileName } = audioState;
-  if(fileName == "")
-    return "Default sound"
-  else
-    return fileName;
+  const activeWaveform = useSelector((state) => state.soundTab.activeWaveform);
+  const {id, fileName, audioUrl} = activeWaveform;
+  
+  return fileName;
 }
-
 const BlocklyComponent = () => {
+  const dispatch = useDispatch();
   const { wavesurferObj, setWavesurferObj } = useContext(WaveSurferContext);
   const [isWavesurferReady, setIsWavesurferReady] = useState(false);
 
   const {fileURL, setFileURL} = useContext(FileContext);
 
   const blocklyRef = useRef(null);
-  const [generatedCode, setGeneratedCode] = useState("");
   const workspace = Blockly.getMainWorkspace();
-
+  const {codeString} = useSelector((state) => ({
+    codeString: state.code.codeString,
+  }))
+  const audioObj = useSelector(state => state.audio.audioObj);
+  
   const generateCode = async () => {
-    javascriptGenerator.addReservedWords("code");
-    var code = javascriptGenerator.workspaceToCode(workspace);
-    setGeneratedCode(code);
+    javascriptGenerator.addReservedWords('code');
+    const code = javascriptGenerator.workspaceToCode(workspace);
+    dispatch(setCodeString(code));
     await eval(`(async () => { ${code} })();`);
   };
+
+  const displayCodeString = () => {
+    const copyString = codeString;
+    // Use a regular expression to remove store.dispatch() calls for display and display inner contents
+    return copyString.replace(/store\.dispatch\((.*?)\);/g, 'sprite.$1'); 
+    // Use the below rather than the above to debug the code if required as it displays perfect code
+    // return copyString;
+  };  
 
   // To handle Wavesurfer object
   useEffect(() => {
     if (wavesurferObj) {
-      setIsWavesurferReady(true);
-      console.log(wavesurferObj);
+      setIsWavesurferReady(true);      
     }
   }, [wavesurferObj]);
 
   function playSound(){
     if(isWavesurferReady){
-      console.log(wavesurferObj.backend.buffer);
-
-      // const oldAudioBuffer = wavesurferObj.backend.buffer;
-      // const newBuffer = audioContext.createBuffer(
-      //   oldAudioBuffer.numberOfChannels,
-      //   oldAudioBuffer.length / oldAudioBuffer.numberOfChannels,
-      //   oldAudioBuffer.sampleRate
-      // )
-
-
-      // for(let channel = 0; channel < newBuffer.numberOfChannels; channel++){
-      //   const channelData = newBuffer.getChannelData(channel);
-      //   for(let i = 0; i < newBuffer.length; i++){
-      //     channelData[i] = oldAudioBuffer[i * oldAudioBuffer.numberOfChannels + channel];
-      //   }
-      // }
-
-      // const source = audioContext.createBufferSource();
-      // source.buffer = newBuffer;
-
-      // source.connect(audioContext.destination);
-      // console.log("I am playing");
-      // source.start();  
-
-      // source.onerror = function (event) {
-      //   console.error('Error playing audio:', event);
-      // };
+      console.log(wavesurferObj.backend.buffer);      
       var abuffer = wavesurferObj.backend.buffer;
       var length = abuffer.length;
       const audioUrl = bufferToWave(abuffer, 0, length);
@@ -86,27 +76,10 @@ const BlocklyComponent = () => {
     else
       console.log("Wavesurfer not ready");
   }  
-
-
-  function pan(direction, value) {
-    const panNode = audioContext.createStereoPanner();
-
-    // Connect the panNode to the audioContext destination
-    panNode.connect(audioContext.destination);
-
-    // Set the pan value based on the direction and amount
-    panNode.pan.value = direction === 'right' ? value : - value;
-
-    // Connect the audioSource to the panNode
-    const audioSource = audioContext.createBufferSource();
-    audioSource.connect(panNode);
-
-    // Start playing the audio source (replace this with your actual audio source)
-    audioSource.start();
-
-    // Stop the audio source after a certain duration (adjust as needed)
-    audioSource.stop(audioContext.currentTime + 2);
+  function getSound(){
+    return audioObj;
   }
+  
 
   const name = getFileName();
   useEffect(() => {
@@ -168,21 +141,20 @@ const BlocklyComponent = () => {
 
   
   useEffect(() => {
-    // Initialize Blockly with English
-    Blockly.setLocale("en");
-    // Construct the complete toolbox XML
-    const toolboxXml = `
+    if (blocklyRef.current === null) {
+      Blockly.setLocale('en');
+      const toolboxXml = `
         <xml id="toolbox" style="display: none">
           ${Logic}
           ${Loops}
           ${Math}
           ${Text}
           ${Sounds}
+          ${Motion}
+          ${Control}
         </xml>
       `;
-
-    if (!blocklyRef.current) {
-      initializeBlockly(toolboxXml); // Initialize Blockly using the separate function
+      initializeBlockly(toolboxXml);
       blocklyRef.current = true;
     }
 
@@ -209,28 +181,13 @@ const BlocklyComponent = () => {
 
 
   return (
-    <div style={{ width: "100%", height: "480px" }}>
-      <h1
-        style={{
-          display: "inline-block",
-          fontSize: "14px",
-          marginRight: "500px",
-        }}
-      >
-        Blockly Toolbox
-      </h1>
-      <h1 style={{ display: "inline-block", fontSize: "14px" }}>
-        Blockly Workspace
-      </h1>
-      <div
-        className="highlighted"
-        id="blocklyDiv"
-        style={{ height: "100%", width: "100%", position: "relative" }}
-      ></div>
+    <div style={{ width: '100%', height: '480px' }}>
+      <h1 style={{ display: 'inline-block', fontSize: '14px', marginRight: '500px' }}>Blockly Toolbox</h1>
+      <h1 style={{ display: 'inline-block', fontSize: '14px' }}>Blockly Workspace</h1>
+      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%', position: 'relative' }}></div>
       <button onClick={generateCode}>Generate Code</button>
-      <pre style={{ whiteSpace: "pre-wrap", marginTop: "20px" }}>
-        <br></br>
-        {generatedCode}
+      <pre style={{ whiteSpace: 'pre-wrap', marginTop: '20px' }}>
+      {displayCodeString()}
       </pre>
     </div>
   );
