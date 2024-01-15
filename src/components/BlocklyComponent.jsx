@@ -16,12 +16,10 @@ import { bufferToWave } from "./bufferToWave.jsx";
 import { useSelector } from "react-redux";
 
 function getFileName(){
-  const audioState = useSelector((state) => state.soundTab.audioState);
-  const { showAudioWaveform, showDefaultAudioWaveform, fileName } = audioState;
-  if(fileName == "")
-    return "Default sound"
-  else
-    return fileName;
+  const activeWaveform = useSelector((state) => state.soundTab.activeWaveform);
+  const {id, fileName, audioUrl} = activeWaveform;
+  
+  return fileName;
 }
 
 const BlocklyComponent = () => {

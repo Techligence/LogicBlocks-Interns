@@ -38,7 +38,7 @@ const AudioCard = (props) => {
           width: "50px", // Adjust the width of the image
           height: "50px",
           borderRadius: "17px",
-          marginBottom: "30px", // Adjust the height of the image
+          marginBottom: "30px", // Adjust the height of the image          
         }}
       />
       <p
@@ -65,6 +65,7 @@ const AudioCard = (props) => {
           fontSize: "12px",
           border: "none",
           background: "transparent",
+          cursor: "pointer",
         }}
       >
         <img
