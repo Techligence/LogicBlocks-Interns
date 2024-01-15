@@ -62,7 +62,6 @@ const UploadAudio = () => {
 
     //redux actions   
     dispatch(setIsPlaying(false));
-
     //Adding to array
     const newSound = {
       id: uuidv4(),
@@ -84,6 +83,10 @@ const UploadAudio = () => {
           fileName: name.slice(0, name.length - 4),
         })
       );
+    }
+    // Clear regions in the AudioWaveform component
+    if (wavesurferObj) {
+      wavesurferObj.clearRegions();
     }
   };
 

@@ -144,6 +144,8 @@ const AudioWaveform = (props) => {
   // when the duration of the audio is available, set the length of the region depending on it, so as to not exceed the total lenght of the audio
   useEffect(() => {
     if (duration && wavesurferObj) {
+      // Check if there are no regions already present
+      if (Object.keys(wavesurferObj.regions.list).length === 0) {
       // add a region with default length
       wavesurferObj.addRegion({
         start: Math.floor(duration / 2) - Math.floor(duration) / 5, // time in seconds
@@ -151,6 +153,7 @@ const AudioWaveform = (props) => {
         color: "hsla(265, 100%, 86%, 0.4)", // color of the selected region, light hue of purple
       });
     }
+  }
   }, [duration, wavesurferObj]);
 
   const handlePlayPause = (e) => {
