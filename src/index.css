@@ -9,7 +9,8 @@ body {
   width: 100vw;
   padding: 0;
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow-x: hidden;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setAudioState,
   setActiveWaveform,
-} from "../state/reducers/soundTabReducers";
+} from "../features/soundTabReducers";
 import { FileContext } from "../contexts/fileContext";
 import { useContext } from "react";
 
@@ -23,9 +23,7 @@ const AudioCard = (props) => {
   function handleClick() {
     const obj = audioArray.find((audioItem) => {
       return audioItem.id == props.id;
-    });
-    console.log(obj);
-    // setFileURL(obj.audioUrl);
+    });        
     dispatch(setActiveWaveform(obj));
   }
 

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import AudioCard from "./AudioCard";
 import { useSelector, useDispatch } from "react-redux";
-import { setAudioArray } from "../state/reducers/soundTabReducers.js";
+import { setAudioArray } from "../features/soundTabReducers.js";
 
 const Sidebar = (props) => {
   const [isFabHovered, setIsFabHovered] = useState(false);

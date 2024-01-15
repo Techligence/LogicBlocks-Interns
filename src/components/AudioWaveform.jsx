@@ -4,11 +4,11 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min.js";
 import { FileContext } from "../contexts/fileContext.jsx";
 import wavesurfer from "wavesurfer.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsPlaying, setVolume } from "../state/reducers/audioSlice.js";
+import { setIsPlaying, setVolume } from "../features/audioSlice.js";
 import { WaveSurferContext } from "../contexts/waveSurferContext.jsx";
 import { bufferToWave } from "./bufferToWave.jsx";
 import { colors } from "@mui/material";
-import { setAudioArray } from "../state/reducers/soundTabReducers.js";
+import { setAudioArray } from "../features/soundTabReducers.js";
 
 const AudioWaveform = (props) => {
   const wavesurferRef = useRef(null);
@@ -117,7 +117,7 @@ const AudioWaveform = (props) => {
       // once audio starts playing, set the state variable to false
       wavesurferObj.on("finish", () => {
         // setPlaying(false);
-        dispatch(setIsPlaying(true));
+        dispatch(setIsPlaying(false));
       });
 
       // if multiple regions are created, then remove all the previous regions so that only 1 is present at any given time

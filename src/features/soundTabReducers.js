@@ -1,4 +1,4 @@
-import audioArray from "../../components/audioArray";
+import audioArray from "../components/audioArray";
 
 export const initialState = {
     activeTab: "Home",

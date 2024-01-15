@@ -5,8 +5,8 @@ import AudioWaveform from "./AudioWaveform"; // Import your AudioWaveform compon
 import Sidebar from "./Sidebar";
 import "../index.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setAudioState, setAudioArray, setActiveWaveform } from "../state/reducers/soundTabReducers.js";
-import { setIsPlaying } from "../state/reducers/audioSlice.js";
+import { setAudioState, setAudioArray, setActiveWaveform } from "../features/soundTabReducers.js";
+import { setIsPlaying } from "../features/audioSlice.js";
 import { v4 as uuidv4 } from 'uuid';
 import RecordAudio from "./recordAudio/RecordAudio.jsx";
 
@@ -51,10 +51,7 @@ const UploadAudio = () => {
   };
   const handleRecordClick = () => {
     openPopup(); // Assuming `openPopup` handles opening the recording popup
-};
-  //   const triggerFileUpload = () => {
-  //     inputFile.current.click();
-  // };
+}; 
 
   const handleFileUpload = (e) => {
     const name = e.target.files[0].name;
@@ -73,8 +70,7 @@ const UploadAudio = () => {
       ...audioArray,
       newSound
     ];
-    dispatch(setAudioArray(updatedAudioArray));
-    console.log(updatedAudioArray);
+    dispatch(setAudioArray(updatedAudioArray));    
 
     dispatch(setActiveWaveform(newSound));
     if (updatedAudioArray.length === 1) {
@@ -89,8 +85,7 @@ const UploadAudio = () => {
 
   const handleDelete = async (id) => {
     const updatedAudioArray = audioArray.filter((audioItem) => audioItem.id !== id);
-    dispatch(setAudioArray(updatedAudioArray));
-    console.log(updatedAudioArray);
+    dispatch(setAudioArray(updatedAudioArray));    
 
     if (updatedAudioArray.length === 0) {
       dispatch(setAudioState({
