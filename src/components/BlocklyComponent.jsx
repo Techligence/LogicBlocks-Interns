@@ -11,7 +11,7 @@ import { Control } from './BlockCategories/Control';
 import { javascriptGenerator } from 'blockly/javascript';
 import {store} from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import {moveSteps,setWorkspace, setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
+import {moveSteps,setWorkspace,pointInDirectionOf,pointToMousePointer ,setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
 } from '../features/motionSlice';
 
 import { waitSeconds , repeatTimes} from '../features/controlSlice';

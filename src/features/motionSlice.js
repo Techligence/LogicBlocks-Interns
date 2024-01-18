@@ -48,6 +48,25 @@ export const motionSlice = createSlice({
       state.selectedSpriteIndex = index;
       console.log(state.selectedSpriteIndex, "selectedSpriteIndex");
     },
+    pointToMousePointer: {
+      reducer: (state, action) => {
+        const { mouseX, mouseY } = action.payload;
+        const selectedSprite = state.sprites[state.selectedSpriteIndex];
+        const canvasDiv = document.getElementById('canvasDiv'); // Replace with the actual ID of your canvas div
+    
+        if (selectedSprite && canvasDiv) {
+          const canvasRect = canvasDiv.getBoundingClientRect();
+          const adjustedMouseX = mouseX - (canvasRect.left + selectedSprite.position.x);
+          const adjustedMouseY = mouseY - (canvasRect.top + selectedSprite.position.y);
+          const angleInRadians = Math.atan2(adjustedMouseY, adjustedMouseX);
+          const angleInDegrees = (angleInRadians * 180) / Math.PI;
+    
+          selectedSprite.angle = angleInDegrees % 360;
+        }
+      },
+      prepare: (mouseX, mouseY) => ({ payload: { mouseX, mouseY } }),
+    },
+
 
     //below is new
     moveSteps: {
@@ -248,15 +267,39 @@ export const motionSlice = createSlice({
 export const { moveSteps, setX, setY, goTo, goToXY, changeX, changeY,
   setSpritePosition, turnRight, turnLeft,
   pointInDirection, setWorkspace,
-   setSelectedSpriteIndex, addSprite, removeSprite, rotateSprite } = motionSlice.actions;
+   setSelectedSpriteIndex,pointToMousePointer, addSprite, removeSprite, rotateSprite } = motionSlice.actions;
 
 export default motionSlice.reducer;
+
+export const pointInDirectionOf = (arg) => (dispatch) => {
+  if (arg === 'mouse_pointer') {
+    const handleMouseClick = (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      // Dispatch action to set sprite angle based on mouse position
+      dispatch(pointToMousePointer(mouseX, mouseY));
+
+      // Cleanup: remove event listener after the first click
+      window.removeEventListener('click', handleMouseClick);
+    };
+
+    // Add event listener for the first click
+    window.addEventListener('click', handleMouseClick);
+
+    // Cleanup: remove event listener on component unmount or as needed
+    return () => {
+      window.removeEventListener('click', handleMouseClick);
+    };
+  }
+};
+
 
 export const moveSpriteToMousePointer = () => (dispatch) => {
   const handleMouseMove = (e) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
-
+    console.log(mouseX, mouseY);
     // Dispatch action to update sprite position
     dispatch(setSpritePosition(mouseX, mouseY));
   };
@@ -264,6 +307,7 @@ export const moveSpriteToMousePointer = () => (dispatch) => {
   const handleEscPress = (e) => {
     if (e.key === 'Escape') {
       // Cleanup: remove event listener when 'Esc' is pressed
+      console.log('Esc pressed');
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('keydown', handleEscPress);
     }

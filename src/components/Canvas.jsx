@@ -70,7 +70,8 @@ const Canvas = () => {
       <h1 style={{ textAlign: 'center', fontSize: '14px' }}>Canvas</h1>
 
       {/* Canvas Div */}
-      <div style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}>
+      <div
+      id="canvasDiv" style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}>
 
         {/* Backdrop */}
         <div

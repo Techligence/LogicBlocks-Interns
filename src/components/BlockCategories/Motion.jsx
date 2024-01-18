@@ -278,7 +278,7 @@ javascriptGenerator['point_in_direction'] = function (block) {
 javascriptGenerator['point_toward_menu'] = function (block) {
   const direction = block.getFieldValue('DIRECTION');
   const code = 
-  `pointInDirection(${direction});
+  `store.dispatch(pointInDirectionOf("${direction}"));
 `;
   console.log(code);
   return code;

@@ -1,7 +1,7 @@
 import Blockly from 'blockly';
 import { javascriptGenerator } from "blockly/javascript";
 import {store} from "../store/store.js";
-import {moveSteps, setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY, setWorkspace
+import {moveSteps,setWorkspace,pointInDirectionOf,pointToMousePointer ,setX, setY, goTo, goToXY,changeX,changeY,moveSpriteToMousePointer,turnRight,turnLeft,pointInDirection, rotateSprite, glideSecsXY
 } from '../features/motionSlice';
 
 import { waitSeconds , repeatTimes} from '../features/controlSlice';
