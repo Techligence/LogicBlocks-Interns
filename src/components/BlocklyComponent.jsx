@@ -2,6 +2,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Blockly from 'blockly';
 
+import * as en from 'blockly/msg/en'; // Import English messages
+import * as fr from 'blockly/msg/fr'; // Import French messages
+
 import { Logic } from './BlockCategories/Logic';
 import { setCode } from '../features/codeSlice';
 
@@ -41,6 +44,7 @@ Blockly.JavaScript = javascriptGenerator;
 
 const BlocklyComponent = () => {
   const [generatedCode, setGeneratedCode] = useState('');
+  const [language, setLanguage] = useState('en');   // state to handle language
   const workspace = Blockly.getMainWorkspace();
   const dispatch = useDispatch();
   const blocklyRef = useRef(null);
@@ -84,8 +88,22 @@ const BlocklyComponent = () => {
     console.log('Python Code:', pythonCode);
   };
 
+    const updateBlocklyLocale = () => {
+      const languageMap = {
+        en,
+        fr,
+      };
+
+      Blockly.setLocale(languageMap[language]);
+    };
+
+    const toggleLanguage = () => {
+      setLanguage(language === 'en' ? 'fr' : 'en');
+    };
 
   useEffect(() => {
+    updateBlocklyLocale(); // Update Blockly locale based on the initial language
+
     if (!blocklyRef.current) {
       // Initialize Blockly with English
       Blockly.setLocale('en');
@@ -131,7 +149,7 @@ const BlocklyComponent = () => {
         blocklyRef.current.removeChangeListener(handleBlockClick);
       }
     };
-  }, []);
+  }, [language]);
 
 
   const getAllConnectedBlocks = (block) => {
@@ -230,6 +248,8 @@ const BlocklyComponent = () => {
         <h1>Blockly Workspace</h1>
         {/* Dynamic Updation of code with workspace events  */}
         <button onClick={generateCode} >Generate code</button>
+        <button onClick={toggleLanguage} >Language</button>
+        <span>{`Current Language: ${language.toUpperCase()}`}</span>
         {/* {workspace.addChangeListener(generateCode)}   */}
       </div>
       <div
