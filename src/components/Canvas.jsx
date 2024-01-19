@@ -49,6 +49,7 @@ const useKeyPress = (targetKey, callback) => {
 
 const Canvas = () => {
 
+  const language = useSelector(state => state.language); // Language
   const dispatch = useDispatch(); //dispatch fore event click
 
   // const { position, angle } = useSelector((state) => ({
@@ -275,7 +276,7 @@ const toggleGenerateCodeBox = () => {
   return (
     <div className={`Canvasbox ${isFullScreen ? 'fullscreen' : ''}`}>
       <Card className={`highlighted ${isFullScreen ? 'fullscreen-card' : ''}`}>
-        <h1 style={{ textAlign: 'center', fontSize: '14px' }}>Canvas</h1>
+        <h1 style={{ textAlign: 'center', fontSize: '14px' }}>{language === 'en' ? 'Canvas' : 'Toile'}</h1>
         <img
           src={Demo}
           alt="Your Image"

@@ -7,7 +7,7 @@ import * as fr from 'blockly/msg/fr'; // Import French messages
 
 import { Logic } from './BlockCategories/Logic';
 import { setCode } from '../features/codeSlice';
-
+import { setLanguage } from '../features/languageSlice';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
@@ -44,7 +44,8 @@ Blockly.JavaScript = javascriptGenerator;
 
 const BlocklyComponent = () => {
   const [generatedCode, setGeneratedCode] = useState('');
-  const [language, setLanguage] = useState('en');   // state to handle language
+  // const [language, setLanguage] = useState('en');   // state to handle language
+  const language = useSelector(state => state.language);
   const workspace = Blockly.getMainWorkspace();
   const dispatch = useDispatch();
   const blocklyRef = useRef(null);
@@ -88,21 +89,22 @@ const BlocklyComponent = () => {
     console.log('Python Code:', pythonCode);
   };
 
-    const updateBlocklyLocale = () => {
-      const languageMap = {
-        en,
-        fr,
-      };
+  const toggleLanguage = () => {
+    const newLanguage = language === 'en' ? 'fr' : 'en';
+    dispatch(setLanguage(newLanguage));
+    updateBlocklyLocale(newLanguage);
+  };
 
-      Blockly.setLocale(languageMap[language]);
+  const updateBlocklyLocale = (lang) => {
+    const languageMap = {
+      en,
+      fr,
     };
-
-    const toggleLanguage = () => {
-      setLanguage(language === 'en' ? 'fr' : 'en');
-    };
+    Blockly.setLocale(languageMap[lang]);
+  };
 
   useEffect(() => {
-    updateBlocklyLocale(); // Update Blockly locale based on the initial language
+    updateBlocklyLocale(language); // Update Blockly locale based on the initial language
 
     if (!blocklyRef.current) {
       // Initialize Blockly with English
@@ -244,10 +246,10 @@ const BlocklyComponent = () => {
   return (
     <div className="BlockyComp">
       <div className="highlghted-text">
-        <h1>Blockly Toolbox</h1>
-        <h1>Blockly Workspace</h1>
+      <h1>{language === 'en' ? 'Blockly Toolbox' : ' Boîte à outils Blockly'}</h1>
+        <h1>{language === 'en' ? 'Blockly Workspace' : 'Espace de travail Blockly'}</h1>
         {/* Dynamic Updation of code with workspace events  */}
-        <button onClick={generateCode} >Generate code</button>
+        {/* <button onClick={generateCode} >Generate code</button> */}
         <button onClick={toggleLanguage} >Language</button>
         <span>{`Current Language: ${language.toUpperCase()}`}</span>
         {/* {workspace.addChangeListener(generateCode)}   */}

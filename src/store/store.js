@@ -6,6 +6,7 @@ import variableReducer from '../features/variableSlice';
 import motionReducer from "../features/motionSlice";
 import controlReducer from "../features/controlSlice"
 import codeReducer from '../features/codeSlice';
+import languageReducer from "../features/languageSlice";
 
 
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
     motion: motionReducer, // Add the sprite reducer to the store
     control: controlReducer, // Add the control reducer to the store
     code: codeReducer,
+    language: languageReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

@@ -6,6 +6,7 @@ const GenerateCodeBox = () => {
   
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
   const { jsCode, pythonCode } = useSelector(selectCode);
+  const language = useSelector(state => state.language);  // Toggle English-French
 
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
@@ -27,7 +28,7 @@ const GenerateCodeBox = () => {
          fontWeight: "bold",
          color: "#333" /* Change the color as needed */
       }}>
-        Choose Language:
+        {language === 'en' ? 'Choose Language' : 'Choisir la langue'}
       </label>
       <select
         id="languageDropdown"
