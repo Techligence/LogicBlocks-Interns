@@ -89,10 +89,9 @@ const BlocklyComponent = () => {
     console.log('Python Code:', pythonCode);
   };
 
-  const toggleLanguage = () => {
-    const newLanguage = language === 'en' ? 'fr' : 'en';
-    dispatch(setLanguage(newLanguage));
-    updateBlocklyLocale(newLanguage);
+  const toggleLanguage = (selectedLanguage) => {
+    dispatch(setLanguage(selectedLanguage));
+    updateBlocklyLocale(selectedLanguage);
   };
 
   const updateBlocklyLocale = (lang) => {
@@ -246,13 +245,23 @@ const BlocklyComponent = () => {
   return (
     <div className="BlockyComp">
       <div className="highlghted-text">
-      <h1>{language === 'en' ? 'Blockly Toolbox' : ' Boîte à outils Blockly'}</h1>
+        <h1>{language === 'en' ? 'Blockly Toolbox' : ' Boîte à outils Blockly'}</h1>
         <h1>{language === 'en' ? 'Blockly Workspace' : 'Espace de travail Blockly'}</h1>
-        {/* Dynamic Updation of code with workspace events  */}
-        {/* <button onClick={generateCode} >Generate code</button> */}
-        <button onClick={toggleLanguage} >Language</button>
-        <span>{`Current Language: ${language.toUpperCase()}`}</span>
-        {/* {workspace.addChangeListener(generateCode)}   */}
+  
+        {/* Use a dropdown (select element) for language selection */}
+        <label htmlFor="languageDropdown">Select Language:</label>
+        <select
+          id="languageDropdown"
+          value={language}
+          onChange={(e) => toggleLanguage(e.target.value)}
+          style={{ marginLeft: '10px', padding: '5px' }}
+        >
+          <option value="en">English</option>
+          <option value="fr">French</option>
+        </select>
+  
+        {/* Display the current language
+        <span>{`Current Language: ${language.toUpperCase()}`}</span> */}
       </div>
       <div
         className="highlighted"
@@ -260,10 +269,9 @@ const BlocklyComponent = () => {
         style={{ height: '100%', width: '100%' }}
         onClick={handleBlockClick}  // Add the click handler directly to the blocklyDiv
       ></div>
-      {/* <GenerateCodeBox generatedCode={generatedCode} /> */}
-      {/* <GenerateCodeBox jsCode={generatedCode.js} pythonCode={generatedCode.python} /> */}
     </div>
   );
-};
-
+  }
 export default BlocklyComponent;
+
+  
