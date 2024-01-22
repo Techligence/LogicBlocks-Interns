@@ -3,7 +3,7 @@ import { javascriptGenerator } from "blockly/javascript";
 import { pythonGenerator } from "blockly/python";
 
 export const Motion = `
-  <category name="Motion">
+  <category name="Motion" colour="#5c81a6">
     <block type="move_steps"></block>
     <block type="turn_right"></block>
     <block type="turn_left"></block>

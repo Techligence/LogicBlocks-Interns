@@ -6,7 +6,7 @@ import { pythonGenerator } from "blockly/python";
 
 
 export const Control = `
-<category name="Control" colour="120">
+<category name="Control" colour="#5c81a6">
     <block type="wait_seconds"></block>
     <block type="repeat_times"></block>
     <block type="forever"></block>

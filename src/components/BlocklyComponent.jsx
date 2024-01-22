@@ -22,6 +22,8 @@ import { Motion } from './BlockCategories/Motion';
 import { Control } from './BlockCategories/Control';
 import { store } from '../store/store';
 import { moveSprite } from '../features/motionSlice';
+import countryFlagEmoji from "country-flag-emoji";
+import { GrLanguage } from "react-icons/gr";
 
 import { waitSeconds } from '../features/controlSlice';
 import {
@@ -37,6 +39,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { triggerEvent, whenKeyPressed, whenSpriteClicked } from '../features/eventSlice';
 import GenerateCodeBox from './GenerateCodeBox';
+import emoji from "emoji-dictionary";
 
 
 Blockly.JavaScript = javascriptGenerator;
@@ -49,6 +52,8 @@ const BlocklyComponent = () => {
   const workspace = Blockly.getMainWorkspace();
   const dispatch = useDispatch();
   const blocklyRef = useRef(null);
+  const ukEmoji = countryFlagEmoji.get('GB');
+  const franceEmoji = countryFlagEmoji.get('FR');
 
   // const generateCode = () => {
   //   javascriptGenerator.addReservedWords('code');
@@ -64,7 +69,7 @@ const BlocklyComponent = () => {
     //   blocklyRef.current,
     //   'JavaScript'
     // );
-  
+
     // const pythonCode = pythonGenerator.workspaceToCode(
     //   blocklyRef.current,
     //   'Python'
@@ -73,7 +78,7 @@ const BlocklyComponent = () => {
       blocklyRef.current,
       { blockToCode: (block) => javascriptGenerator[block.type].call(block, block) }
     );
-  
+
     const pythonCode = pythonGenerator.workspaceToCode(
       blocklyRef.current,
       { blockToCode: (block) => pythonGenerator[block.type].call(block, block) }
@@ -102,6 +107,8 @@ const BlocklyComponent = () => {
     Blockly.setLocale(languageMap[lang]);
   };
 
+
+
   useEffect(() => {
     updateBlocklyLocale(language); // Update Blockly locale based on the initial language
 
@@ -126,14 +133,14 @@ const BlocklyComponent = () => {
       // blocklyRef.current = true;
 
       // dynamic generation of code with event changes in workspace
-      {blocklyRef.current.addChangeListener(generateCode)}  
+      { blocklyRef.current.addChangeListener(generateCode) }
     }
 
     // Attach the click event handler to the workspace
     blocklyRef.current.addChangeListener(handleBlockClick);
 
     // Call generateCode after Blockly is initialized
-    generateCode(); 
+    generateCode();
 
     //press_key checking
     // const handleKeyDown = (event) => {
@@ -242,24 +249,51 @@ const BlocklyComponent = () => {
     console.log('Generated Code:', code);
   };
 
+  // Dropdown
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLanguageChange = (selectedLanguage) => {
+    toggleDropdown(); // Close the dropdown after selecting an option
+    toggleLanguage(selectedLanguage);
+  };
+
+  const countryEmojiMap = {
+    en: "🇬🇧", // Replace with the actual emoji for the UK
+    fr: "🇫🇷", // Replace with the actual emoji for France
+  };
+
   return (
     <div className="BlockyComp">
       <div className="highlghted-text">
+      
         <h1>{language === 'en' ? 'Blockly Toolbox' : ' Boîte à outils Blockly'}</h1>
         <h1>{language === 'en' ? 'Blockly Workspace' : 'Espace de travail Blockly'}</h1>
-  
-        {/* Use a dropdown (select element) for language selection */}
-        <label htmlFor="languageDropdown">Select Language:</label>
-        <select
-          id="languageDropdown"
-          value={language}
-          onChange={(e) => toggleLanguage(e.target.value)}
-          style={{ marginLeft: '10px', padding: '5px' }}
-        >
-          <option value="en">English</option>
-          <option value="fr">French</option>
-        </select>
-  
+
+        {/* Custom dropdown with icon */}
+        <div className="custom-dropdown">
+          <label htmlFor="languageDropdown" onClick={toggleDropdown}>
+            <GrLanguage />
+          </label>
+          {isDropdownOpen && (
+            <div className="dropdown-options">
+              <select
+                id="languageDropdown"
+                value={language}
+                onChange={(e) => handleLanguageChange(e.target.value)}
+                style={{ padding: '5px' }}
+              >
+                <option value="en">{`${countryEmojiMap['en']} English`}</option>
+                <option value="fr">{`${countryEmojiMap['fr']} French`}</option>
+                <option value="en">😍</option>
+              </select>
+            </div>
+          )}
+        </div>
+
         {/* Display the current language
         <span>{`Current Language: ${language.toUpperCase()}`}</span> */}
       </div>
@@ -271,7 +305,7 @@ const BlocklyComponent = () => {
       ></div>
     </div>
   );
-  }
+}
 export default BlocklyComponent;
 
-  
+

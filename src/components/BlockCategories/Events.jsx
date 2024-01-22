@@ -361,7 +361,7 @@ pythonGenerator.forBlock["broadcast_message_and_wait"] = function (
 
 // JavaScript code for generating category XML
 export const Events = `
-  <category name="Events" colour="#FFD600">
+  <category name="Events" colour="#5c81a6">
       <block type="flag_clicked_event"></block>
       <block type="event_trigger"></block>
       <block type="key_press_event"></block>
