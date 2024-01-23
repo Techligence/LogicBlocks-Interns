@@ -191,8 +191,9 @@ body {
 
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
-  bottom: -1px;
-  right: 10px;
+  position: absolute;
+    top: 600px;
+    right: -300px;
 }
 
 /* Responsive */
