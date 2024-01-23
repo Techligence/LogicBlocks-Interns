@@ -190,6 +190,11 @@ body {
 }
 
 
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  bottom: -1px;
+  right: 10px;
+}
+
 /* Responsive */
 
 @media only screen and (min-width:1000px) and (max-width:1237px){
@@ -266,6 +271,7 @@ body {
    /* Anchor Button */
   .css-sghohy-MuiButtonBase-root-MuiButton-root {
     top: -10px;
+  
   }
 }
 
