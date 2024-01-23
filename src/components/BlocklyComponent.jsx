@@ -271,10 +271,7 @@ const BlocklyComponent = () => {
     toggleLanguage(selectedLanguage);
   };
 
-  const countryEmojiMap = {
-    en: "🇬🇧", // Replace with the actual emoji for the UK
-    fr: "🇫🇷", // Replace with the actual emoji for France
-  };
+
 
   return (
     <div className="BlockyComp">
@@ -300,8 +297,8 @@ const BlocklyComponent = () => {
                           marginleft: '3px',
                           position: 'absolute' }}
               >
-                <option value="en">{`${countryEmojiMap['en']} English`}</option>
-                <option value="fr">{`${countryEmojiMap['fr']} French`}</option>
+                <option value="en">English</option>
+                <option value="fr">French</option>
               </select>
             // </div>
           )}
