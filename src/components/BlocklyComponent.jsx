@@ -6,6 +6,7 @@ import * as en from 'blockly/msg/en'; // Import English messages
 import * as fr from 'blockly/msg/fr'; // Import French messages
 
 import { Logic } from './BlockCategories/Logic';
+import { Grove } from './BlockCategories/Grove';
 import { setCode } from '../features/codeSlice';
 import { setLanguage } from '../features/languageSlice';
 import { Loops } from './BlockCategories/Loops';
@@ -13,6 +14,7 @@ import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
+import { InputOutput } from './BlockCategories/InputOutput';
 import initializeBlockly from './InitializeBlockly';  // import the function
 import { javascriptGenerator } from 'blockly/javascript';
 import { pythonGenerator } from 'blockly/python';
@@ -40,6 +42,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { triggerEvent, whenKeyPressed, whenSpriteClicked } from '../features/eventSlice';
 import GenerateCodeBox from './GenerateCodeBox';
 import emoji from "emoji-dictionary";
+import { GroveAnalog } from './BlockCategories/GroveAnalog';
+import { GroveLCD } from './BlockCategories/GroveLCD';
+import { GroveMotor } from './BlockCategories/GroveMotor';
 
 
 Blockly.JavaScript = javascriptGenerator;
@@ -126,6 +131,11 @@ const BlocklyComponent = () => {
           ${Events}
           ${Motion}
           ${Control}
+          ${InputOutput}
+          ${Grove}
+          ${GroveAnalog}
+          ${GroveLCD}
+          ${GroveMotor}
         </xml>
       `;
       const newWorkspace = initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
