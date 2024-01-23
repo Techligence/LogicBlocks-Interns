@@ -284,25 +284,28 @@ const BlocklyComponent = () => {
         <h1>{language === 'en' ? 'Blockly Workspace' : 'Espace de travail Blockly'}</h1>
 
         {/* Custom dropdown with icon */}
-        <div className="custom-dropdown">
-          <label htmlFor="languageDropdown" onClick={toggleDropdown}>
+        {/* <div className="custom-dropdown"> */}
+          <label htmlFor="languageDropdown" onClick={toggleDropdown} style={{position: 'absolute',top: '81px'  ,left: '1054px'}}>
             <GrLanguage />
           </label>
           {isDropdownOpen && (
-            <div className="dropdown-options">
+            // <div className="dropdown-options">
               <select
                 id="languageDropdown"
                 value={language}
                 onChange={(e) => handleLanguageChange(e.target.value)}
-                style={{ padding: '5px' }}
+                style={{  padding: '5px',
+                          top: '77px',
+                          left: '1079px',
+                          marginleft: '3px',
+                          position: 'absolute' }}
               >
                 <option value="en">{`${countryEmojiMap['en']} English`}</option>
                 <option value="fr">{`${countryEmojiMap['fr']} French`}</option>
-                <option value="en">😍</option>
               </select>
-            </div>
+            // </div>
           )}
-        </div>
+        {/* </div> */}
 
         {/* Display the current language
         <span>{`Current Language: ${language.toUpperCase()}`}</span> */}
