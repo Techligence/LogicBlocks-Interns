@@ -45,6 +45,7 @@ import emoji from "emoji-dictionary";
 import { GroveAnalog } from './BlockCategories/GroveAnalog';
 import { GroveLCD } from './BlockCategories/GroveLCD';
 import { GroveMotor } from './BlockCategories/GroveMotor';
+import { Functions } from './BlockCategories/Funtions';
 
 
 Blockly.JavaScript = javascriptGenerator;
@@ -131,6 +132,7 @@ const BlocklyComponent = () => {
           ${Events}
           ${Motion}
           ${Control}
+          // ${Functions}
           ${InputOutput}
           ${Grove}
           ${GroveAnalog}
@@ -282,7 +284,7 @@ const BlocklyComponent = () => {
 
         {/* Custom dropdown with icon */}
         {/* <div className="custom-dropdown"> */}
-          <label htmlFor="languageDropdown" onClick={toggleDropdown} style={{position: 'absolute',top: '81px'  ,left: '1054px'}}>
+          {/* <label htmlFor="languageDropdown" onClick={toggleDropdown} style={{position: 'absolute',top: '81px'  ,left: '1054px'}}>
             <GrLanguage />
           </label>
           {isDropdownOpen && (
@@ -301,7 +303,7 @@ const BlocklyComponent = () => {
                 <option value="fr">French</option>
               </select>
             // </div>
-          )}
+          )} */}
         {/* </div> */}
 
         {/* Display the current language
