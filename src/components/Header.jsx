@@ -195,6 +195,9 @@ import { setLanguage } from '../features/languageSlice';
 import * as en from 'blockly/msg/en'; // Import English messages
 import * as fr from 'blockly/msg/fr'; // Import French messages
 
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
 const ProjectNameInput = styled(TextField)({
   maxWidth: '200px',
   '& .MuiInputBase-input': {
@@ -238,6 +241,21 @@ export default function Header() {
     Blockly.setLocale(languageMap[lang]);
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLanguageItemClick = (selectedLanguage) => {
+    handleClose();
+    handleLanguageChange(selectedLanguage);
+  };
+
   return (
     <Box sx={{ flexGrow: 1, width: '100%' }}>
       <AppBar position="static">
@@ -270,10 +288,24 @@ export default function Header() {
 
           {/* Language Dropdown */}
           <div style={{ position: 'relative', marginLeft: '8px' }}>
-            <label htmlFor="languageDropdown" onClick={toggleDropdown}>
+          <Button
+              onClick={handleClick}
+              startIcon={<GrLanguage style={{ color: 'black' }} />}
+            >
+              {language === 'en' ? 'English' : 'Français'}
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => handleLanguageItemClick('en')}>English</MenuItem>
+              <MenuItem onClick={() => handleLanguageItemClick('fr')}>Français</MenuItem>
+            </Menu>
+            {/* <label htmlFor="languageDropdown" onClick={() => handleLanguageChange(language)}>
               <GrLanguage />
-            </label>
-            {isDropdownOpen && (
+            </label> */}
+            {/* {isDropdownOpen && (
               <select
                 id="languageDropdown"
                 value={language}
@@ -288,7 +320,7 @@ export default function Header() {
                 <option value="en">English</option>
                 <option value="fr">French</option>
               </select>
-            )}
+            )} */}
           </div>
 
           {/* Spacing Element */}
