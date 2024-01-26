@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from '@mui/material';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Import the button components
 import FlagButton from './Canvas/FlagButton';
@@ -13,9 +14,13 @@ import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
 const Canvas = () => {
+
+  const language = useSelector(state => state.language); // Language
+  const dispatch = useDispatch(); //dispatch fore event click
+
   return (
     <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden' }}>
-      <h1 style={{ textAlign: 'center' ,fontSize: '14px'}}>Canvas</h1>
+      <h1 style={{ textAlign: 'center' ,fontSize: '14px'}}>{language === 'en' ? 'Canvas' : 'Toile'}</h1>
       <Draggable bounds="parent" defaultPosition={{x: 150, y: 100}}>
         <Resizable
           defaultSize={{
