@@ -1,9 +1,13 @@
 import Blockly from 'blockly';
+import { javascriptGenerator } from "blockly/javascript";
+Blockly.JavaScript = javascriptGenerator;
+import { pythonGenerator } from "blockly/python";
+Blockly.Python = pythonGenerator;
 export const GroveAnalog = `
 <category name="Grove Analog" colour="#5c81a6">
     <block type="grove_rotary_angle"></block> 
     <block type="grove_temporature_sensor"></block> 
-    <block type="grove_sound_sensors"></block>
+    <block type="grove_sound_sensor"></block>
     <block type="grove_thumb_joystick"></block>
 </category>
 `;
@@ -64,3 +68,61 @@ Blockly.Blocks['grove_thumb_joystick'] = {
       this.setTooltip('Analog output between 0 and Vcc');
     }
   };  
+  Blockly.JavaScript['grove_thumb_joystick'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var axis = block.getFieldValue('AXIS');
+  
+    var code = `readThumbJoystick(${pin}, "${axis}")`;
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  };
+  
+  Blockly.JavaScript['grove_sound_sensor'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+  
+    var code = `readSoundSensor(${pin})`;
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  };
+  
+  Blockly.JavaScript['grove_temporature_sensor'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+  
+    var code = `readTemperatureSensor(${pin})`;
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  };
+  
+  Blockly.JavaScript['grove_rotary_angle'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+  
+    var code = `readRotaryAngle(${pin})`;
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  };
+  
+  Blockly.Python['grove_thumb_joystick'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var axis = block.getFieldValue('AXIS');
+  
+    var code = `readThumbJoystick(${pin}, "${axis}")`;
+    return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+  };
+  
+  Blockly.Python['grove_sound_sensor'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+  
+    var code = `readSoundSensor(${pin})`;
+    return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+  };
+  
+  Blockly.Python['grove_temporature_sensor'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+  
+    var code = `readTemperatureSensor(${pin})`;
+    return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+  };
+  
+  Blockly.Python['grove_rotary_angle'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+  
+    var code = `readRotaryAngle(${pin})`;
+    return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+  };
+  

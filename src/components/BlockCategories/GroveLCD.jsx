@@ -1,9 +1,13 @@
 import Blockly from 'blockly';
+import { javascriptGenerator } from "blockly/javascript";
+Blockly.JavaScript = javascriptGenerator;
+import { pythonGenerator } from "blockly/python";
+Blockly.Python = pythonGenerator;
 export const GroveLCD = `
 <category name="Grove LCD" colour="#5c81a6">
     <block type="grove_serial_lcd_print"></block>
     <block type="grove_serial_lcd_power"></block>
-    <block type="grove_serial_lcd_effects"></block>
+    <block type="grove_serial_lcd_effect"></block>
 </category>
 `;
 
@@ -76,6 +80,56 @@ Blockly.Blocks['grove_serial_lcd_print'] = {
       this.setTooltip('Turn LCD power on/off');
     }
   };
+  Blockly.JavaScript['grove_serial_lcd_print'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var textLine1 = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_ATOMIC);
+    var textLine2 = Blockly.JavaScript.valueToCode(block, 'TEXT2', Blockly.JavaScript.ORDER_ATOMIC);
+    var delayTime = Blockly.JavaScript.valueToCode(block, 'DELAY_TIME', Blockly.JavaScript.ORDER_ATOMIC) || 0;
+  
+    var code = `printLCD(${pin}, ${textLine1}, ${textLine2}, ${delayTime});\n`;
+    return code;
+  };
+  
+  Blockly.JavaScript['grove_serial_lcd_power'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var status = block.getFieldValue('STAT');
+  
+    var code = `setLCDPower(${pin}, "${status}");\n`;
+    return code;
+  };
+  
+  Blockly.JavaScript['grove_serial_lcd_effect'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var effect = block.getFieldValue('STAT');
+  
+    var code = `setLCDEffect(${pin}, "${effect}");\n`;
+    return code;
+  };
   
   
+  Blockly.Python['grove_serial_lcd_print'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var textLine1 = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_ATOMIC);
+    var textLine2 = Blockly.Python.valueToCode(block, 'TEXT2', Blockly.Python.ORDER_ATOMIC);
+    var delayTime = Blockly.Python.valueToCode(block, 'DELAY_TIME', Blockly.Python.ORDER_ATOMIC) || 0;
+  
+    var code = `printLCD(${pin}, ${textLine1}, ${textLine2}, ${delayTime})\n`;
+    return code;
+  };
+  
+  Blockly.Python['grove_serial_lcd_power'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var status = block.getFieldValue('STAT');
+  
+    var code = `setLCDPower(${pin}, "${status}")\n`;
+    return code;
+  };
+  
+  Blockly.Python['grove_serial_lcd_effect'] = function(block) {
+    var pin = block.getFieldValue('PIN');
+    var effect = block.getFieldValue('STAT');
+  
+    var code = `setLCDEffect(${pin}, "${effect}")\n`;
+    return code;
+  };
   

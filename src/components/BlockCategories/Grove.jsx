@@ -1,4 +1,8 @@
 import Blockly from 'blockly';
+import { javascriptGenerator } from "blockly/javascript";
+Blockly.JavaScript = javascriptGenerator;
+import { pythonGenerator } from "blockly/python";
+Blockly.Python = pythonGenerator;
 export const Grove = `
 <category name="Grove" colour="#5c81a6">
     <block type="grove_led"></block>
@@ -158,7 +162,7 @@ Blockly.Blocks['grove_rgb_led'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Color 1")
         .appendField(new Blockly.FieldColour("#00ff00"), "RGB0");
-    this.setMutator(new Blockly.Mutator(['grove_rgb_led_item']));
+    // this.setMutator(new Blockly.Mutator(['grove_rgb_led_item']));
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip('256 color LED, currently Chainable feature is not support');
@@ -325,4 +329,168 @@ Blockly.Blocks['grove_bluetooth_slave'] = {
     this.setNextStatement(true, null);
     this.setTooltip('Bluetooth V2.0+EDR slave. Support single slave per board');
   }
+};
+Blockly.JavaScript['grove_led'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var status = block.getFieldValue('STAT');
+
+  var code = `controlLED(${pin}, "${status}");\n`;
+  return code;
+};
+
+Blockly.JavaScript['grove_button'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readButton(${pin})`;
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+};
+
+Blockly.JavaScript['grove_tilt_switch'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readTiltSwitch(${pin})`;
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+};
+
+Blockly.JavaScript['grove_piezo_buzzer'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var status = block.getFieldValue('STAT');
+
+  var code = `controlBuzzer(${pin}, "${status}");\n`;
+  return code;
+};
+
+Blockly.JavaScript['grove_relay'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var status = block.getFieldValue('STAT');
+
+  var code = `controlRelay(${pin}, "${status}");\n`;
+  return code;
+};
+
+Blockly.JavaScript['grove_pir_motion_sensor'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readPIRMotionSensor(${pin})`;
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+};
+
+Blockly.JavaScript['grove_line_finder'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readLineFinder(${pin})`;
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+};
+
+Blockly.JavaScript['grove_ultrasonic_ranger'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var unit = block.getFieldValue('UNIT');
+
+  var code = `readUltrasonicRanger(${pin}, "${unit}")`;
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+};
+
+Blockly.JavaScript['grove_rgb_led'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var colors = [];
+  for (var i = 0; i < block.itemCount_; i++) {
+    colors.push(block.getFieldValue('RGB' + i));
+  }
+
+  var code = `setRGBLED(${pin}, ${JSON.stringify(colors)});\n`;
+  return code;
+};
+
+Blockly.JavaScript['grove_bluetooth_slave'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var name = block.getFieldValue('NAME');
+  var pincode = block.getFieldValue('PINCODE');
+
+  var receiveCode = Blockly.JavaScript.statementToCode(block, 'RCV');
+  var sendCode = Blockly.JavaScript.statementToCode(block, 'SNT');
+
+  var code = `setupBluetoothSlave(${pin}, "${name}", "${pincode}");\n${receiveCode}${sendCode}`;
+  return code;
+};
+Blockly.Python['grove_led'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var status = block.getFieldValue('STAT');
+
+  var code = `controlLED(${pin}, "${status}")\n`;
+  return code;
+};
+
+Blockly.Python['grove_button'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readButton(${pin})`;
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+Blockly.Python['grove_tilt_switch'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readTiltSwitch(${pin})`;
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+Blockly.Python['grove_piezo_buzzer'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var status = block.getFieldValue('STAT');
+
+  var code = `controlBuzzer(${pin}, "${status}")\n`;
+  return code;
+};
+
+Blockly.Python['grove_relay'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var status = block.getFieldValue('STAT');
+
+  var code = `controlRelay(${pin}, "${status}")\n`;
+  return code;
+};
+
+Blockly.Python['grove_pir_motion_sensor'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readPIRMotionSensor(${pin})`;
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+Blockly.Python['grove_line_finder'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+
+  var code = `readLineFinder(${pin})`;
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+Blockly.Python['grove_ultrasonic_ranger'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var unit = block.getFieldValue('UNIT');
+
+  var code = `readUltrasonicRanger(${pin}, "${unit}")`;
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+Blockly.Python['grove_rgb_led'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var colors = [];
+  for (var i = 0; i < block.itemCount_; i++) {
+    colors.push(block.getFieldValue('RGB' + i));
+  }
+
+  var code = `setRGBLED(${pin}, ${colors})\n`;
+  return code;
+};
+
+Blockly.Python['grove_bluetooth_slave'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  var name = block.getFieldValue('NAME');
+  var pincode = block.getFieldValue('PINCODE');
+
+  var receiveCode = Blockly.Python.statementToCode(block, 'RCV');
+  var sendCode = Blockly.Python.statementToCode(block, 'SNT');
+
+  var code = `setupBluetoothSlave(${pin}, "${name}", "${pincode}")\n${receiveCode}${sendCode}`;
+  return code;
 };

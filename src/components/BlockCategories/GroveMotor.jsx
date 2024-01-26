@@ -1,4 +1,8 @@
 import Blockly from 'blockly';
+import { javascriptGenerator } from "blockly/javascript";
+Blockly.JavaScript = javascriptGenerator;
+import { pythonGenerator } from "blockly/python";
+Blockly.Python = pythonGenerator;
 export const GroveMotor = `
 <category name="Grove Motor" colour="#5c81a6">
     <block type="grove_motor_shield"></block>
@@ -22,3 +26,45 @@ Blockly.Blocks['grove_motor_shield'] = {
     }
   };
   
+  Blockly.JavaScript['grove_motor_shield'] = function(block) {
+    var direction = block.getFieldValue('DIRECTION');
+  
+    // Generate JavaScript code based on selected direction
+    var code = '';
+    switch (direction) {
+      case 'stop':
+        code = 'stopMotor();';
+        break;
+      case 'forward':
+        code = 'driveForward();';
+        break;
+      case 'right':
+        code = 'turnRight();';
+        break;
+      case 'left':
+        code = 'turnLeft();';
+        break;
+      case 'backward':
+        code = 'driveBackward();';
+        break;
+    }
+  
+    return code;
+  };
+  Blockly.Python['grove_motor_shield'] = function(block){
+    var direction = block.getFieldValue('DIRECTION')
+
+//   # Generate Python code based on selected direction
+  var code = ''
+  if (direction == 'stop'){code = 'stop_motor()\n'}
+  else if (direction == 'forward')
+    {code = 'drive_forward()\n'}
+  else if (direction == 'right')
+  {  code = 'turn_right()\n'}
+  else if (direction == 'left')
+    {code = 'turn_left()\n'}
+  else if (direction == 'backward')
+    {code = 'drive_backward()\n'}
+
+  return code
+  }
