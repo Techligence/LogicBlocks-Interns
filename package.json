@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@use-gesture/react": "^10.3.0",
     "blockly": "^10.2.1",
+    "blockly-arduino": "^0.1.0",
     "country-flag-emoji": "^1.0.3",
     "emoji-dictionary": "^1.0.11",
     "re-resizable": "^6.9.11",

@@ -4,7 +4,8 @@ import Blockly from 'blockly';
 
 import * as en from 'blockly/msg/en'; // Import English messages
 import * as fr from 'blockly/msg/fr'; // Import French messages
-
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
 import { Logic } from './BlockCategories/Logic';
 import { Grove } from './BlockCategories/Grove';
 import { setCode } from '../features/codeSlice';
@@ -84,20 +85,26 @@ const BlocklyComponent = () => {
       blocklyRef.current,
       { blockToCode: (block) => javascriptGenerator[block.type].call(block, block) }
     );
-
+    
     const pythonCode = pythonGenerator.workspaceToCode(
       blocklyRef.current,
       { blockToCode: (block) => pythonGenerator[block.type].call(block, block) }
-    );
+      );
+
+      const arduinoCode = Arduino.workspaceToCode(
+        blocklyRef.current,
+        { blockToCode: (block) => Arduino['Text'].call(block, block) }
+      );
 
     // Set the generated codes to their respective states
     // setGeneratedCode({ js: jsCode, python: pythonCode });
-    dispatch(setCode({ jsCode, pythonCode }));
+    dispatch(setCode({ jsCode, pythonCode}));
 
 
     // Display both JavaScript and Python code
-    console.log('JavaScript Code:', jsCode);
-    console.log('Python Code:', pythonCode);
+    // console.log('JavaScript Code:', jsCode);
+    // console.log('Python Code:', pythonCode);
+    console.log(arduinoCode);
   };
 
   const toggleLanguage = (selectedLanguage) => {
