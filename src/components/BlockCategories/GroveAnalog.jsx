@@ -23,7 +23,7 @@ Blockly.Blocks['grove_thumb_joystick'] = {
       this.setColour(10);
       this.appendDummyInput()
       .appendField("Thumb Joystick")
-          // .appendField(new Blockly.FieldImage("http://www.seeedstudio.com/wiki/images/thumb/e/e0/Twig_-_Thumb_Joystick_v0.9b.jpg/200px-Twig_-_Thumb_Joystick_v0.9b.jpg", 64, 64))
+          .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/product/bgjoy1.jpg", 64, 64))
       .appendField("PIN#")
           // .appendField(new Blockly.FieldDropdown(profile.default.analog), "PIN")
           .appendField("axis")
@@ -39,7 +39,7 @@ Blockly.Blocks['grove_thumb_joystick'] = {
       this.setColour(10);
       this.appendDummyInput()
           .appendField("Sound Sensor")
-          // .appendField(new Blockly.FieldImage("http://www.seeedstudio.com/wiki/images/thumb/e/e3/Twig-Sound-sensor.jpg/400px-Twig-Sound-sensor.jpg", 64, 64))
+          .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/seeed/img/2017-02/fhpNt4QmMYZRtWvB40LIiMrw.jpg", 64, 64))
           .appendField("PIN#")
           // .appendField(new Blockly.FieldDropdown(profile.default.analog), "PIN")
       this.setOutput(true, 'Number');
@@ -53,7 +53,7 @@ Blockly.Blocks['grove_thumb_joystick'] = {
       this.setColour(10);
       this.appendDummyInput()
           .appendField("Temporature Sensor")
-          // .appendField(new Blockly.FieldImage("http://www.seeedstudio.com/wiki/images/thumb/b/b0/Temperature1.jpg/400px-Temperature1.jpg", 64, 64))
+          .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/101020015%201.jpg", 64, 64))
           .appendField("PIN#")
           // .appendField(new Blockly.FieldDropdown(profile.default.analog), "PIN")
       this.setOutput(true, 'Number');
@@ -65,6 +65,7 @@ Blockly.Blocks['grove_thumb_joystick'] = {
         this.setColour(10);
         this.appendDummyInput()
             .appendField("Rotary Angle")
+            .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/product/GroveRotaryP.jpg", 64, 64))
             .appendField("Axis")
             .appendField(new Blockly.FieldDropdown([["x", "x"], ["y", "y"]]), "AXIS");
         this.setOutput(true, 'Number');

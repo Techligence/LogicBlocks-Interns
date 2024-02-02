@@ -21,7 +21,7 @@ Blockly.Blocks['grove_serial_lcd_print'] = {
       this.setColour(190);
       this.appendDummyInput()
           .appendField("Serial LCD")
-          // .appendField(new Blockly.FieldImage("http://www.seeedstudio.com/wiki/images/thumb/6/6a/LCD1.jpg/400px-LCD1.jpg", 64, 64))
+          .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/product/Serial%20LCD.jpg", 64, 64))
           .appendField("PIN#")
           // .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
       this.appendValueInput("TEXT", 'String')
@@ -49,7 +49,7 @@ Blockly.Blocks['grove_serial_lcd_print'] = {
       this.setColour(190);
       this.appendDummyInput()
           .appendField("Serial LCD")
-          // .appendField(new Blockly.FieldImage("http://www.seeedstudio.com/wiki/images/thumb/6/6a/LCD1.jpg/400px-LCD1.jpg", 64, 64))
+          .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/product/Serial%20LCD.jpg", 64, 64))
           .appendField("PIN#")
           // .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
       this.appendDummyInput()
@@ -70,7 +70,7 @@ Blockly.Blocks['grove_serial_lcd_print'] = {
       this.setColour(190);
       this.appendDummyInput()
           .appendField("Serial LCD")
-          // .appendField(new Blockly.FieldImage("http://www.seeedstudio.com/wiki/images/thumb/6/6a/LCD1.jpg/400px-LCD1.jpg", 64, 64))
+          .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/product/Serial%20LCD.jpg", 64, 64))
           .appendField("PIN#")
           // .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
       this.appendDummyInput()
