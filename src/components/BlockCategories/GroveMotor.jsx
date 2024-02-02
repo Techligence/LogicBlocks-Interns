@@ -3,11 +3,16 @@ import { javascriptGenerator } from "blockly/javascript";
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 Blockly.Python = pythonGenerator;
+
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
 export const GroveMotor = `
 <category name="Grove Motor" colour="#5c81a6">
     <block type="grove_motor_shield"></block>
 </category>
 `;
+
 Blockly.Blocks['grove_motor_shield'] = {
     // helpUrl: 'http://www.seeedstudio.com/wiki/Motor_Shield',
     init: function() {
@@ -26,6 +31,13 @@ Blockly.Blocks['grove_motor_shield'] = {
     }
   };
   
+  Arduino['grove_motor_shield'] = function () {
+    var direction = this.getFieldValue('DIRECTION');
+    var code = 'groveMotorShield.' + direction + '();\n';  // Replace 'groveMotorShield' with the actual motor shield object
+    console.log("Arduino" + code);
+    return code;
+};
+
   Blockly.JavaScript['grove_motor_shield'] = function(block) {
     var direction = block.getFieldValue('DIRECTION');
   

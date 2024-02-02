@@ -3,6 +3,10 @@ import { javascriptGenerator } from "blockly/javascript";
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 Blockly.Python = pythonGenerator;
+
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
 export const GroveLCD = `
 <category name="Grove LCD" colour="#5c81a6">
     <block type="grove_serial_lcd_print"></block>
@@ -132,4 +136,35 @@ Blockly.Blocks['grove_serial_lcd_print'] = {
     var code = `setLCDEffect(${pin}, "${effect}")\n`;
     return code;
   };
-  
+
+
+// ============================== Arduino Code ============================
+Arduino['grove_serial_lcd_print'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var text1 = Blockly.Arduino.valueToCode(this, 'TEXT', Blockly.Arduino.ORDER_ATOMIC) || "\"\"";
+  var text2 = Blockly.Arduino.valueToCode(this, 'TEXT2', Blockly.Arduino.ORDER_ATOMIC) || "\"\"";
+  var delayTime = Blockly.Arduino.valueToCode(this, 'DELAY_TIME', Blockly.Arduino.ORDER_ATOMIC) || "0";
+
+  var code = 'groveSerialLCD.print(' + pin + ', ' + text1 + ', ' + text2 + ');\n';
+  code += 'delay(' + delayTime + ');\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_serial_lcd_power'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+
+  var code = 'groveSerialLCD.power(' + pin + ', "' + stat + '");\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_serial_lcd_effect'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+
+  var code = 'groveSerialLCD.effect(' + pin + ', "' + stat + '");\n';
+  console.log("Arduino" + code);
+  return code;
+};

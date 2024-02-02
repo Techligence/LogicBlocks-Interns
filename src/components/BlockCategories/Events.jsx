@@ -3,6 +3,9 @@ import { javascriptGenerator } from "blockly/javascript";
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
 // Block for FLAG_CLICKED event trigger.
 Blockly.Blocks["flag_clicked_event"] = {
   init: function () {
@@ -359,6 +362,77 @@ pythonGenerator.forBlock["broadcast_message_and_wait"] = function (
   return code;
 };
 
+
+// ================================== Arduino Code =============================================
+Arduino['flag_clicked_event'] = function() {
+  var code = 'whenFlagClicked';
+  console.log(code);
+  return code
+}
+
+Arduino['event_trigger'] = function () {
+  var eventName = this.getFieldValue('EVENT_NAME');
+  var code = 'when ' + eventName + ' is triggered\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['key_press_event'] = function () {
+  var keyName = this.getFieldValue('KEY_NAME');
+  var code = 'whenkeyIsPressed ' + keyName + '\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['sprite_clicked_event'] = function() {
+  var code = 'whenThisSpriteClicked';
+  console.log(code);
+  return code
+}
+
+Arduino['when_backdrop_switches_to'] = function () {
+  var keyName = this.getFieldValue('BACKDROP_NAME');
+  var code = 'whenBackDropSwitchesTo ' + keyName + '\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['when_dropdown_greater_than_input'] = function () {
+  var dropdownOptions = {
+    'OPTION1': 'Loudness',
+    'OPTION2': 'Timer',
+    // Add mappings for more options if needed...
+  };
+
+  var dropdownName = this.getFieldValue('DROPDOWN_NAME');
+  var selectedOption = dropdownOptions[dropdownName];
+  var inputValue = this.getFieldValue('INPUT_VALUE');
+  var code = 'when ' + selectedOption + ' > ' + inputValue + '\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['when_i_receive_dropdown'] = function () {
+  var dropdownValue = this.getFieldValue('BACKDROP_NAME');
+  var code = 'whenIReceive ' + dropdownValue + '\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['broadcast'] = function () {
+  var dropdownValue = this.getFieldValue('BACKDROP_NAME');
+  var code = 'broadcast ' + dropdownValue + '\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['broadcast_message_and_wait'] = function () {
+  var dropdownValue = this.getFieldValue('BACKDROP_NAME');
+  var code = 'broadcast ' + dropdownValue + ' and wait event: \n';
+  console.log("Arduino" + code);
+  return code;
+};
+
 // JavaScript code for generating category XML
 export const Events = `
   <category name="Events" colour="#5c81a6">
@@ -374,3 +448,5 @@ export const Events = `
       <!-- Other event blocks go here... -->
   </category>
   `;
+
+

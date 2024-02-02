@@ -1,4 +1,7 @@
 // MathCategory.jsx
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
 export const Math = `
   <category name="Math" colour="#5C81A6" >
     <block type="math_number"></block>
@@ -17,3 +20,10 @@ export const Math = `
     </block>
   </category>
 `;
+
+Arduino['Math']= function() {
+  // Text value.
+  var code = Blockly.Arduino.quote_(this.getFieldValue('Math'));
+  console.log("Arduino"+ code);
+  return [code, Blockly.Arduino.ORDER_ATOMIC];
+};

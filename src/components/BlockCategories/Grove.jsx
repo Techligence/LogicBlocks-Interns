@@ -3,6 +3,10 @@ import { javascriptGenerator } from "blockly/javascript";
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 Blockly.Python = pythonGenerator;
+
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
 export const Grove = `
 <category name="Grove" colour="#5c81a6">
     <block type="grove_led"></block>
@@ -492,5 +496,112 @@ Blockly.Python['grove_bluetooth_slave'] = function(block) {
   var sendCode = Blockly.Python.statementToCode(block, 'SNT');
 
   var code = `setupBluetoothSlave(${pin}, "${name}", "${pincode}")\n${receiveCode}${sendCode}`;
+  return code;
+};
+
+
+// ================================ Arduino Code =====================================
+Arduino['grove_led'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+  var code = 'digitalWriteLED(' + pin + ', ' + stat + ');\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_button'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var code = 'digitalReadButton(' + pin + ')';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_tilt_switch'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var code = 'digitalReadTiltSwitch(' + pin + ')';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_piezo_buzzer'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+  var code = 'digitalWritePiezoBuzzer(' + pin + ', ' + stat + ');\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_relay'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+  var code = 'digitalWriteGroveRelay(' + pin + ', ' + stat + ');\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_pir_motion_sensor'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var code = 'digitalReadGrovePirMotionSensor(' + pin + ')';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_line_finder'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var code = 'digitalReadGroveLineFinder(' + pin + ')';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_ultrasonic_ranger'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var unit = this.getFieldValue('UNIT');
+  var code = 'ultrasonicReadGroveUltrasonicRanger(' + pin + ', "' + unit + '")';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_rgb_led'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var colors = [];
+  for (var i = 0; i < this.itemCount_; i++) {
+      colors.push(this.getFieldValue('RGB' + i));
+  }
+  var code = 'setRGB(' + pin + ', ' + colors.join(', ') + ');\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_serial_lcd_print'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var text1 = Blockly.Arduino.valueToCode(this, 'TEXT', Blockly.Arduino.ORDER_ATOMIC) || '';
+  var text2 = Blockly.Arduino.valueToCode(this, 'TEXT2', Blockly.Arduino.ORDER_ATOMIC) || '';
+  var delayTime = Blockly.Arduino.valueToCode(this, 'DELAY_TIME', Blockly.Arduino.ORDER_ATOMIC) || '0';
+  var code = 'serialLCDPrint(' + pin + ', ' + text1 + ', ' + text2 + ', ' + delayTime + ');\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_serial_lcd_power'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+  var code = 'serialLCDPower(' + pin + ', "' + stat + '");\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_serial_lcd_effect'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+  var code = 'serialLCDEffect(' + pin + ', "' + stat + '");\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_led'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var stat = this.getFieldValue('STAT');
+  var code = 'digitalWriteGroveLed(' + pin + ', ' + stat + ');\n';
+  console.log("Arduino" + code);
   return code;
 };

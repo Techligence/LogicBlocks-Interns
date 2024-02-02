@@ -3,6 +3,10 @@ import { javascriptGenerator } from "blockly/javascript";
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 Blockly.Python = pythonGenerator;
+
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
 export const Functions = `
 <category name="Funtions" colour="#5C81A6">
     <block type="do_something_func"></block>
@@ -128,4 +132,37 @@ Blockly.Python['inline_if'] = function (block){
 Blockly.Python['do_something2_input'] = function (block) {
   var code = 'doSomething2Input()';
   return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
+
+// ========================== Arduino Code =============================
+
+Arduino['do_something_func'] = function (block) {
+  var functionName = block.getFieldValue('FUNCTION_NAME');
+  var methodBody = Blockly['javascript'].statementToCode(block, 'METHOD_BODY');
+  var code = 'void ' + functionName + '() {\n' + methodBody + '}\n';
+  return code;
+};
+
+Arduino['do_something2_func'] = function () {
+  var functionName = Blockly.Arduino.quote_(this.getFieldValue('FUNCTION_NAME'));
+  var methodBody = Blockly.Arduino.statementToCode(this, 'METHOD_BODY');
+  var returnValue = Blockly.Arduino.valueToCode(this, 'RETURN_VALUE', Blockly.Arduino.ORDER_ATOMIC) || '';
+  var code = functionName + ' {' + methodBody + ' return ' + returnValue + ';}';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['inline_if'] = function () {
+  var condition = Blockly.Arduino.valueToCode(this, 'CONDITION', Blockly.Arduino.ORDER_ATOMIC) || '';
+  var returnValue = Blockly.Arduino.valueToCode(this, 'RETURN_VALUE', Blockly.Arduino.ORDER_ATOMIC) || '';
+  var code = 'if (' + condition + ') return ' + returnValue + ';';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['do_something2_input'] = function () {
+  var code = 'doSomething2Function()';
+  console.log("Arduino" + code);
+  return code;
 };

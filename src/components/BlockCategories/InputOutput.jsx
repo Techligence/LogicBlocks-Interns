@@ -3,6 +3,9 @@ import { javascriptGenerator } from "blockly/javascript";
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
 // Block for HIGH/LOW input and output
 Blockly.Blocks['high_low'] = {
     init: function () {
@@ -14,6 +17,13 @@ Blockly.Blocks['high_low'] = {
         this.setTooltip("");
         this.setHelpUrl("");
     }
+};
+
+Arduino['high_low'] = function () {
+    var value = this.getFieldValue('NAME');
+    var code = value.toLowerCase();  // Convert to lowercase for consistency with Arduino syntax
+    console.log("Arduino" + code);
+    return code;
 };
 
 // JS codegenerator for HIGH/LOW block

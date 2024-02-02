@@ -3,6 +3,11 @@ import { javascriptGenerator } from "blockly/javascript";
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 Blockly.Python = pythonGenerator;
+
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
+
+
 export const GroveAnalog = `
 <category name="Grove Analog" colour="#5c81a6">
     <block type="grove_rotary_angle"></block> 
@@ -56,18 +61,16 @@ Blockly.Blocks['grove_thumb_joystick'] = {
     }
   };
   Blockly.Blocks['grove_rotary_angle'] = {
-    // helpUrl: 'http://www.seeedstudio.com/wiki/index.php?title=GROVE_-_Starter_Bundle_V1.0b#Potentiometer',
     init: function() {
-      this.setColour(10);
-      this.appendDummyInput()
-          .appendField("Rotary Angle")
-          // .appendField(new Blockly.FieldImage("http://www.seeedstudio.com/wiki/images/thumb/5/59/Potentiometer1.jpg/400px-Potentiometer1.jpg", 64, 64))
-          .appendField("PIN#")
-          // .appendField(new Blockly.FieldDropdown(profile.default.analog), "PIN");
-      this.setOutput(true, 'Number');
-      this.setTooltip('Analog output between 0 and Vcc');
+        this.setColour(10);
+        this.appendDummyInput()
+            .appendField("Rotary Angle")
+            .appendField("Axis")
+            .appendField(new Blockly.FieldDropdown([["x", "x"], ["y", "y"]]), "AXIS");
+        this.setOutput(true, 'Number');
+        this.setTooltip('Analog output between 0 and Vcc');
     }
-  };  
+};
   Blockly.JavaScript['grove_thumb_joystick'] = function(block) {
     var pin = block.getFieldValue('PIN');
     var axis = block.getFieldValue('AXIS');
@@ -126,3 +129,38 @@ Blockly.Blocks['grove_thumb_joystick'] = {
     return [code, Blockly.Python.ORDER_FUNCTION_CALL];
   };
   
+
+
+
+
+
+  // ========================== Arduino Code ==========================
+  Arduino['grove_thumb_joystick'] = function () {
+    var pin = this.getFieldValue('PIN#');
+    var axis = this.getFieldValue('AXIS');
+    var code = 'analogRead(' + pin + ' + ' + (axis === 'x' ? 'A0' : 'A1') + ')';  // Adjust pin numbers as needed
+    console.log("Arduino" + code);
+    return code;
+};
+
+Arduino['grove_sound_sensor'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var code = 'analogRead(' + pin + ')';
+  console.log("Arduino" + code);
+  return code;
+};
+
+
+Arduino['grove_temporature_sensor'] = function () {
+  var pin = this.getFieldValue('PIN#');
+  var code = 'analogRead(' + pin + ')';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['grove_rotary_angle'] = function () {
+  var axis = this.getFieldValue('AXIS');
+  var code = 'analogRead(' + (axis === 'x' ? 'A0' : 'A1') + ')';
+  console.log("Arduino" + code);
+  return code;
+};

@@ -4,6 +4,8 @@ import { javascriptGenerator } from 'blockly/javascript';
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
 
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
 
 export const Control = `
 <category name="Control" colour="#5c81a6">
@@ -321,3 +323,102 @@ pythonGenerator['delete_this_clone'] = function (block, generator) {
   const code = `deleteThisClone()\n`;
   return code;
 };  
+
+
+
+// =========================== Arduino Code ==============================
+// Wait Seconds Block
+Arduino['wait_seconds'] = function() {
+  var seconds = this.getFieldValue('SECONDS');
+  var code = 'delay(' + (seconds * 1000) + ');\n';  // Assuming delay function in milliseconds
+  console.log("Arduino" + code);
+  return code;
+};
+
+// Repeat Times Block
+Arduino['repeat_times'] = function() {
+  var times = this.getFieldValue('TIMES');
+  var code = 'for (int i = 0; i < ' + times + '; i++) {\n';
+  code += Blockly.Arduino.statementToCode(this, 'DO');
+  code += '}\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+// If-Then Block
+Arduino['if_then'] = function() {
+  var condition = Blockly.Arduino.valueToCode(this, 'CONDITION', Blockly.Arduino.ORDER_ATOMIC);
+  var code = 'if (' + condition + ') {\n';
+  code += Blockly.Arduino.statementToCode(this, 'DO');
+  code += '}\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+// If-Then-Else Block
+Arduino['if_then_else'] = function() {
+  var condition = Blockly.Arduino.valueToCode(this, 'CONDITION', Blockly.Arduino.ORDER_ATOMIC);
+  var code = 'if (' + condition + ') {\n';
+  code += Blockly.Arduino.statementToCode(this, 'DO');
+  code += '} else {\n';
+  code += Blockly.Arduino.statementToCode(this, 'ELSE');
+  code += '}\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+// Wait Until Block
+Arduino['wait_until'] = function() {
+  var condition = Blockly.Arduino.valueToCode(this, 'CONDITION', Blockly.Arduino.ORDER_ATOMIC);
+  var code = 'while (!' + condition + ') {\n';
+  code += '  // Wait until condition is true\n';
+  code += '}\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+// Repeat Until Block
+Arduino['repeat_until'] = function() {
+  var condition = Blockly.Arduino.valueToCode(this, 'CONDITION', Blockly.Arduino.ORDER_ATOMIC);
+  var code = 'while (!' + condition + ') {\n';
+  code += Blockly.Arduino.statementToCode(this, 'DO');
+  code += '}\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['forever'] = function() {
+  var code = 'while (true) {\n';
+  code += Blockly.Arduino.statementToCode(this, 'DO');
+  code += '}\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['stop'] = function() {
+  var stopOption = this.getFieldValue('STOP_OPTION');
+  var code = 'stop(' + stopOption + ');\n';  // Assuming stop function takes the appropriate argument
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['when_start_as_clone'] = function() {
+  var code = 'whenIStartAsClone\n';
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['create_clone_of'] = function() {
+  var cloneOption = this.getFieldValue('CLONE_OPTION');
+  var code = 'createClone(' + cloneOption + ');\n';  // Assuming createClone function takes the appropriate argument
+  console.log("Arduino" + code);
+  return code;
+};
+
+Arduino['delete_this_clone'] = function() {
+  var code = 'deleteThisClone();\n';  // Assuming deleteThisClone function
+  console.log("Arduino" + code);
+  return code;
+};
+
+
