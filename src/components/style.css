@@ -1,0 +1,232 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+
+
+.container {
+    height: 470px;
+    width: 400px;
+    background-color: white;
+    box-shadow: 8px 8px 20px rgb(128, 128, 128);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn {
+    height: 50px;
+    width: 250px;
+    margin: 20px auto;
+    box-shadow: 10px 10px 30px  rgb(201, 228, 255);
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.login,
+.signup {
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+}
+
+.slider {
+    height: 50px;
+    width: 140px;
+    border-radius: 50px;
+    background-image: linear-gradient(to right,  rgb(23, 94, 165),
+	rgb(78, 145, 212)
+	);
+    position: absolute;
+    top: 20px;
+    left: 60px;
+    transition: all 0.5s ease-in-out;
+}
+
+.moveslider {
+    left: 190px;
+}
+
+.form-section {
+    height: 350px;
+    width: 30px; /* Increased width */
+    padding: 17px 0;
+    display: flex;
+    position: relative;
+    transition: left 0.5s ease-in-out;
+    left: 20px;
+    margin: 35px;
+}
+
+.form-section-move {
+    left: -299px;
+}
+
+.login-box {
+	height: 100%;
+    width: 560px; /* Increased width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 40px;
+	margin: left 30px ;
+}
+.signup-box {
+    height: 100%;
+    width: 590px; /* Increased width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 50px;
+	margin: left 90px ;
+}
+
+.login-box {
+    gap: 30px;
+}
+
+.signup-box {
+    gap: 20px;
+}
+
+.ele {
+    height: 40px;
+    width: 200px;
+    outline: none;
+    border: none;
+    color: rgb(77, 77, 77);
+    background-color: rgb(240, 240, 240);
+    border-radius: 30px;
+    padding-left: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.clkbtn {
+    height: 40px;
+    width: 100px;
+    border-radius: 50px;
+    background-image: linear-gradient(to right, rgb(10, 87, 163),
+	rgb(78, 145, 212)
+	);
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* For Responsiveness of the page */
+
+@media screen and (max-width: 650px) {
+    .container {
+        height: 100px;
+        width: 250px;
+    }
+
+    .btn {
+        height: 40px;
+        width: 200px;
+        margin: 20px auto;
+    }
+
+    .login,
+    .signup {
+        font-size: 16px;
+    }
+
+    .slider {
+        height: 40px;
+        width: 90px;
+        left: 40px;
+    }
+
+    .moveslider {
+        left: 130px;
+    }
+
+    .form-section {
+        height: 350px;
+        width: 200px;
+    }
+    .form-section-move {
+        left: -300px;
+    }
+
+    .login-box,
+    .signup-box {
+        height: 100%;
+        width: 200px;
+    }
+
+    .ele {
+        height: 30px;
+        width: 150px;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .clkbtn {
+        height: 30px;
+        width: 70px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .container {
+        height: 450px;
+        width: 200px;
+    }
+
+    .btn {
+        height: 40px;
+        width: 200px;
+        margin: 20px auto;
+    }
+
+    .login,
+    .signup {
+        font-size: 16px;
+    }
+
+    .slider {
+        height: 40px;
+        width: 90px;
+        left: 20px;
+    }
+
+    .moveslider {
+        left: 110px;
+    }
+
+    .form-section {
+        height: 350px;
+        width: 150px;
+    }
+
+    .form-section-move {
+        left: -250px;
+    }
+
+    .login-box,
+    .signup-box {
+        height: 100%;
+        width: 150px;
+    }
+
+    .ele {
+        height: 30px;
+        width: 120px;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .clkbtn {
+        height: 30px;
+        width: 60px;
+        font-size: 14px;
+    }
+}

@@ -1,8 +1,7 @@
 import Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
-Blockly.JavaScript = javascriptGenerator;
 export const Control = `
-<category name="Control" colour="120">
+<category name="Control" >
     <block type="wait_seconds"></block>
     <block type="repeat_times"></block>
     <block type="forever"></block>
@@ -169,101 +168,110 @@ Blockly.Blocks['delete_this_clone'] = {
   }
 };
 
+
 // JavaScript code generator for 'wait_seconds' block
-javascriptGenerator['wait_seconds'] = function (block) {
+javascriptGenerator['wait_seconds'] = function(block) {
   const seconds = block.getFieldValue('SECONDS');
-  const code = `waitSeconds(${seconds});\n`;
+  const code = 
+  `await waitSeconds(${seconds});
+`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'repeat_times' block
-Blockly.JavaScript['repeat_times'] = function (block) {
+javascriptGenerator['repeat_times'] = function (block) {
   const times = block.getFieldValue('TIMES');
-  const statements = Blockly.JavaScript.statementToCode(block, 'DO');
-  const code = `for (let i = 0; i < ${times}; i++) {\n${statements}}\n`;
+  const statements = javascriptGenerator.statementToCode(block, 'DO');
+  const code = 
+  `for (let i = 0; i < ${times}; i++) {\n${statements}}
+`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'if_then' block
-Blockly.JavaScript['if_then'] = function (block) {
-  const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_ATOMIC);
-  const statements = Blockly.JavaScript.statementToCode(block, 'DO');
-  const code = `if (${condition}) {\n${statements}}\n`;
+javascriptGenerator['if_then'] = function (block) {
+  const condition = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
+  const statements = javascriptGenerator.statementToCode(block, 'DO');
+  const code = 
+  `if (${condition}) {\n${statements}}
+`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'if_then_else' block
-Blockly.JavaScript['if_then_else'] = function (block) {
-  const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_ATOMIC);
-  const doStatements = Blockly.JavaScript.statementToCode(block, 'DO');
-  const elseStatements = Blockly.JavaScript.statementToCode(block, 'ELSE');
+javascriptGenerator['if_then_else'] = function (block) {
+  const condition = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
+  const doStatements = javascriptGenerator.statementToCode(block, 'DO');
+  const elseStatements = javascriptGenerator.statementToCode(block, 'ELSE');
   const code = `if (${condition}) {\n${doStatements}} else {\n${elseStatements}}\n`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'wait_until' block
-Blockly.JavaScript['wait_until'] = function (block) {
-  const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_ATOMIC);
-  const code = `waitUntil(${condition});\n`;
+javascriptGenerator['wait_until'] = function (block) {
+  const condition = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
+  const code = 
+  `waitUntil(${condition});
+`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'repeat_until' block
-Blockly.JavaScript['repeat_until'] = function (block) {
-  const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_ATOMIC);
-  const statements = Blockly.JavaScript.statementToCode(block, 'DO');
-  const code = `while (!(${condition})) {\n${statements}}\n`;
+javascriptGenerator['repeat_until'] = function (block) {
+  const condition = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_ATOMIC);
+  const statements = javascriptGenerator.statementToCode(block, 'DO');
+  const code = 
+  `while (!(${condition})) {\n${statements}}\n`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'forever' block
-Blockly.JavaScript['forever'] = function (block) {
-  const statements = Blockly.JavaScript.statementToCode(block, 'DO');
+javascriptGenerator['forever'] = function (block) {
+  const statements = javascriptGenerator.statementToCode(block, 'DO');
   const code = `while (true) {\n${statements}}\n`;
   console.log(code);
   return code;
 };
 
-// JavaScript code generator for 'wait_until' block
-Blockly.JavaScript['wait_until'] = function (block) {
-  const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_ATOMIC);
-  const code = `waitUntil(${condition});\n`;
+// JavaScript code generator for 'stop' block
+javascriptGenerator['stop'] = function (block) {
+  const stopOption = block.getFieldValue('STOP_OPTION');
+  const code = 
+  `stop("${stopOption}");
+`;
   console.log(code);
   return code;
 };
 
-// JavaScript code generator for 'stop' block
-Blockly.JavaScript['stop'] = function (block) {
-  const stopOption = block.getFieldValue('STOP_OPTION');
-  const code = `stop("${stopOption}");\n`;
-  console.log(code);
-  return code;
-};
 
 // JavaScript code generator for 'when_start_as_clone' block
-Blockly.JavaScript['when_start_as_clone'] = function (block) {
-  const code = `whenStartAsClone();\n`;
+javascriptGenerator['when_start_as_clone'] = function (block) {
+  const code = 
+  `whenStartAsClone();\n`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'create_clone_of' block
-Blockly.JavaScript['create_clone_of'] = function (block) {
+javascriptGenerator['create_clone_of'] = function (block) {
   const cloneOption = block.getFieldValue('CLONE_OPTION');
-  const code = `createCloneOf("${cloneOption}");\n`;
+  const code = 
+  `createCloneOf("${cloneOption}");\n`;
   console.log(code);
   return code;
 };
 
 // JavaScript code generator for 'delete_this_clone' block
-Blockly.JavaScript['delete_this_clone'] = function (block) {
-  const code = `deleteThisClone();\n`;
+javascriptGenerator['delete_this_clone'] = function (block) {
+  const code = 
+  `deleteThisClone();
+`;
   console.log(code);
   return code;
 };
