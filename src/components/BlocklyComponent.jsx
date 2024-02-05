@@ -93,12 +93,12 @@ const BlocklyComponent = () => {
 
       const arduinoCode = Arduino.workspaceToCode(
         blocklyRef.current,
-        { blockToCode: (block) => Arduino['Text'].call(block, block) }
+        { blockToCode: (block) => Arduino[block.type].call(block, block) }
       );
 
     // Set the generated codes to their respective states
     // setGeneratedCode({ js: jsCode, python: pythonCode });
-    dispatch(setCode({ jsCode, pythonCode}));
+    dispatch(setCode({ jsCode, pythonCode, arduinoCode}));
 
 
     // Display both JavaScript and Python code

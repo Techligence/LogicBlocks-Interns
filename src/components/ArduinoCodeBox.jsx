@@ -1,17 +1,12 @@
 // ArduinoCodeBox.js
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectCode } from '../features/codeSlice';
 
 const ArduinoCodeBox = () => {
+  const { arduinoCode } = useSelector(selectCode);
   // Your Arduino code goes here
-  const arduinoCode = `
-    void setup() {
-      // Setup code
-    }
-
-    void loop() {
-      // Loop code
-    }
-  `;
+  
 
   return (
     <div className="GenerateCodeBox" style={{

@@ -3,6 +3,8 @@ import Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
 Blockly.JavaScript = javascriptGenerator;
 import { pythonGenerator } from "blockly/python";
+import 'blockly-arduino/blocks'
+import * as Arduino from 'blockly-arduino/arduino'
 
 
 // Block for variable getter.
@@ -154,6 +156,33 @@ pythonGenerator.forBlock['variables_hide'] = function(block, generator) {
   return code;
 };
 
+Arduino['variables_get'] = function() {
+  // Variable getter.
+  var code = Arduino.variableDB_.getName(this.getFieldValue('VAR'),
+      Variables.NAME_TYPE);
+  return [code, Arduino.ORDER_ATOMIC];
+};
+
+Arduino['variables_declare'] = function() {
+  // Variable setter.
+  var dropdown_type = this.getFieldValue('TYPE');
+  //TODO: settype to variable
+  var argument0 = Arduino.valueToCode(this, 'VALUE',
+      Arduino.ORDER_ASSIGNMENT) || '0';
+  var varName = Arduino.variableDB_.getName(this.getFieldValue('VAR'),
+      Variables.NAME_TYPE);
+  Arduino.setups_['setup_var' + varName] = varName + ' = ' + argument0 + ';\n';
+  return '';
+};
+
+Arduino['variables_set']= function() {
+  // Variable setter.
+  var argument0 = Arduino.valueToCode(this, 'VALUE',
+      Arduino.ORDER_ASSIGNMENT) || '0';
+  var varName = Arduino.variableDB_.getName(this.getFieldValue('VAR'),
+      Variables.NAME_TYPE);
+  return varName + ' = ' + argument0 + ';\n';
+};
 export const Variables = `
   <category name="Variables" colour="#5C81A6">
     <block type="variables_get"></block>
@@ -164,3 +193,4 @@ export const Variables = `
     <!-- Other variable blocks go here... -->
   </category>
 `;
+

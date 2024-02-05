@@ -8,6 +8,7 @@ const codeSlice = createSlice({
     setCode: (state, action) => {
       state.jsCode = action.payload.jsCode;
       state.pythonCode = action.payload.pythonCode;
+      state.arduinoCode = action.payload.arduinoCode;
     },
   },
 });
