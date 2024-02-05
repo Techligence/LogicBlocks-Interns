@@ -1,12 +1,26 @@
 // ArduinoCodeBox.js
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCode } from '../features/codeSlice';
 
 const ArduinoCodeBox = () => {
   const { arduinoCode } = useSelector(selectCode);
-  // Your Arduino code goes here
-  
+  const [uploading, setUploading] = useState(false);
+
+  const handleUpload = () => {
+    // TODO: Implement code to send arduinoCode to Arduino device
+    // You may use a library like serialport or a custom solution for communication
+    // Example: sendToArduino(arduinoCode);
+    
+    // Set uploading state to show loading indicator
+    setUploading(true);
+
+    // Simulate a delay for demonstration purposes (remove in the actual implementation)
+    setTimeout(() => {
+      // Reset uploading state after the simulated upload is complete
+      setUploading(false);
+    }, 2000);
+  };
 
   return (
     <div className="GenerateCodeBox" style={{
@@ -39,6 +53,23 @@ const ArduinoCodeBox = () => {
       }}>
         {arduinoCode}
       </pre>
+      
+      {/* Upload Button */}
+      <button
+        onClick={handleUpload}
+        disabled={uploading}
+        style={{
+          marginTop: "10px",
+          padding: "8px 16px",
+          backgroundColor: "#007BFF",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+      >
+        {uploading ? 'Uploading...' : 'Upload to Arduino'}
+      </button>
     </div>
   );
 };
