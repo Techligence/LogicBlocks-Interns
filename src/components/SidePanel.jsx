@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../index.css'; // You can create a separate CSS file for styling
 import GenerateCodeBox from './GenerateCodeBox';
+import ArduinoCodeBox from './ArduinoCodeBox';
 
 const SidePanel = () => {
     const [isPanelVisible, setPanelVisibility] = useState(false);
@@ -20,6 +21,9 @@ const SidePanel = () => {
           {/* Add your content for the side panel here */}
           <div className="panel-content">
             <GenerateCodeBox />
+
+          {/* New ArduinoCodeBox component */}
+          <ArduinoCodeBox />
 
             {/* You can add more content as needed */}
           </div>
