@@ -52,10 +52,51 @@ const InitializeBlockly = (toolboxXml) => {
   return workspace;
 };
 
+
 //function to console log hello
 function make_block() {
   console.log("Make a block BUTTON CLICKED!");
+  if (document.getElementById("customModal")) {
+    return;
+  }
+  const modalContainer = document.createElement("div");
+  modalContainer.id = "customModal";
+
+  const modalContent = document.createElement("div");
+  modalContent.innerHTML = `
+    <p>Make a block BUTTON CLICKED!</p>
+    <span id="closeModal">&times;</span>
+  `;
+
+  modalContent.style.padding = "20px";
+  modalContent.style.backgroundColor = "#fff";
+  modalContent.style.border = "1px solid #ccc";
+  modalContent.style.borderRadius = "5px";
+  modalContent.style.position = "fixed";
+  modalContent.style.top = "50%";
+  modalContent.style.left = "50%";
+  modalContent.style.transform = "translate(-50%, -50%)";
+  modalContent.style.width = "30%"; // Adjust width as needed
+  modalContent.style.height = "50%"; // Adjust height as needed
+
+  const closeModalButton = modalContent.querySelector("#closeModal");
+  closeModalButton.style.cursor = "pointer";
+  closeModalButton.style.position = "absolute";
+  closeModalButton.style.top = "10px";
+  closeModalButton.style.right = "20px";
+  closeModalButton.style.fontSize = "20px";
+  closeModalButton.style.color = "#aaa";
+
+
+  closeModalButton.addEventListener("click", () => {
+    document.body.removeChild(modalContainer);
+  });
+
+  modalContainer.appendChild(modalContent);  
+
+  document.body.appendChild(modalContainer);
 }
+
 
   // Helper functions to create undo, redo, zoom-in, zoom-out, and reset buttons
   function createZoomInButton(workspace, size) {
