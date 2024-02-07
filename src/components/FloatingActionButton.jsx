@@ -133,7 +133,10 @@ const FloatingActionButton = () => {
 
     return (
       <Box>
-        <Typography variant="h6">
+        <Typography variant="h5" style={{
+          textAlign: "center",
+          marginBottom: "1.5rem",
+        }}>
           {selectedOption === "Choose a Sprite" ? "Sprite" : "Backdrop"}{" "}
           Selection
         </Typography>
@@ -143,14 +146,18 @@ const FloatingActionButton = () => {
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ marginBottom: '5px' }}
+            style={{ 
+              marginBottom: '5px', 
+              width: '100%',
+            }}
           />
 
           <div
+          id="up-draw-box"
             style={{
+              width: '100%',
               display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
+              gap: '10px',
               maxHeight: '300px',
               overflowY: 'auto',
               marginTop: '16px',
@@ -183,8 +190,11 @@ const FloatingActionButton = () => {
             display: "flex",
             flexWrap: 'wrap',
             gap: '8px',
+            width: '100%',
             maxHeight: '300px',
             overflowY: 'auto',
+            justifyContent: 'center',
+            marginTop: '16px',
           }}>
             {filteredItems.map((item, index) => (
               <div
@@ -192,11 +202,10 @@ const FloatingActionButton = () => {
                 style={{
                   width: '50px',
                   height: '50px',
-                  marginBottom: '8px',
-                  marginRight: '18px',
+                  margin: '10px',
                   cursor: 'pointer',
                   backgroundImage: `url(${item})`,
-                  backgroundSize: 'cover',
+                  backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
                   border: selectedItemImage === item ? '2px solid #2196F3' : 'none',
@@ -251,7 +260,7 @@ const FloatingActionButton = () => {
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
-        <Box
+        <Box className="selection-box"
           sx={{
             position: "absolute",
             top: "50%",

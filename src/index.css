@@ -23,3 +23,11 @@ body {
   border-radius: 5px;     /* Optional rounded corners */
   padding: 5px;           /* Some padding */
 }
+
+.selection-box{
+  border-radius: 1rem;
+}
+
+#up-draw-box > *{
+  width: 100%;
+}
