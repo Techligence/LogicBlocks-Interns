@@ -47,8 +47,15 @@ const InitializeBlockly = (toolboxXml) => {
   blocklyDiv.appendChild(customResetButton.button);
   blocklyDiv.appendChild(customZoomOutButton.button);
 
+  workspace.registerButtonCallback("make_block", make_block);
+
   return workspace;
 };
+
+//function to console log hello
+function make_block() {
+  console.log("Make a block BUTTON CLICKED!");
+}
 
   // Helper functions to create undo, redo, zoom-in, zoom-out, and reset buttons
   function createZoomInButton(workspace, size) {

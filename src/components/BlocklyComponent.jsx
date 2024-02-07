@@ -5,6 +5,7 @@ import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
+import { MyBlocks } from './BlockCategories/MyBlocks';
 import initializeBlockly from './InitializeBlockly';  // import the function
 
 const BlocklyComponent = () => {
@@ -21,6 +22,7 @@ const BlocklyComponent = () => {
           ${Loops}
           ${Math}
           ${Text}
+          ${MyBlocks}
         </xml>
       `;
       initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
