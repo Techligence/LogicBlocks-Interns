@@ -5,6 +5,8 @@ import audioReducer from "../features/audioSlice";
 import motionReducer from "../features/motionSlice";
 import controlReducer from "../features/controlSlice";
 import codeReducer from "../features/codeSlice";
+import cameraReducer from "../features/cameraSlice";
+
 export const store = configureStore({
   reducer: {
     soundTab: soundTabReducer,
@@ -12,6 +14,7 @@ export const store = configureStore({
     motion: motionReducer, // Add the sprite reducer to the store
     control: controlReducer, // Add the control reducer to the store
     code: codeReducer, // Add the code reducer to the store
+    camera: cameraReducer
   },
   initialState,
 });
