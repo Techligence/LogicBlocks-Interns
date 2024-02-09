@@ -133,6 +133,18 @@ const FloatingActionButton = () => {
 
     return (
       <Box>
+        {draw == false ? (<>
+        </>) : (
+          <Button onClick={drawSprite}  
+            style={{ position: "absolute", top: "32px", left: "20px" }}
+          >
+            <img
+              src="/back.png"
+              alt="Back"
+              style={{ width: "24px", height: "24px" }}
+            />
+          </Button>
+        )}
         <Typography variant="h5" style={{
           textAlign: "center",
           marginBottom: "1.5rem",
@@ -146,14 +158,14 @@ const FloatingActionButton = () => {
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ 
-              marginBottom: '5px', 
+            style={{
+              marginBottom: '5px',
               width: '100%',
             }}
           />
 
           <div
-          id="up-draw-box"
+            id="up-draw-box"
             style={{
               width: '100%',
               display: 'flex',
@@ -181,9 +193,9 @@ const FloatingActionButton = () => {
             {selectedOption === 'Choose a Sprite' && (<>
               <Button onClick={drawSprite}>Draw Sprite</Button>
             </>)}
-            { selectedOption === 'Choose a Backdrop' &&(<>
-            
-            <Button onClick={drawSprite}>Draw Backdrop</Button>
+            {selectedOption === 'Choose a Backdrop' && (<>
+
+              <Button onClick={drawSprite}>Draw Backdrop</Button>
             </>)}
           </div>
           <div style={{
@@ -216,17 +228,10 @@ const FloatingActionButton = () => {
           </div>
 
         </>) : (<div>
-          <Button onClick={drawSprite}>
-            <img
-              src="/back.png"
-              alt="Back"
-              style={{ width: "32px", height: "32px" }}
-            />
-          </Button>
           <DrawSprite
-        exampleItems={selectedOption === "Choose a Sprite" ? exampleSprites : exampleBackdrops}
-        closeModal={closeModal} selectedOption={selectedOption}
-      />
+            exampleItems={selectedOption === "Choose a Sprite" ? exampleSprites : exampleBackdrops}
+            closeModal={closeModal} selectedOption={selectedOption}
+          />
         </div>
         )}
 

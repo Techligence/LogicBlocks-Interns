@@ -1,15 +1,10 @@
 import * as React from "react";
-import { useSprite,useBackdrop } from "../../pages/Home";
+import { useSprite, useBackdrop } from "../../pages/Home";
 import { Button } from "@mui/material";
 import { ReactSketchCanvas } from "react-sketch-canvas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./DrawSprite.css";
-
-const styles = {
-    border: "0.0625rem solid #fcfcfc",
-    borderRadius: "0.25rem",
-};
 
 const createButton = (label, handler, themeColor) => (
     <Button
@@ -49,7 +44,7 @@ const InputField = ({ label, fieldName, type, canvasProps, setCanvasProps }) => 
     );
 };
 
-const DrawSprite = ({ exampleItems, closeModal,selectedOption }) => {
+const DrawSprite = ({ exampleItems, closeModal, selectedOption }) => {
     const { setSprite } = useSprite();
     const { setBackdrop } = useBackdrop();
 
@@ -119,17 +114,17 @@ const DrawSprite = ({ exampleItems, closeModal,selectedOption }) => {
 
         if (exportImage) {
             const exportedDataURI = await exportImage("png");
-            if(selectedOption === 'Choose a Sprite'){
+            if (selectedOption === 'Choose a Sprite') {
                 setSprite(exportedDataURI);
                 exampleItems.push(exportedDataURI);
             }
-            else{
+            else {
                 setBackdrop(exportedDataURI);
                 exampleItems.push(exportedDataURI);
             }
             closeModal();
             console.log(exampleItems);
-            
+
         }
     };
 
@@ -145,21 +140,17 @@ const DrawSprite = ({ exampleItems, closeModal,selectedOption }) => {
         className: "react-sketch-canvas",
         width: "100%",
         height: "100%",
-        backgroundImage: "",
-        preserveBackgroundImageAspectRatio: "none",
         strokeWidth: 4,
         eraserWidth: 5,
         strokeColor: "#000000",
         canvasColor: "#FFFFFF",
-        style: { borderRight: "1px solid #CCC" },
+        style: { border: "1px solid #CCC" },
         svgStyle: {},
-        exportWithBackgroundImage: true,
+        exportWithBackgroundImage: false,
         withTimestamp: true,
         allowOnlyPointerType: "all",
         withViewBox: false,
     });
-
-    const [showColorInput, setShowColorInput] = React.useState(false);
 
     return (
         <div>
@@ -175,33 +166,25 @@ const DrawSprite = ({ exampleItems, closeModal,selectedOption }) => {
                     />
                 ))}
             </div>
-            <Button className="color-palette-container">
-                <label
-                    htmlFor="strokeColorInput"
-                    className="palette-label"
-                    onClick={() => setShowColorInput(!showColorInput)}
-                >
-                    <FontAwesomeIcon icon="fa-solid fa-palette" />
-                </label>
-                {showColorInput && (
-                    <input
-                        type="color"
-                        name="strokeColor"
-                        className="form-control form-control-color"
-                        id="strokeColorInput"
-                        value={canvasProps.strokeColor}
-                        title="Choose stroke color"
-                        onChange={(e) => {
-                            setCanvasProps((prevCanvasProps) => ({
-                                ...prevCanvasProps,
-                                strokeColor: e.target.value,
-                            }));
-                        }}
-                    />
-                )}
-            </Button>
-            <div className="color-selector-container mx-4">
-                <label className="color-selector-label">Canvas Colour</label>
+            <div className="color-selector-container">
+                <label htmlFor="strokeColorInput">Stroke Color: </label>
+                <input
+                    type="color"
+                    name="strokeColor"
+                    className="color-selector-input"
+                    id="strokeColorInput"
+                    value={canvasProps.strokeColor}
+                    title="Choose stroke color"
+                    onChange={(e) => {
+                        setCanvasProps((prevCanvasProps) => ({
+                            ...prevCanvasProps,
+                            strokeColor: e.target.value,
+                        }));
+                    }}
+                />
+            </div>
+            <div className="color-selector-container color-bottom">
+                <label className="color-selector-label">Canvas Colour: </label>
                 <input
                     name="canvasColor"
                     type="color"
@@ -219,7 +202,7 @@ const DrawSprite = ({ exampleItems, closeModal,selectedOption }) => {
                 />
             </div>
 
-            <ReactSketchCanvas style={styles} ref={canvasRef} {...canvasProps} />
+            <ReactSketchCanvas ref={canvasRef} {...canvasProps} />
             <div className="col-3 panel">
                 <Button
                     key="Pen"
@@ -253,10 +236,11 @@ const DrawSprite = ({ exampleItems, closeModal,selectedOption }) => {
                 >
                     <FontAwesomeIcon icon="fa-solid fa-rotate-left" />
                 </Button>
+                <Button onClick={imageExportHandler}>
+                    <FontAwesomeIcon icon="fa-solid fa-check" />
+                </Button>
             </div>
-            <Button onClick={imageExportHandler}>
-                <FontAwesomeIcon icon="fa-solid fa-check" />
-            </Button>
+
         </div>
     );
 };
