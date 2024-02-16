@@ -10,7 +10,7 @@ import { Events } from './BlockCategories/Events';
 import initializeBlockly from './InitializeBlockly';
 import { useDispatch } from 'react-redux';
 import { javascriptGenerator } from 'blockly/javascript';
-import { generateCode } from '../features/codeSlice'; // Make sure to import the correct action
+//import { generateCode } from '../features/codeSlice'; // Make sure to import the correct action
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
