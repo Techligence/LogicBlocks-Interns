@@ -11,13 +11,14 @@ const FloatingActionButton = ({ onSelect }) => {
 
   const actions = [
     { icon: <PetsIcon />, name: 'Choose a Sprite' },
+    { icon: <PetsIcon/>, name: 'Choose a Sprite' },
     { icon: <WallpaperIcon />, name: 'Choose a Backdrop' },
   ];
 
   return (
     <SpeedDial
       ariaLabel="SpeedDial"
-      sx={{ position: 'absolute', bottom: 16, right: 16 }}
+      sx={{ position: 'absolute', bottom: 16, right: 16 }} 
       icon={<SpeedDialIcon />}
       onClose={() => setSpeedDialOpen(false)}
       onOpen={() => setSpeedDialOpen(true)}

@@ -1,85 +1,102 @@
-// BlocklyComponent.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import Blockly from 'blockly';
-import { javascriptGenerator } from 'blockly/javascript';
-import { useDispatch } from 'react-redux';
-import { moveSprite } from '../features/motionSlice';
-import { waitSeconds } from '../features/controlSlice';
-import { BoardsSelectionModal } from './BoardsSelectionModal';
-import initializeBlockly from './InitializeBlockly';
+
 import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
-import { Control } from './BlockCategories/Control';
-import { Operators } from './BlockCategories/Operators';
-import { Motion } from './BlockCategories/Motion';
-import { Looks } from './BlockCategories/Looks';
+import { Variables } from './BlockCategories/Variables';
+import { Events } from './BlockCategories/Events';
+import initializeBlockly from './InitializeBlockly';
+import { useDispatch } from 'react-redux';
+import { javascriptGenerator } from 'blockly/javascript';
+import { generateCode } from '../features/codeSlice'; // Make sure to import the correct action
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
-  const workspaceRef = useRef(null);
-  const [selectedBoard, setSelectedBoard] = useState(null);
-  const [isBoardSelectionModalOpen, setIsBoardSelectionModalOpen] = useState(false);
   const [generatedCode, setGeneratedCode] = useState('');
+  const workspace = Blockly.getMainWorkspace();
   const dispatch = useDispatch();
+
+  const generateCode = () => {
+    javascriptGenerator.addReservedWords('code');
+    const code = javascriptGenerator.workspaceToCode(workspace);
+    setGeneratedCode(code);
+    console.log(code);
+  };
 
   useEffect(() => {
     if (!blocklyRef.current) {
-      // Construct the complete toolbox XML
       const toolboxXml = `
         <xml id="toolbox" style="display: none">
           ${Logic}
           ${Loops}
           ${Math}
           ${Text}
-          ${Control}
-          ${Operators}
-          ${Motion}
-          ${Looks}
+          ${Variables}
+          ${Events}
         </xml>
       `;
-
-      workspaceRef.current = initializeBlockly(toolboxXml);
-      blocklyRef.current = true;
+      const newWorkspace = initializeBlockly(toolboxXml);
+      blocklyRef.current = newWorkspace;
     }
+
+    blocklyRef.current.addChangeListener(handleBlockClick);
+
+    return () => {
+      if (blocklyRef.current) {
+        blocklyRef.current.removeChangeListener(handleBlockClick);
+      }
+    };
   }, []);
 
-  const generateCode = () => {
+  const getAllConnectedBlocks = (block) => {
+    const connectedBlocks = [];
+
+    const populateConnectedBlocks = (currentBlock) => {
+      if (currentBlock) {
+        connectedBlocks.push(currentBlock);
+        currentBlock.getChildren().forEach((childBlock) => {
+          populateConnectedBlocks(childBlock);
+        });
+      }
+    };
+
+    populateConnectedBlocks(block);
+    return connectedBlocks;
+  };
+
+  const getBlockJavaScriptCode = (block) => {
     javascriptGenerator.addReservedWords('code');
-    const code = javascriptGenerator.workspaceToCode(workspaceRef.current);
-    setGeneratedCode(code);
-    try {
-      eval(code);
-    } catch (error) {
-      console.error('Error executing generated code:', error);
+    const code = Blockly.JavaScript.blockToCode(block);
+    return code.trim();
+  };
+
+  const handleBlockClick = (event) => {
+    if (event.type === Blockly.Events.CLICK) {
+      const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
+      const connectedBlocks = getAllConnectedBlocks(clickedBlock);
+      connectedBlocks.forEach((block) => {
+        const generatedCode = getBlockJavaScriptCode(block);
+        console.log(generatedCode);
+      });
     }
   };
 
-  const handleBoardSelection = (board) => {
-    console.log('Selected Board:', board);
-    setSelectedBoard(board);
+  const handleGenerateCode = () => {
+    const code = javascriptGenerator.workspaceToCode(blocklyRef.current);
+    dispatch(generateCode(generatedCode)); // Fix the argument here
+    console.log('Generated Code:', code);
   };
 
   return (
-    <div style={{ width: '100%', height: '480px' }}>
-      <h1 style={{ display: 'inline-block', fontSize: '14px', marginRight: '500px' }}>Blockly Toolbox</h1>
-      <h1 style={{ display: 'inline-block', fontSize: '14px' }}>Blockly Workspace</h1>
-      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%', position: 'relative' }}></div>
-      
-      {/* Render the selected board */}
-      {selectedBoard && <p>Selected Board: {selectedBoard}</p>}
-      
-      {/* Add the BoardSelectionModal component */}
-      <BoardsSelectionModal
-        isOpen={isBoardSelectionModalOpen}
-        onClose={() => setIsBoardSelectionModalOpen(false)}
-        onSelectBoard={handleBoardSelection}
-      />
-      <button onClick={generateCode}>Generate Code</button>  
-      <pre style={{ whiteSpace: 'pre-wrap', marginTop: '20px' }}>
-        <br></br>{generatedCode}
-      </pre>
+    <div className="BlockyComp">
+      <div className="highlghted-text">
+        <h1>Blockly Toolbox</h1>
+        <h1>Blockly Workspace</h1>
+        <button onClick={generateCode}>Generate Code</button>
+      </div>
+      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%' }} onClick={handleBlockClick}></div>
     </div>
   );
 };

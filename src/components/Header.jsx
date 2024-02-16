@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -85,6 +86,9 @@ const Header = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isBoardSelectionModalOpen, setIsBoardSelectionModalOpen] = useState(false);
   const navigateTo = useNavigate();
+export default function Header() {
+  // Add state management for project name if needed
+  const [projectName, setProjectName] = React.useState('Project_Name');
 
   const handleProjectNameChange = (event) => {
     setProjectName(event.target.value);
@@ -289,10 +293,16 @@ const Header = () => {
     <Box sx={{ flexGrow: 1, width: '100%' }}>
       <AppBar position="static">
         <Toolbar>
+  return (
+    <Box sx={{ flexGrow: 1 , width: '100%'}}>
+      <AppBar position="static">
+        <Toolbar>
+          {/* LogicBlocks Title */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <h1>LogicBlocks</h1>
           </Typography>
 
+<<<<<<< HEAD
           <Button
             color="inherit"
             onClick={handleMenuClick}
@@ -315,6 +325,18 @@ const Header = () => {
           </Button>
           <Button color="inherit">Connect</Button>
 
+=======
+          {/* Navigation Buttons */}
+          <div className="nav-button">
+          <Button className="btn" color="inherit">Files</Button>
+          <Button className="btn" color="inherit">Edit</Button>
+          <Button className="btn" color="inherit">Tutorials</Button>
+          <Button className="btn" color="inherit">Boards</Button>
+          <Button className="btn" color="inherit">Connect</Button>
+          </div> 
+          
+          {/* Editable Project Name */}
+>>>>>>> feature/Event_Variables
           <ProjectNameInput
             value={projectName}
             onChange={handleProjectNameChange}
@@ -326,6 +348,7 @@ const Header = () => {
             }}
           />
 
+<<<<<<< HEAD
           <Box sx={{ marginRight: '16px' }}>{autoSaving && 'Auto-saving...'}</Box>
 
           <Box sx={{ flexGrow: 1 }} />
@@ -414,3 +437,18 @@ const Header = () => {
 }
 
 export default Header;
+=======
+          {/* Spacing Element */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/* Logo Placeholder */}
+          <img src="trial_sprite_nobkg.png" alt="Logo" style={{ height: '50px' }} />
+
+          {/* Sign In Button */}
+          <Button color="inherit">Sign In</Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
+  );
+}
+>>>>>>> feature/Event_Variables

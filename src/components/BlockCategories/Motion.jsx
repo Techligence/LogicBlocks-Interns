@@ -1,13 +1,6 @@
-import Blockly from 'blockly';
-import { javascriptGenerator } from 'blockly/javascript';
-export const Motion = `
-  <category name="Motion">
-    <block type="move_steps"></block>
-    <block type="turn_right"></block>
-    <block type="turn_left"></block>
-    <block type="point_in_direction"></block>
-    <block type="point_toward_menu"></block>
-    <block type="go_to_menu"></block>
+export const MoveSpriteBlock = `
+  <category name="Motion" colour="#5C81A6" categorystyle="math_category">
+    <block type="move_sprite_10px"></block>
   </category>
 `;
 
