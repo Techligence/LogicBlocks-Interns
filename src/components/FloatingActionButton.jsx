@@ -124,8 +124,6 @@ const FloatingActionButton = () => {
   const renderModalContent = () => {
     const displayItems = selectedOption === 'Choose a Sprite' ? exampleSprites : exampleBackdrops;
     const selectedItemImage = selectedOption === 'Choose a Sprite' ? selectedSprite : selectedBackdrop;
-    const fileInputOpen = selectedOption === 'Choose a Sprite' ? fileInputSpriteOpen : fileInputBackdropOpen;
-    const setFileInputOpenFunc = selectedOption === 'Choose a Sprite' ? setFileInputSpriteOpen : setFileInputBackdropOpen;
 
     const filteredItems = displayItems.filter((item) =>
       item.toLowerCase().includes(searchTerm.toLowerCase())
@@ -173,7 +171,6 @@ const FloatingActionButton = () => {
             }}
           />
 
-
           <div style={{
             display: "flex",
             flexWrap: 'wrap',
@@ -208,23 +205,21 @@ const FloatingActionButton = () => {
               width: '100%',
               display: 'flex',
               gap: '10px',
-              maxHeight: '300px',
-              overflowY: 'auto',
               marginTop: '16px',
             }}
           >
             {selectedOption === 'Choose a Sprite' && (
-              <>
-                <Button onClick={() => setFileInputSpriteOpen(!fileInputSpriteOpen)}>Upload Sprite</Button>
-                {fileInputSpriteOpen && <input type="file" accept=".png" onChange={handleFileUpload} />}
-              </>
+              <div className="upload-div">
+                <label className="label-upload" htmlFor='upload-sprite'>UPLOAD SPRITE</label>
+                <input type="file" id="upload-sprite" style={{ display: "none" }} accept=".png" onChange={handleFileUpload} />
+              </div>
             )}
 
             {selectedOption === 'Choose a Backdrop' && (
-              <>
-                <Button onClick={() => setFileInputBackdropOpen(!fileInputBackdropOpen)}>Upload Backdrop</Button>
-                {fileInputBackdropOpen && <input type="file" accept="image/*" onChange={handleFileUpload} />}
-              </>
+              <div className="upload-div">
+                <label className="label-upload" htmlFor='upload-backdrop'>UPLOAD BACKDROP</label>
+                <input type="file" id="upload-backdrop" style={{ display: "none" }} accept=".png,.jpg,.jpeg" onChange={handleFileUpload} />
+              </div>
             )}
 
             <Button onClick={handleSurpriseMe}>Surprise Me</Button>

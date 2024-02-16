@@ -32,17 +32,27 @@ body {
   width: 100%;
 }
 
-.file-upload{
-  display: none;
+#up-draw-box{
+  height: 100%;
 }
 
-.custom-file-upload{
-  height: 100%;
-  width: 100%;
+.label-upload{
   text-align: center;
+  font-family: "Roboto";
+  color: rgb(25, 118, 210);
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .upload-div{
-  height: 100%;
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 3px;
+}
+
+.upload-div:hover{
+  background-color: rgba(25, 118, 210, 0.04);
 }
