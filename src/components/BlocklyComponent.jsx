@@ -1,23 +1,20 @@
 // BlocklyComponent.jsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Blockly from 'blockly';
-import { useState } from 'react';
+import { javascriptGenerator } from 'blockly/javascript';
+import { useDispatch } from 'react-redux';
+import { moveSprite } from '../features/motionSlice';
+import { waitSeconds } from '../features/controlSlice';
+import { BoardsSelectionModal } from './BoardsSelectionModal';
+import initializeBlockly from './InitializeBlockly';
 import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
-import { Control } from './BlockCategories/Control'
-import initializeBlockly from './InitializeBlockly';  // import the function
-import {Operators} from './BlockCategories/Operators'
+import { Control } from './BlockCategories/Control';
+import { Operators } from './BlockCategories/Operators';
 import { Motion } from './BlockCategories/Motion';
-import initializeBlockly from './InitializeBlockly';
-import BoardsSelectionModal from './BoardsSelectionModal';
-import { javascriptGenerator } from 'blockly/javascript';
-import {store} from '../store/store';
-import {moveSprite} from '../features/motionSlice';
-import { waitSeconds } from '../features/controlSlice';
-import { useDispatch } from 'react-redux';
-
+import { Looks } from './BlockCategories/Looks';
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
@@ -25,18 +22,10 @@ const BlocklyComponent = () => {
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isBoardSelectionModalOpen, setIsBoardSelectionModalOpen] = useState(false);
   const [generatedCode, setGeneratedCode] = useState('');
-  const workspace=Blockly.getMainWorkspace();
- 
-  const generateCode = () => {
-    javascriptGenerator.addReservedWords('code');
-    var code = javascriptGenerator.workspaceToCode(workspace);
-    setGeneratedCode(code);
-    eval(code);
-  };
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (blocklyRef.current === null) {
-      // Initialize Blockly with English
-        Blockly.setLocale('en');
+    if (!blocklyRef.current) {
       // Construct the complete toolbox XML
       const toolboxXml = `
         <xml id="toolbox" style="display: none">
@@ -45,22 +34,27 @@ const BlocklyComponent = () => {
           ${Math}
           ${Text}
           ${Control}
-
-          
-
-          
-          
           ${Operators}
           ${Motion}
+          ${Looks}
         </xml>
       `;
+
       workspaceRef.current = initializeBlockly(toolboxXml);
-      console.log('Workspace initialized:', workspaceRef.current);
       blocklyRef.current = true;
     }
   }, []);
 
- 
+  const generateCode = () => {
+    javascriptGenerator.addReservedWords('code');
+    const code = javascriptGenerator.workspaceToCode(workspaceRef.current);
+    setGeneratedCode(code);
+    try {
+      eval(code);
+    } catch (error) {
+      console.error('Error executing generated code:', error);
+    }
+  };
 
   const handleBoardSelection = (board) => {
     console.log('Selected Board:', board);
@@ -71,10 +65,8 @@ const BlocklyComponent = () => {
     <div style={{ width: '100%', height: '480px' }}>
       <h1 style={{ display: 'inline-block', fontSize: '14px', marginRight: '500px' }}>Blockly Toolbox</h1>
       <h1 style={{ display: 'inline-block', fontSize: '14px' }}>Blockly Workspace</h1>
-      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%', position: 'relative' }}></div>      
-      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%' }}></div>
+      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%', position: 'relative' }}></div>
       
-
       {/* Render the selected board */}
       {selectedBoard && <p>Selected Board: {selectedBoard}</p>}
       
@@ -82,14 +74,13 @@ const BlocklyComponent = () => {
       <BoardsSelectionModal
         isOpen={isBoardSelectionModalOpen}
         onClose={() => setIsBoardSelectionModalOpen(false)}
-        onSelectBoard = {handleBoardSelection}
+        onSelectBoard={handleBoardSelection}
       />
       <button onClick={generateCode}>Generate Code</button>  
       <pre style={{ whiteSpace: 'pre-wrap', marginTop: '20px' }}>
         <br></br>{generatedCode}
       </pre>
     </div>
-    
   );
 };
 

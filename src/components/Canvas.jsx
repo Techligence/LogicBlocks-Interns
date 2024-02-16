@@ -2,6 +2,9 @@ import React from 'react';
 import { Card } from '@mui/material';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
+import { javascriptGenerator } from 'blockly/javascript';
+import Blockly from 'blockly';
+import { changeSize, changeSizeBy, show, hide, saywithdelay, thinkwithdelay } from './BlockCategoriesFunctions/Looks';
 
 // Import the button components
 import FlagButton from './Canvas/FlagButton';
@@ -13,16 +16,22 @@ import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
 const Canvas = () => {
+  const handleClick = () => {
+    const code = javascriptGenerator.workspaceToCode(Blockly.getMainWorkspace());
+    // console.log(code);
+    eval(code)
+  }
+
   return (
     <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden' }}>
-      <h1 style={{ textAlign: 'center' ,fontSize: '14px'}}>Canvas</h1>
-      <Draggable bounds="parent" defaultPosition={{x: 150, y: 100}}>
+      <h1 style={{ textAlign: 'center', fontSize: '14px' }}>Canvas</h1>
+      <Draggable bounds="parent" defaultPosition={{ x: 150, y: 100 }}>
         <Resizable
           defaultSize={{
             width: '50%',
             height: '50%'
           }}
-          style={{  
+          style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -30,29 +39,31 @@ const Canvas = () => {
             cursor: 'move'
           }}
           lockAspectRatio={true}
+
+          id="sprite-container"
         >
           <div style={{ width: '100%', height: '100%' }} />
         </Resizable>
       </Draggable>
 
-      <div style={{ 
-        position: 'absolute', 
-        bottom: 10, 
-        right: 10, 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        display: 'flex',
+        justifyContent: 'space-between',
         width: '100%'
       }}>
         <div>
-          <FlagButton onClick={() => {}} />
-          <StopButton onClick={() => {}} />
-          <UndoButton onClick={() => {}} />
-          <RedoButton onClick={() => {}} />
+          <FlagButton onClick={() => handleClick()} />
+          <StopButton onClick={() => { }} />
+          <UndoButton onClick={() => { }} />
+          <RedoButton onClick={() => { }} />
         </div>
         <div>
-          <ZoomIn onClick={() => {}} />
-          <ZoomOut onClick={() => {}} />
-          <FullScreen onClick={() => {}} />
+          <ZoomIn onClick={() => { }} />
+          <ZoomOut onClick={() => { }} />
+          <FullScreen onClick={() => { }} />
         </div>
       </div>
     </Card>
