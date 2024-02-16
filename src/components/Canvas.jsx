@@ -18,11 +18,16 @@ import ZoomIn from "./Canvas/ZoomIn";
 import ZoomOut from "./Canvas/ZoomOut";
 import FullScreen from "./Canvas/FullScreen";
 
+import { setDetectedObjs } from "../features/detection.js";
+import { useDispatch } from "react-redux";
+
 const Canvas = () => {
   const isCameraOn = useSelector((state) => state.camera.isCameraOn);
   // const [net, setNet] = useState(null);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   const runCoco = async () => {
     // 3. TODO - Load network
@@ -31,7 +36,7 @@ const Canvas = () => {
     //  Loop and detect hands
     setInterval(() => {
       detect(net);
-    }, 10);
+    });
   };
 
   const detect = async (net) => {
@@ -58,6 +63,7 @@ const Canvas = () => {
 
       const obj = await net.detect(video);
       console.log(obj);
+      dispatch(setDetectedObjs(obj));
 
       // if ((obj.find(el => el.class == 'cell phone'))) {
       //   setFlag(1)

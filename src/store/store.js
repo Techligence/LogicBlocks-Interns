@@ -7,14 +7,17 @@ import controlReducer from "../features/controlSlice";
 import codeReducer from "../features/codeSlice";
 import cameraReducer from "../features/cameraSlice";
 
+import detectReducer from "../features/detection";
+
 export const store = configureStore({
   reducer: {
     soundTab: soundTabReducer,
-    audio: audioReducer,  
+    audio: audioReducer,
     motion: motionReducer, // Add the sprite reducer to the store
     control: controlReducer, // Add the control reducer to the store
     code: codeReducer, // Add the code reducer to the store
-    camera: cameraReducer
+    camera: cameraReducer,
+    detect: detectReducer,
   },
   initialState,
 });

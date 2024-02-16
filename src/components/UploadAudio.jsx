@@ -5,11 +5,14 @@ import AudioWaveform from "./AudioWaveform"; // Import your AudioWaveform compon
 import Sidebar from "./Sidebar";
 import "../index.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setAudioState, setAudioArray, setActiveWaveform } from "../features/soundTabReducers.js";
+import {
+  setAudioState,
+  setAudioArray,
+  setActiveWaveform,
+} from "../features/soundTabReducers.js";
 import { setIsPlaying } from "../features/audioSlice.js";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import RecordAudio from "./recordAudio/RecordAudio.jsx";
-
 
 const UploadAudio = () => {
   const dispatch = useDispatch();
@@ -18,7 +21,7 @@ const UploadAudio = () => {
   const [file, setFile] = useState(null);
   const audioState = useSelector((state) => state.soundTab.audioState);
   const { showAudioWaveform, fileName } = audioState;
-  const audioArray = useSelector(state => state.soundTab.audioArray);
+  const audioArray = useSelector((state) => state.soundTab.audioArray);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const openPopup = () => {
@@ -51,13 +54,13 @@ const UploadAudio = () => {
   };
   const handleRecordClick = () => {
     openPopup(); // Assuming `openPopup` handles opening the recording popup
-}; 
+  };
 
   const handleFileUpload = (e) => {
     const name = e.target.files[0].name;
     setFile(URL.createObjectURL(e.target.files[0]));
 
-    //redux actions   
+    //redux actions
     dispatch(setIsPlaying(false));
     //Adding to array
     const newSound = {
@@ -65,11 +68,8 @@ const UploadAudio = () => {
       fileName: name.slice(0, name.length - 4),
       audioUrl: URL.createObjectURL(e.target.files[0]),
     };
-    const updatedAudioArray = [
-      ...audioArray,
-      newSound
-    ];
-    dispatch(setAudioArray(updatedAudioArray));    
+    const updatedAudioArray = [...audioArray, newSound];
+    dispatch(setAudioArray(updatedAudioArray));
 
     dispatch(setActiveWaveform(newSound));
     if (updatedAudioArray.length === 1) {
@@ -87,17 +87,20 @@ const UploadAudio = () => {
   };
 
   const handleDelete = async (id) => {
-    const updatedAudioArray = audioArray.filter((audioItem) => audioItem.id !== id);
-    dispatch(setAudioArray(updatedAudioArray));    
+    const updatedAudioArray = audioArray.filter(
+      (audioItem) => audioItem.id !== id
+    );
+    dispatch(setAudioArray(updatedAudioArray));
 
     if (updatedAudioArray.length === 0) {
-      dispatch(setAudioState({
-        showAudioWaveform: false,
-        fileName: "",
-      }))
+      dispatch(
+        setAudioState({
+          showAudioWaveform: false,
+          fileName: "",
+        })
+      );
       dispatch(setActiveWaveform({}));
-    }
-    else {
+    } else {
       dispatch(setActiveWaveform(updatedAudioArray[0]));
     }
   };
@@ -105,7 +108,7 @@ const UploadAudio = () => {
   const handleSaveAudio = (audioSrc) => {
     // setFileURL(audioSrc);
     // dispatch(setAudioState({
-    //   showAudioWaveform: true,      
+    //   showAudioWaveform: true,
     //   fileName: "RecordedAudio", // You may set a default name for the recorded audio
     // }));
     dispatch(setIsPlaying(false));
@@ -114,10 +117,7 @@ const UploadAudio = () => {
       fileName: "Recorded Audio",
       audioUrl: audioSrc,
     };
-    const updatedAudioArray = [
-      ...audioArray,
-      newSound
-    ];
+    const updatedAudioArray = [...audioArray, newSound];
     dispatch(setAudioArray(updatedAudioArray));
     dispatch(setActiveWaveform(newSound));
     if (updatedAudioArray.length === 1) {
@@ -134,12 +134,16 @@ const UploadAudio = () => {
 
   return (
     <div className="main-container">
-      <Sidebar triggerFileUpload={handleButtonClick} onDelete={handleDelete} onRecordClick={handleRecordClick}/> {/* Add the Sidebar component here */}
+      <Sidebar
+        triggerFileUpload={handleButtonClick}
+        onDelete={handleDelete}
+        onRecordClick={handleRecordClick}
+      />{" "}
+      {/* Add the Sidebar component here */}
       <div className="content-container">
         {showAudioWaveform && <AudioWaveform />}
 
         <div className="upload-controls">
-
           {/* Upload audio button */}
           {!showAudioWaveform && (
             <>
@@ -166,7 +170,9 @@ const UploadAudio = () => {
           onChange={handleFileUpload}
         />
         {/* <button className="upload-btn" onClick={openPopup}>Record</button> */}
-        {isPopupOpen && <RecordAudio onClose={closePopup} onSaveAudio={handleSaveAudio} />}
+        {isPopupOpen && (
+          <RecordAudio onClose={closePopup} onSaveAudio={handleSaveAudio} />
+        )}
       </div>
     </div>
   );
