@@ -135,7 +135,7 @@ const FloatingActionButton = () => {
       <Box>
         {draw == false ? (<>
         </>) : (
-          <Button onClick={drawSprite}  
+          <Button onClick={drawSprite}
             style={{ position: "absolute", top: "32px", left: "20px" }}
           >
             <img
@@ -153,6 +153,15 @@ const FloatingActionButton = () => {
           Selection
         </Typography>
         {draw == false ? (<>
+          <Button onClick={() => closeModal()}
+            style={{ position: "absolute", top: "32px", left: "20px" }}
+          >
+            <img
+              src="/back.png"
+              alt="Back"
+              style={{ width: "24px", height: "24px" }}
+            />
+          </Button>
           <TextField
             label="Search"
             variant="outlined"
@@ -164,40 +173,7 @@ const FloatingActionButton = () => {
             }}
           />
 
-          <div
-            id="up-draw-box"
-            style={{
-              width: '100%',
-              display: 'flex',
-              gap: '10px',
-              maxHeight: '300px',
-              overflowY: 'auto',
-              marginTop: '16px',
-            }}
-          >
-            {selectedOption === 'Choose a Sprite' && (
-              <>
-                <Button onClick={() => setFileInputOpenFunc(true)}>Upload Sprite</Button>
-                {fileInputOpen && <input type="file" accept=".png" onChange={handleFileUpload} />}
-              </>
-            )}
 
-            {selectedOption === 'Choose a Backdrop' && (
-              <>
-                <Button onClick={() => setFileInputOpenFunc(true)}>Upload Backdrop</Button>
-                {fileInputOpen && <input type="file" accept=".png" onChange={handleFileUpload} />}
-              </>
-            )}
-
-            <Button onClick={handleSurpriseMe}>Surprise Me</Button>
-            {selectedOption === 'Choose a Sprite' && (<>
-              <Button onClick={drawSprite}>Draw Sprite</Button>
-            </>)}
-            {selectedOption === 'Choose a Backdrop' && (<>
-
-              <Button onClick={drawSprite}>Draw Backdrop</Button>
-            </>)}
-          </div>
           <div style={{
             display: "flex",
             flexWrap: 'wrap',
@@ -225,6 +201,40 @@ const FloatingActionButton = () => {
                 onClick={() => handleSelection(item)}
               />
             ))}
+          </div>
+          <div
+            id="up-draw-box"
+            style={{
+              width: '100%',
+              display: 'flex',
+              gap: '10px',
+              maxHeight: '300px',
+              overflowY: 'auto',
+              marginTop: '16px',
+            }}
+          >
+            {selectedOption === 'Choose a Sprite' && (
+              <>
+                <Button onClick={() => setFileInputSpriteOpen(!fileInputSpriteOpen)}>Upload Sprite</Button>
+                {fileInputSpriteOpen && <input type="file" accept=".png" onChange={handleFileUpload} />}
+              </>
+            )}
+
+            {selectedOption === 'Choose a Backdrop' && (
+              <>
+                <Button onClick={() => setFileInputBackdropOpen(!fileInputBackdropOpen)}>Upload Backdrop</Button>
+                {fileInputBackdropOpen && <input type="file" accept="image/*" onChange={handleFileUpload} />}
+              </>
+            )}
+
+            <Button onClick={handleSurpriseMe}>Surprise Me</Button>
+            {selectedOption === 'Choose a Sprite' && (<>
+              <Button onClick={drawSprite}>Draw Sprite</Button>
+            </>)}
+            {selectedOption === 'Choose a Backdrop' && (<>
+
+              <Button onClick={drawSprite}>Draw Backdrop</Button>
+            </>)}
           </div>
 
         </>) : (<div>

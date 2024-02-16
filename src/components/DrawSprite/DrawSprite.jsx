@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useSprite, useBackdrop } from "../../pages/Home";
-import { Button } from "@mui/material";
+import { Button, ToggleButton } from "@mui/material";
 import { ReactSketchCanvas } from "react-sketch-canvas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -16,6 +16,7 @@ const createButton = (label, handler, themeColor) => (
         {label}
     </Button>
 );
+
 const InputField = ({ label, fieldName, type, canvasProps, setCanvasProps }) => {
     return (
         <div className={`input-field ${type}-input`} key={fieldName}>
@@ -45,8 +46,10 @@ const InputField = ({ label, fieldName, type, canvasProps, setCanvasProps }) => 
 };
 
 const DrawSprite = ({ exampleItems, closeModal, selectedOption }) => {
-    const { setSprite } = useSprite();
+    const { addSprite } = useSprite();
     const { setBackdrop } = useBackdrop();
+
+    const [pen, setPen] = React.useState(true);
 
     const inputProps = [
         ["Background Image:", "backgroundImage", "text"],
@@ -115,7 +118,7 @@ const DrawSprite = ({ exampleItems, closeModal, selectedOption }) => {
         if (exportImage) {
             const exportedDataURI = await exportImage("png");
             if (selectedOption === 'Choose a Sprite') {
-                setSprite(exportedDataURI);
+                addSprite(exportedDataURI);
                 exampleItems.push(exportedDataURI);
             }
             else {

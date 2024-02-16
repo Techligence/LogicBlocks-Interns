@@ -28,11 +28,6 @@ const AnchorMenu = () => {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        PaperProps={{
-          style: {
-            width: '35ch',
-          },
-        }}
       >
         <CameraToggle camera={camera} setCamera={setCamera} />
         <MicToggle mic={mic} setMic={setMic} />

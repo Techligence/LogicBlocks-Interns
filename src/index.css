@@ -31,3 +31,18 @@ body {
 #up-draw-box > *{
   width: 100%;
 }
+
+.file-upload{
+  display: none;
+}
+
+.custom-file-upload{
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.upload-div{
+  height: 100%;
+  width: 100%;
+}
