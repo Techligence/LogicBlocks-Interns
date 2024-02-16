@@ -4,7 +4,7 @@ import { Button, Menu, Box } from '@mui/material';
 import CameraToggle from './AnchorMenu/CameraToggle';
 import MicToggle from './AnchorMenu/MicToggle';
 import ModeToggle from './AnchorMenu/ModeToggle';
-
+import Canvas from './Canvas';
 
 const AnchorMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
