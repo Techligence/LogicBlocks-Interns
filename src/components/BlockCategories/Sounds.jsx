@@ -4,7 +4,6 @@ import { setIsPlaying, setVolume } from "../../features/audioSlice";
 import { useDispatch } from "react-redux";
 import { javascriptGenerator } from "blockly/javascript";
 
-
 // Category definition
 export const Sounds = `
   <category name="Sounds" colour="">
@@ -19,11 +18,10 @@ export const Sounds = `
   </category>
 `;
 
-
 // Define the 'play_sound' block
 Blockly.Blocks["play_sound"] = {
   init: function () {
-    this.appendDummyInput().appendField("Set Sound");   
+    this.appendDummyInput().appendField("Set Sound");
     this.appendDummyInput()
       .appendField("Sound Name:")
       .appendField(new Blockly.FieldTextInput("defaultsound"), "SOUND_NAME");
@@ -35,7 +33,7 @@ Blockly.Blocks["play_sound"] = {
 };
 // Generator code for 'play_sound' block
 javascriptGenerator["play_sound"] = function (block) {
-  var soundName = block.getFieldValue("SOUND_NAME");  
+  var soundName = block.getFieldValue("SOUND_NAME");
   var code = `      
   const audioUrl = playSound(); 
   const audio = new Audio(audioUrl);     
@@ -135,7 +133,7 @@ Blockly.Blocks["set_by_effect"] = {
     this.setTooltip("Set the sound by a specified effect");
   },
 };
-// Generator code for 'set_by_effect' block 
+// Generator code for 'set_by_effect' block
 javascriptGenerator["set_by_effect"] = function (block) {
   var effectType = block.getFieldValue("EFFECT_TYPE");
   var value = block.getFieldValue("VALUE");
