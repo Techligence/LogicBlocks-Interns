@@ -5,18 +5,15 @@ import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
-import { MyBlocks } from './BlockCategories/MyBlocks';
+// import { MyBlocks } from './BlockCategories/MyBlocks';
 import initializeBlockly from './InitializeBlockly';  // import the function
-
+import {store } from '../store/store';
+import { useSelector } from 'react-redux';
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
+  const MyBlocks=useSelector((state)=>state.xml.xml);
 
-  useEffect(() => {
-    if (blocklyRef.current === null) {
-      // Initialize Blockly with English
-        Blockly.setLocale('en');
-      // Construct the complete toolbox XML
-      const toolboxXml = `
+  const toolboxXml = `
         <xml id="toolbox" style="display: none">
           ${Logic}
           ${Loops}
@@ -25,10 +22,23 @@ const BlocklyComponent = () => {
           ${MyBlocks}
         </xml>
       `;
+
+  useEffect(() => {
+    if (blocklyRef.current === null) {
+      // Initialize Blockly with English
+        Blockly.setLocale('en');
+      // Construct the complete toolbox XML
+      
       initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
       blocklyRef.current = true;
     }
+    console.log('MyBlocks',MyBlocks)
   }, []);
+
+  useEffect(() => {
+    console.log('Updated')
+    Blockly.getMainWorkspace().updateToolbox(toolboxXml);
+  },[MyBlocks]);  
 
   return (
     <div style={{ width: '100%', height: '480px' }}>

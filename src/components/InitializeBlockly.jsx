@@ -1,5 +1,7 @@
 import Blockly from "blockly/core";
 import "blockly/blocks";
+import { updateXML } from "../features/xmlSlice";
+import { store } from "../store/store";
 
 const InitializeBlockly = (toolboxXml) => {
   const workspace = Blockly.inject("blocklyDiv", {
@@ -66,6 +68,9 @@ function make_block() {
   modalContent.innerHTML = `
     <p>Make a block BUTTON CLICKED!</p>
     <span id="closeModal">&times;</span>
+    <input type="text" id="blockName" placeholder="Block Name" />
+    <br>
+    <button id="create_cust">Create</button>
   `;
 
   modalContent.style.padding = "20px";
@@ -87,6 +92,33 @@ function make_block() {
   closeModalButton.style.fontSize = "20px";
   closeModalButton.style.color = "#aaa";
 
+  const createButton = modalContent.querySelector("#create_cust");
+  createButton.style.cursor = "pointer";
+  createButton.style.position = "flex";
+  createButton.style.top = "10px";
+  createButton.style.right = "20px";
+  createButton.style.fontSize = "15px";
+  createButton.style.color = "#aaa";
+
+  // modalContent.querySelector("#blockName").style.position = "flex";
+  
+  
+  
+  
+  createButton.addEventListener("click", async() => {
+    const blockName = modalContent.querySelector("#blockName");
+    const blockNameValue = blockName.value;
+    if (blockNameValue === "") {
+      alert("Block name cannot be empty!");
+      return;
+    }
+    console.log("Create button clicked");
+    await store.dispatch(updateXML(blockNameValue));
+    //update the blockly toolbox
+    // Blockly.getMainWorkspace().updateToolbox()
+
+    document.body.removeChild(modalContainer);
+  });
 
   closeModalButton.addEventListener("click", () => {
     document.body.removeChild(modalContainer);
