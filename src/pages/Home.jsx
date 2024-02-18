@@ -11,8 +11,7 @@ const Home = () => {
       <Header />
       <div style={{ textAlign: 'center' }}>
       </div>
-      {/* <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}> */}
-      <div className="home-box">
+      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
         <BlocklyComponent />
         <Canvas />
       </div>
