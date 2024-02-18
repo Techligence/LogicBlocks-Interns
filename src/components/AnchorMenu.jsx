@@ -4,7 +4,7 @@ import { Button, Menu, Box } from '@mui/material';
 import CameraToggle from './AnchorMenu/CameraToggle';
 import MicToggle from './AnchorMenu/MicToggle';
 import ModeToggle from './AnchorMenu/ModeToggle';
-
+import Canvas from './Canvas';
 
 const AnchorMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,7 +21,9 @@ const AnchorMenu = () => {
   };
 
   return (
+    <div className="anchor">
     <Box sx={{ position: 'absolute', top: 70, right: 16 }}>
+      
       <Button variant="contained" color="primary" onClick={handleClick}>
         <AnchorIcon />
       </Button>
@@ -40,6 +42,7 @@ const AnchorMenu = () => {
         <ModeToggle mode={mode} setMode={setMode} />
       </Menu>
     </Box>
+    </div>
   );
 };
 
