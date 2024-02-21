@@ -47,7 +47,7 @@ const Canvas = () => {
 
   return (
     <div>
-      <Card class="highlighted" style={{ position: 'relative', width: '700px', margin: '28px auto', height: '600px', overflow: 'hidden', background: `url(localVideo)` }}>
+      <Card class="highlighted" style={{ position: 'relative', width: '650px', margin: '28px auto', height: '600px', overflow: 'hidden', background: `url(localVideo)` }}>
         <h1 style={{ textAlign: 'center', fontSize: '14px' }}>Canvas</h1>
         {isCameraOn && <video id="localVideo" autoplay playsinline controls={false} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -100 }} />}
         <Draggable bounds="parent" position={position} defaultPosition={position} style={{ transform: `rotate(100deg)` }}>
