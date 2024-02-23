@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+// Updated BlocklyComponent.jsx
+import React, { useEffect, useRef } from 'react';
 import Blockly from 'blockly';
-
 import { Logic } from './BlockCategories/Logic';
 import { Loops } from './BlockCategories/Loops';
 import { Math } from './BlockCategories/Math';
 import { Text } from './BlockCategories/Text';
+
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import {Operators} from './BlockCategories/Operators';
@@ -12,96 +13,42 @@ import {Control} from './BlockCategories/Control';
 import initializeBlockly from './InitializeBlockly';
 import { useDispatch } from 'react-redux';
 import { javascriptGenerator } from 'blockly/javascript';
-//import { generateCode } from '../features/codeSlice'; // Make sure to import the correct action
+import { generateCode } from '../features/codeSlice'; // Make sure to import the correct action
+import initializeBlockly from './InitializeBlockly';  // import the function
 
 const BlocklyComponent = () => {
   const blocklyRef = useRef(null);
-  const [generatedCode, setGeneratedCode] = useState('');
-  const workspace = Blockly.getMainWorkspace();
-  const dispatch = useDispatch();
-
-  const generateCode = () => {
-    javascriptGenerator.addReservedWords('code');
-    const code = javascriptGenerator.workspaceToCode(workspace);
-    setGeneratedCode(code);
-    console.log(code);
-  };
 
   useEffect(() => {
-    if (!blocklyRef.current) {
+    if (blocklyRef.current === null) {
+      // Initialize Blockly with English
+        Blockly.setLocale('en');
+      // Construct the complete toolbox XML
       const toolboxXml = `
         <xml id="toolbox" style="display: none">
           ${Logic}
           ${Loops}
           ${Math}
           ${Text}
+
           ${Variables}
           ${Events}
           ${Operators}
          ${Control}
           
+
         </xml>
       `;
-      const newWorkspace = initializeBlockly(toolboxXml);
-      blocklyRef.current = newWorkspace;
+      initializeBlockly(toolboxXml);  // Initialize Blockly using the separate function
+      blocklyRef.current = true;
     }
-
-    blocklyRef.current.addChangeListener(handleBlockClick);
-
-    return () => {
-      if (blocklyRef.current) {
-        blocklyRef.current.removeChangeListener(handleBlockClick);
-      }
-    };
   }, []);
 
-  const getAllConnectedBlocks = (block) => {
-    const connectedBlocks = [];
-
-    const populateConnectedBlocks = (currentBlock) => {
-      if (currentBlock) {
-        connectedBlocks.push(currentBlock);
-        currentBlock.getChildren().forEach((childBlock) => {
-          populateConnectedBlocks(childBlock);
-        });
-      }
-    };
-
-    populateConnectedBlocks(block);
-    return connectedBlocks;
-  };
-
-  const getBlockJavaScriptCode = (block) => {
-    javascriptGenerator.addReservedWords('code');
-    const code = Blockly.JavaScript.blockToCode(block);
-    return code.trim();
-  };
-
-  const handleBlockClick = (event) => {
-    if (event.type === Blockly.Events.CLICK) {
-      const clickedBlock = blocklyRef.current.getBlockById(event.blockId);
-      const connectedBlocks = getAllConnectedBlocks(clickedBlock);
-      connectedBlocks.forEach((block) => {
-        const generatedCode = getBlockJavaScriptCode(block);
-        console.log(generatedCode);
-      });
-    }
-  };
-
-  const handleGenerateCode = () => {
-    const code = javascriptGenerator.workspaceToCode(blocklyRef.current);
-    dispatch(generateCode(generatedCode)); // Fix the argument here
-    console.log('Generated Code:', code);
-  };
-
   return (
-    <div className="BlockyComp">
-      <div className="highlghted-text">
-        <h1>Blockly Toolbox</h1>
-        <h1>Blockly Workspace</h1>
-        <button onClick={generateCode}>Generate Code</button>
-      </div>
-      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%' }} onClick={handleBlockClick}></div>
+    <div style={{ width: '100%', height: '480px' }}>
+      <h1 style={{ display: 'inline-block', fontSize: '14px', marginRight: '500px' }}>Blockly Toolbox</h1>
+      <h1 style={{ display: 'inline-block', fontSize: '14px' }}>Blockly Workspace</h1>
+      <div className="highlighted" id="blocklyDiv" style={{ height: '100%', width: '100%', position: 'relative' }}></div>      
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,14 +6,6 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Blockly from 'blockly';
-import Modal from '@mui/material/Modal';
-import { useNavigate } from 'react-router-dom';
-import BoardsSelectionModal from './BoardsSelectionModal';
-
 
 const ProjectNameInput = styled(TextField)({
   maxWidth: '200px',
@@ -44,14 +36,12 @@ export default function Header() {
           </Typography>
 
           {/* Navigation Buttons */}
-          <div className="nav-button">
-          <Button className="btn" color="inherit">Files</Button>
-          <Button className="btn" color="inherit">Edit</Button>
-          <Button className="btn" color="inherit">Tutorials</Button>
-          <Button className="btn" color="inherit">Boards</Button>
-          <Button className="btn" color="inherit">Connect</Button>
-          </div> 
-          
+          <Button color="inherit">Files</Button>
+          <Button color="inherit">Edit</Button>
+          <Button color="inherit">Tutorials</Button>
+          <Button color="inherit">Boards</Button>
+          <Button color="inherit">Connect</Button>
+
           {/* Editable Project Name */}
           <ProjectNameInput
             value={projectName}
