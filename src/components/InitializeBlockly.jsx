@@ -20,7 +20,7 @@ import {
   ifOnEdgeBounce,
 } from "../features/motionSlice";
 
-import { waitSeconds, repeatTimes } from "../features/controlSlice";
+import { waitSeconds} from "../features/controlSlice";
 import { setCodeString } from "../features/codeSlice";
 import { useSelector } from "react-redux";
 const InitializeBlockly = (toolboxXml) => {
@@ -100,81 +100,78 @@ const InitializeBlockly = (toolboxXml) => {
   blocklyDiv.appendChild(customResetButton.button);
   blocklyDiv.appendChild(customZoomOutButton.button);
 
-  // Define the custom Blockly block
-  //on DOM load
-
   return workspace;
 };
 
-// Helper functions to create undo, redo, zoom-in, zoom-out, and reset buttons
-function createZoomInButton(workspace, size) {
-  const button = document.createElement("button");
-  button.innerHTML = `<img src="/zoom-in.svg" alt="Zoom In">`;
-  button.addEventListener("click", () => {
-    const currentScale = workspace.getScale();
-    const newScale = Math.min(Math.max(currentScale + 0.1, 0.3), 3);
-    workspace.setScale(newScale);
-  });
+  // Helper functions to create undo, redo, zoom-in, zoom-out, and reset buttons
+  function createZoomInButton(workspace, size) {
+    const button = document.createElement("button");
+    button.innerHTML = `<img src="/zoom-in.svg" alt="Zoom In">`;
+    button.addEventListener("click", () => {
+      const currentScale = workspace.getScale();
+      const newScale = Math.min(Math.max(currentScale + 0.1, 0.3), 3);
+      workspace.setScale(newScale);
+    });
+  
+    setButtonStyles_zoom(button, size);
+    button.style.marginBottom = "80px";
+    button.style.marginRight = "8px";
+    return { button };
+  }
+  
+  function createZoomOutButton(workspace, size) {
+    const button = document.createElement("button");
+    button.innerHTML = `<img src="/zoom-out.svg" alt="Zoom Out"> `;
+    button.addEventListener("click", () => {
+      const currentScale = workspace.getScale();
+      const newScale = Math.max(currentScale - 0.1, 0.3);
+      workspace.setScale(newScale);
+    });
+  
+    setButtonStyles_zoom(button, size);
+    button.style.marginBottom = "45px";
+    button.style.marginRight = "8px";
+    return { button };
+  }
+  
+  function createResetButton(workspace, size) {
+    const button = document.createElement("button");
+    const imagePath = "/zoom-reset.svg";
+    button.innerHTML = `<img src="${imagePath}" alt="Reset"> `;
+    button.addEventListener("click", () => {
+      centerWorkspace(workspace);
+    });
+  
+    setButtonStyles_zoom(button, size);
+    button.style.marginBottom = "10px";
+    button.style.marginRight = "8px";
+  
+    return { button };
+  }
+  
+  function centerWorkspace(workspace) {
+    const viewSize = workspace.getCanvas().getBBox();
+    workspace.scrollCenter(
+      viewSize.x + viewSize.width / 2,
+      viewSize.y + viewSize.height / 2
+    );
+  }
+  
+  // Helper function to set common button styles
+  function setButtonStyles_zoom(button, size) {
+    button.style.zIndex = "1000";
+    button.style.position = "absolute";
+    button.style.visibility = "visible";
+    button.style.right = "10px";
+    button.style.bottom = "10px";
+    button.style.width = `${size}px`;
+    button.style.height = `${size}px`;
+    button.style.borderRadius = "50%";
+    button.style.backgroundColor = "transparent";
+    button.style.border = "2px solid #808080";
+  }
 
-  setButtonStyles_zoom(button, size);
-  button.style.marginBottom = "80px";
-  button.style.marginRight = "8px";
-  return { button };
-}
-
-function createZoomOutButton(workspace, size) {
-  const button = document.createElement("button");
-  button.innerHTML = `<img src="/zoom-out.svg" alt="Zoom Out"> `;
-  button.addEventListener("click", () => {
-    const currentScale = workspace.getScale();
-    const newScale = Math.max(currentScale - 0.1, 0.3);
-    workspace.setScale(newScale);
-  });
-
-  setButtonStyles_zoom(button, size);
-  button.style.marginBottom = "45px";
-  button.style.marginRight = "8px";
-  return { button };
-}
-
-function createResetButton(workspace, size) {
-  const button = document.createElement("button");
-  const imagePath = "/zoom-reset.svg";
-  button.innerHTML = `<img src="${imagePath}" alt="Reset"> `;
-  button.addEventListener("click", () => {
-    centerWorkspace(workspace);
-  });
-
-  setButtonStyles_zoom(button, size);
-  button.style.marginBottom = "10px";
-  button.style.marginRight = "8px";
-
-  return { button };
-}
-
-function centerWorkspace(workspace) {
-  const viewSize = workspace.getCanvas().getBBox();
-  workspace.scrollCenter(
-    viewSize.x + viewSize.width / 2,
-    viewSize.y + viewSize.height / 2
-  );
-}
-
-// Helper function to set common button styles
-function setButtonStyles_zoom(button, size) {
-  button.style.zIndex = "1000";
-  button.style.position = "absolute";
-  button.style.visibility = "visible";
-  button.style.right = "10px";
-  button.style.bottom = "10px";
-  button.style.width = `${size}px`;
-  button.style.height = `${size}px`;
-  button.style.borderRadius = "50%";
-  button.style.backgroundColor = "transparent";
-  button.style.border = "2px solid #808080";
-}
-
-function createUndoButton(workspace, size) {
+  function createUndoButton(workspace, size) {
   const button = document.createElement("button");
   button.innerHTML = `<img src="/undo.svg" alt="Undo"> `;
   button.addEventListener("click", () => {
@@ -185,9 +182,9 @@ function createUndoButton(workspace, size) {
   button.style.marginBottom = "10px"; // Adjust the position as needed
   button.style.marginRight = "100px";
   return { button };
-}
+  }
 
-function createRedoButton(workspace, size) {
+  function createRedoButton(workspace, size) {
   const button = document.createElement("button");
   button.innerHTML = `<img src="/redo.svg" alt="Redo"> `;
   button.addEventListener("click", () => {
@@ -198,10 +195,10 @@ function createRedoButton(workspace, size) {
   button.style.marginBottom = "10px"; // Adjust the position as needed
   button.style.marginRight = "65px";
   return { button };
-}
+  }
 
-// Helper function to set common button styles
-function setButtonStyles(button, size) {
+  // Helper function to set common button styles
+  function setButtonStyles(button, size) {
   button.style.zIndex = "1000";
   button.style.position = "absolute";
   button.style.visibility = "visible";
@@ -211,8 +208,8 @@ function setButtonStyles(button, size) {
   button.style.height = `${size}px`;
   button.style.borderRadius = "50%";
   button.style.backgroundColor = "transparent";
-  button.style.border = "2px solid #808080";
-  ``;
+  button.style.border = "2px solid #808080";``
 }
 
 export default InitializeBlockly;
+

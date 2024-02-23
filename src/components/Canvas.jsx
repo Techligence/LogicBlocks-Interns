@@ -2,7 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@mui/material';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
-import { useSelector } from 'react-redux';
+import Blockly from 'blockly';
+import 'blockly/javascript';
+import GenerateCodeBox from './GenerateCodeBox';
+
+import {javascriptGenerator} from 'blockly/javascript';
+import { useSelector, useDispatch } from 'react-redux';
+import { spriteClickedEvent,flagClickedEvent} from './BlockCategories/Events';
+import { whenSpriteClicked } from '../features/eventSlice';  
+import { whenFlagClicked } from '../features/eventSlice';
+import { whenKeyPressed } from '../features/eventSlice'; // keypress
+
+// Import Image from src
+// import Demo from '../Images/trial_sprite_nobkg.png'
 
 // Import the button components
 import FlagButton from './Canvas/FlagButton';
@@ -13,12 +25,52 @@ import ZoomIn from './Canvas/ZoomIn';
 import ZoomOut from './Canvas/ZoomOut';
 import FullScreen from './Canvas/FullScreen';
 
+//Start of key press
+const useKeyPress = (targetKey, callback) => {
+  const handleKeyDown = (event) => {
+    if (event.key === targetKey) {
+      callback();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [targetKey, callback]);
+};
+  //End of key press
+
+
 const Canvas = () => {
   const { position, angle } = useSelector((state) => ({
     position: state.motion.position,
     angle: state.motion.angle,
   }));
 
+  const language = useSelector(state => state.language); // Language
+  const dispatch = useDispatch(); //dispatch fore event click
+
+  // const { position, angle } = useSelector((state) => ({
+  //   position: state.motion.position,
+  //   angle: state.motion.angle,
+  // }));
+
+
+  // useEffect(() => {
+  //   const spriteElement = document.getElementById('sprite');
+  //   if (spriteElement) {
+  //     spriteElement.style.transform = `translate(${position.x}px, ${position.y}px) rotate(${angle}deg)`;
+  //   }
+  // }, [position, angle]); 
+  
+
+
+  const [imageSize, setImageSize] = useState(100); // useState for zooming in-out
+  const maxImageSize = 200; // Maximum limit for image size
+  const minImageSize = 100; // Minimum limit for image size
 
   useEffect(() => {
     const spriteElement = document.getElementById('sprite');

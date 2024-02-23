@@ -84,7 +84,6 @@ export const motionSlice = createSlice({
       prepare: (dashUnits) => ({ payload: { dashUnits } }),
     },
     setSpritePosition: {
-      //
       reducer: (state, action) => {
         state.position.x = action.payload.x;
         state.position.y = action.payload.y;
@@ -181,7 +180,7 @@ export const {
   ifOnEdgeBounce,
 } = motionSlice.actions;
 
-export default motionSlice.reducer;
+// export default motionSlice.reducer;
 
 export const moveSpriteToMousePointer = () => (dispatch) => {
   const handleMouseMove = (e) => {
@@ -233,3 +232,19 @@ export const glideSecsXY = (x, y, time) => (dispatch) => {
     }
   }, 10);
 };
+//     name: "Motion",
+//     initialState,
+//     reducers: {
+//         moveSprite: {
+//             reducer: (state, action) => {
+//                 state.position.x += action.payload.rightSteps;
+//                 state.position.y += action.payload.upSteps;
+//             },
+//             prepare: (rightSteps, upSteps) => ({ payload: { rightSteps, upSteps } })
+//         },
+//     },
+// });
+
+// Export the action and reducer
+export const { moveSprite } = motionSlice.actions;
+export default motionSlice.reducer;

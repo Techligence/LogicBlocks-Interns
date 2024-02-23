@@ -1,6 +1,6 @@
 // LoopsCategory.jsx
 export const Loops= `
-  <category name="Loops" colour="#5C81A6" categorystyle="loop_category">
+  <category name="Loops" colour="#5C81A6" >
     <block type="controls_repeat_ext">
       <value name="TIMES">
         <shadow type="math_number">
