@@ -52,9 +52,11 @@ const BlocklyComponent = () => {
   const workspace = Blockly.getMainWorkspace();
   const { codeString } = useSelector((state) => ({
     codeString: state.code.codeString,
-  }));
-  const audioObj = useSelector((state) => state.audio.audioObj);
-
+  }))
+  
+  const audioArray = useSelector(state => state.soundTab.audioArray);
+  const audioObj = useSelector(state => state.audio.audioObj);
+  
   const generateCode = async () => {
     javascriptGenerator.addReservedWords("code");
     const code = javascriptGenerator.workspaceToCode(workspace);
@@ -77,16 +79,18 @@ const BlocklyComponent = () => {
     }
   }, [wavesurferObj]);
 
-  function playSound() {
-    if (isWavesurferReady) {
-      console.log(wavesurferObj.backend.buffer);
-      var abuffer = wavesurferObj.backend.buffer;
-      var length = abuffer.length;
-      const audioUrl = bufferToWave(abuffer, 0, length);
-      return audioUrl;
-    } else console.log("Wavesurfer not ready");
-  }
-  function getSound() {
+  function playSound(soundname){    
+
+    const foundSound = audioArray.find(sound => sound.fileName === soundname);
+    if (foundSound) {
+        return foundSound.audioUrl;
+    } else {
+        console.log("Sound not found in audioArray");
+        return "defaultsound.wav"; // Or return a default sound URL, or handle the case accordingly
+    }
+
+  }  
+  function getSound(){
     return audioObj;
   }
 
@@ -100,8 +104,7 @@ const BlocklyComponent = () => {
         clearInterval(intervalId);
 
         // Get the current block definition
-        const oldDefinition_play = Blockly.Blocks["play_sound"];
-        const oldDefinition_start = Blockly.Blocks["start_sound"];
+        const oldDefinition_play = Blockly.Blocks["play_sound"];        
 
         // Create a new block definition with the updated field value
         const newDefinition_play = {
@@ -110,32 +113,17 @@ const BlocklyComponent = () => {
             this.appendDummyInput().appendField("Set Sound");
             this.appendDummyInput()
               .appendField("Sound Name:")
-              .appendField(new Blockly.FieldTextInput(`${name}`), "SOUND_NAME");
+              .appendField(new Blockly.FieldDropdown(audioArray.map(sound => [sound.fileName, sound.fileName])), "SOUND_NAME");
             this.setPreviousStatement(true, null);
             this.setNextStatement(true, null);
             this.setColour(230);
             this.setTooltip("Play a sound");
           },
-        };
-        const newDefinition_start = {
-          ...oldDefinition_start,
-          init: function () {
-            this.appendDummyInput().appendField("Start Sound");
-            this.appendDummyInput()
-              .appendField("Sound Name:")
-              .appendField(new Blockly.FieldTextInput(`${name}`), "SOUND_NAME");
-            this.setPreviousStatement(true, null);
-            this.setNextStatement(true, null);
-            this.setColour(230);
-            this.setTooltip("Start playing a sound");
-          },
-        };
+        };        
 
         // Unregister the old block
-        delete Blockly.Blocks["play_sound"];
-        delete Blockly.Blocks["start_sound"];
-        Blockly.Blocks["play_sound"] = newDefinition_play;
-        Blockly.Blocks["start_sound"] = newDefinition_start;
+        delete Blockly.Blocks['play_sound'];        
+        Blockly.Blocks['play_sound'] = newDefinition_play;        
 
         // Clear the workspace and add the new block
         workspace.clear();
