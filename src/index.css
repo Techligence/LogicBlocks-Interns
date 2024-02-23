@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
-
+@import url("https://fonts.googleapis.com/css?family=Dosis:300,400");
 * {
   padding: 0;
   margin: 0;
@@ -9,8 +9,478 @@ body {
   width: 100vw;
   padding: 0;
   margin: 0;
+  /* overflow: hidden; */
+  overflow-x: hidden;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  /* font-family: "Poppins", sans-serif; */
+}
+
+/* animation Floating action button */
+
+@keyframes comeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  box-sizing: border-box;
+  margin: 10px auto;
+  width: 120px;
+  height: 120px;
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 17px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  font-weight: bolder;
+  color: black;
+}
+
+.card:hover {
+  border: 1px solid black;
+  transform: scale(1.05);
+}
+
+.card:active {
+  transform: scale(0.95) rotateZ(1.7deg);
+}
+
+h1 a {
+  color: #fff;
+  font-size: 2em;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  font-family: "Dosis", sans-serif;
+}
+.wrapper {
+  display: block;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+/* effect-shine */
+h1.effect-shine:hover {
+  -webkit-mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  -moz-mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  -ms-mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  mask-image: linear-gradient(
+    -75deg,
+    rgba(0, 0, 0, 0.568) 30%,
+    #000 50%,
+    rgba(0, 0, 0, 0.568) 70%
+  );
+  mask-size: 200%;
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  from {
+    mask-position: 150%;
+  }
+
+  to {
+    mask-position: -50%;
+  }
+}
+
+@-webkit-keyframes shine {
+  from {
+    -webkit-mask-position: 150%;
+  }
+
+  to {
+    -webkit-mask-position: -50%;
+  }
+}
+
+/* style for the upload audio component */
+.upload-audio {
+  width: 100%;
+  margin-top: 5vh;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* the container where wavesurfer adds the audio waveform */
+.waveform-container {
+  width: 100%; /* Ensure the container takes up 100% of the width */
+  overflow-x: hidden;
+}
+
+/* Add a border to the waveform */
+
+div#soundBlocklyDiv.highlighted > div {
+  width: 90%;
+}
+
+#waveform {
+  width: 100%; /* Ensure the waveform takes up 100% of the width */
+}
+
+/* Remove the following styles */
+#waveform:nth-child(2) > canvas {
+  width: 100%;
+}
+
+/* style for the navbar */
+nav {
+  display: flex;
+  align-items: center;
+  height: 3.5em;
+  padding: 0 2em;
+  background-color: #1d0b22;
+  color: white;
+  font-size: large;
+  font-weight: bold;
+}
+
+nav > .brand {
+  display: flex;
+  color: white;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* all icons */
+i.material-icons {
+  font-size: 1.5em;
+  color: #1976d2;
+}
+
+h1 {
+  color: #1d0b22;
+}
+
+i.material-icons.audio-icon {
+  font-size: 5em;
+  color: #1976d2 !important;
+  margin: 1rem auto;
+}
+
+/* style for the upload button */
+button.upload-btn {
+  width: 10em;
+  font-size: 1em;
+  padding: 0.5em;
+  background: #1976d2;
+  border-radius: 999px;
+  color: white;
+  border-color: #5b266b;
+  cursor: pointer;
+  margin: 1rem auto;
+}
+
+button.upload-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* Container for the upload and delete buttons */
+div.upload-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+/* style for the delete button */
+button.controls.delete-btn {
+  width: 2em; /* Adjust the width as needed */
+  font-size: 1em;
+  padding: 0.5em;
+  background: #fbfbfb;
+  border-radius: 999px;
+  color: #1976d2;
+  border-color: #b32b0a;
+  cursor: pointer;
+}
+
+/* style for the trim button */
+.trim {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #1976d2;
+  color: white;
+  width: 6.5em;
+  height: 2.5em;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0.25em;
+  border: 1px solid rebeccapurple;
+}
+
+.fade {
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* CSS Started all the button controls */
+/* Container for all the button controls */
+div.all-controls {
+  margin: 2em auto;
+  max-width: 60vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* Container for the left and right sections */
+.all-controls .right-container,
+.all-controls .left-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 50%;
+}
+.all-controls .right-container button.controls.fade-in {
+  margin-right: 2px; /* Adjust this value as needed */
+}
+
+/* Target the Fade Out button and reduce the left margin */
+.all-controls .right-container button.controls.fade-out {
+  margin-left: 2px; /* Adjust this value as needed */
+}
+/* Styling for the individual buttons */
+button.controls {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.2em;
+  position: relative;
+}
+
+/* Styling for the icons */
+button.controls i {
+  /* Add any common styling for the icons here */
+  color: #1976d2;
+}
+
+.custom-icon-color {
+  color: #1976d2;
+}
+/* Styling for the names below the icons */
+button.controls span {
+  font-size: 0.6em;
+  font-style: italic;
+  display: block;
+  text-align: center;
+}
+
+/*CSS End 
+
+/* Volume slider container styling */
+.volume-slide-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Styling for the volume icon */
+.volume-slide-container i {
+  margin-right: 0.5em;
+}
+
+/* style for both sliders */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: rgba(213, 184, 255, 0.7);
+  border: 1px solid #1d0b22;
+  border-radius: 999px;
+  margin: 0;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  filter: brightness(1.05);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #1d0b22;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #1d0b22;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.volume-slide-container {
+  display: flex;
+  align-items: center;
+}
+
+/* smaller icon for zoom slider */
+i.zoom-icon {
+  font-size: 0.8em;
+}
+
+/* toggle switch style*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 4em;
+  height: 1.2em;
+}
+
+.switch input {
+  display: none;
+}
+
+.toggle {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #1d0b22;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  padding: 0;
+  border-radius: 999px;
+}
+
+.toggle:before {
+  position: absolute;
+  content: "";
+  top: -10%;
+  height: 1.3em;
+  width: 1.3em;
+  background-color: #923cac;
+  border: 0.05em solid rebeccapurple;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle:before {
+  -webkit-transform: translateX(180%);
+  -ms-transform: translateX(180%);
+  transform: translateX(180%);
+}
+
+.on {
+  display: none;
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 45%;
+  left: 35%;
+  font-size: 0.5em;
+}
+
+.off {
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 45%;
+  left: 65%;
+  font-size: 0.5em;
+}
+
+input:checked + .toggle .on {
+  display: block;
+}
+
+input:checked + .toggle .off {
+  display: none;
+}
+
+@media screen and (max-width: 430px) {
+  nav {
+    font-size: 1em;
+  }
+
+  .upload-audio i.audio-icon {
+    font-size: 4em;
+  }
+
+  /* all icons */
+  i.material-icons {
+    font-size: 1.5em;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  div.all-controls {
+    max-width: 90vw;
+    flex-flow: column nowrap;
+  }
+
+  .waveform-container {
+    max-width: 90vw;
+  }
+
+  .all-controls .right-container,
+  .all-controls .left-container {
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 1em;
+  }
+
+  /* smaller icon for zoom slider */
+  i.zoom-icon {
+    font-size: 1em;
+  }
 }
 
 .highlighted {
@@ -18,8 +488,25 @@ body {
 }
 
 .blocklyTreeRow {
-  border: 2px solid #333;  /* Add border */
-  margin: 5px 0;          /* Space between categories */
-  border-radius: 5px;     /* Optional rounded corners */
-  padding: 5px;           /* Some padding */
+  border: 2px solid #333; /* Add border */
+  margin: 5px 0; /* Space between categories */
+  border-radius: 5px; /* Optional rounded corners */
+  padding: 5px; /* Some padding */
+}
+
+.content-container {
+  flex: 1;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  padding-left: 20px; /* Adjust the value as needed */
+  margin-left: 127px;
+  overflow: hidden !important; /* Hide any content that overflows the container */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent; /* Firefox */
+}
+
+.content-container::-webkit-scrollbar {
+  display: none;
+}
+.container-inside-content {
+  overflow: hidden; /* or auto, depending on your design */
 }
