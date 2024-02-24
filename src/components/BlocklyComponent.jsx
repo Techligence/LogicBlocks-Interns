@@ -16,8 +16,8 @@ import { Text } from './BlockCategories/Text';
 import { Variables } from './BlockCategories/Variables';
 import { Events } from './BlockCategories/Events';
 import { InputOutput } from './BlockCategories/InputOutput';
-import { Operators } from './BlockCategories/Operators';
-import { generateCode } from '../features/codeSlice'; // Make sure to import the correct action
+// import { Operators } from './BlockCategories/Operators';
+// import { generateCode } from '../features/codeSlice'; // Make sure to import the correct action
 
 import initializeBlockly from './InitializeBlockly';  // import the function
 import { javascriptGenerator } from 'blockly/javascript';
@@ -133,7 +133,6 @@ const BlocklyComponent = () => {
           ${Math}
           ${Text}
           ${Variables}
-          ${Operators}
           ${Events}
           ${Motion}
           ${Control}
