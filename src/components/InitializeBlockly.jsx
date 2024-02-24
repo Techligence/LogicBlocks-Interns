@@ -1,6 +1,28 @@
 import Blockly from "blockly/core";
+import { useState, useEffect } from "react";
 import "blockly/blocks";
+import { javascriptGenerator } from "blockly/javascript";
+import { store } from "../store/store.js";
+import {
+  moveSteps,
+  setX,
+  setY,
+  goTo,
+  goToXY,
+  moveSpriteToMousePointer,
+  turnRight,
+  turnLeft,
+  pointInDirection,
+  rotateSprite,
+  glideSecsXY,
+  changeX,
+  changeY,
+  ifOnEdgeBounce,
+} from "../features/motionSlice";
 
+import { waitSeconds} from "../features/controlSlice";
+import { setCodeString } from "../features/codeSlice";
+import { useSelector } from "react-redux";
 const InitializeBlockly = (toolboxXml) => {
   const workspace = Blockly.inject("blocklyDiv", {
     toolbox: toolboxXml,
@@ -26,6 +48,38 @@ const InitializeBlockly = (toolboxXml) => {
       wheel: true,
     },
   });
+  async function onBlockClick(event) {
+    // console.log('Event details:', event);
+    if (event.type === Blockly.Events.CLICK) {
+      var clickedBlock = workspace.getBlockById(event.blockId);
+      // console.log('Clicked block:', clickedBlock);
+      if (clickedBlock) {
+        var codeToExecute = generateCodeForBlock(clickedBlock);
+        const codeString = store.getState().code.codeString;
+
+        // if (codeToExecute !== codeString) {
+        //   store.dispatch(setCodeString(codeToExecute));
+        // }
+        store.dispatch(setCodeString(codeToExecute));
+        console.log("Executing block code:", codeToExecute);
+        try {
+            await eval(`(async () => { ${codeToExecute} })();`);
+          console.log("executed");
+        } catch (error) {
+          console.error("Error executing block code:", error);
+        }
+      }
+    }
+  }
+
+  // Function to generate code for a block
+  function generateCodeForBlock(block) {
+    javascriptGenerator.addReservedWords("code");
+    const blockCode = javascriptGenerator.blockToCode(block);
+    return blockCode;
+  }
+
+  workspace.addChangeListener(onBlockClick);
 
   // Create custom zoom controls
   const customUndoButton = createUndoButton(workspace, 30);
@@ -35,7 +89,6 @@ const InitializeBlockly = (toolboxXml) => {
   const blocklyDiv = workspace.getParentSvg().parentNode;
   blocklyDiv.appendChild(customUndoButton.button);
   blocklyDiv.appendChild(customRedoButton.button);
-
 
   // Create custom zoom controls
   const customZoomInButton = createZoomInButton(workspace, 30);

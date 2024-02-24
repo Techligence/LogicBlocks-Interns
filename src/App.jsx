@@ -10,11 +10,11 @@ function App() {
     <div className="App">
       <Provider store={store}>
         <BrowserRouter>
-        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center"> 
-        </Box>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
+          <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center"> 
+          </Box>
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
         </BrowserRouter>
       </Provider>
     </div>
