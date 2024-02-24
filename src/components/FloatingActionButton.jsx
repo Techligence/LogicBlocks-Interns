@@ -74,8 +74,13 @@ const FloatingActionButton = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-
-    if (file.type === 'image/png') {
+  
+    if (
+      file.type === 'image/png' ||
+      file.type === 'image/jpeg' ||
+      file.type === 'image/jpg' ||
+      file.type === 'image/gif'
+    ) {
       const reader = new FileReader();
       reader.onload = () => {
         const dataURL = reader.result;
@@ -94,9 +99,10 @@ const FloatingActionButton = () => {
       reader.readAsDataURL(file);
       closeModal();
     } else {
-      alert("Please upload a valid .png file.");
+      alert("Please upload a valid image file (PNG, JPEG, JPG, or GIF).");
     }
   };
+  
 
   const handleSurpriseMe = () => {
 
@@ -211,14 +217,14 @@ const FloatingActionButton = () => {
             {selectedOption === 'Choose a Sprite' && (
               <div className="upload-div">
                 <label className="label-upload" htmlFor='upload-sprite'>UPLOAD SPRITE</label>
-                <input type="file" id="upload-sprite" style={{ display: "none" }} accept=".png" onChange={handleFileUpload} />
+                <input type="file" id="upload-sprite" style={{ display: "none" }} accept=".png,.jpg,.jpeg,.gif" onChange={handleFileUpload} />
               </div>
             )}
 
             {selectedOption === 'Choose a Backdrop' && (
               <div className="upload-div">
                 <label className="label-upload" htmlFor='upload-backdrop'>UPLOAD BACKDROP</label>
-                <input type="file" id="upload-backdrop" style={{ display: "none" }} accept=".png,.jpg,.jpeg" onChange={handleFileUpload} />
+                <input type="file" id="upload-backdrop" style={{ display: "none" }} accept=".png,.jpg,.jpeg,.gif" onChange={handleFileUpload} />
               </div>
             )}
 

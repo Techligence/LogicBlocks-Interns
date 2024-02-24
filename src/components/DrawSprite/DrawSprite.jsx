@@ -142,7 +142,7 @@ const DrawSprite = ({ exampleItems, closeModal, selectedOption }) => {
     const [canvasProps, setCanvasProps] = React.useState({
         className: "react-sketch-canvas",
         width: "100%",
-        height: "100%",
+        height: "400px",
         strokeWidth: 4,
         eraserWidth: 5,
         strokeColor: "#000000",
@@ -164,8 +164,8 @@ const DrawSprite = ({ exampleItems, closeModal, selectedOption }) => {
                         key={fieldName}
                         fieldName={fieldName}
                         type={type}
-                        canvasProps={canvasProps} // Assuming canvasProps is your state
-                        setCanvasProps={setCanvasProps} // Assuming setCanvasProps is your state updater function
+                        canvasProps={canvasProps} 
+                        setCanvasProps={setCanvasProps} 
                     />
                 ))}
             </div>
