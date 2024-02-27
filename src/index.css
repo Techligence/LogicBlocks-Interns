@@ -14,21 +14,26 @@ body {
 }
 
 .highlighted {
-  border: 1px solid #000000; /* Example with a red-orange color */
+  border: 1px solid #000000;
+  /* Example with a red-orange color */
 }
 
 .blocklyTreeRow {
-  border: 2px solid #333; /* Add border */
-  margin: 5px 0; /* Space between categories */
-  border-radius: 5px; /* Optional rounded corners */
-  padding: 5px; /* Some padding */
+  border: 2px solid #333;
+  /* Add border */
+  margin: 5px 0;
+  /* Space between categories */
+  border-radius: 5px;
+  /* Optional rounded corners */
+  padding: 5px;
+  /* Some padding */
 }
 
 .selection-box {
   border-radius: 1rem;
 }
 
-#up-draw-box > * {
+#up-draw-box>* {
   width: 100%;
 }
 
