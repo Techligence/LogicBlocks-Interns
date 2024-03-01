@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-
+import { createAsyncThunk } from "@reduxjs/toolkit";
 // Initial state of the sprite
 const initialState = {
   position: { x: 150, y: 100 }, // Assuming default position
   angle: 0,
+  glideClicked: false,
+  glideStartPosn: { x: -1, y: -1 },
+  glideEndPosn: { x: -1, y: -1, sec: 0 },
 };
 
 // Create the slice
@@ -13,31 +16,37 @@ export const motionSlice = createSlice({
   initialState,
   reducers: {
     moveSteps: {
-        reducer: (state, action) => {
-            const { rightSteps, upSteps } = action.payload;
-             const angleInRadians = (state.angle * Math.PI) / 180;
-             let newX = state.position.x + rightSteps * Math.cos(angleInRadians) - upSteps * Math.sin(angleInRadians);
-             let newY = state.position.y + rightSteps * Math.sin(angleInRadians) + upSteps * Math.cos(angleInRadians);
-             
-             const spriteElement = document.getElementById('sprite');
-             const canvasElement = document.getElementsByClassName("highlighted")[1];
-             
-             if(newX >= 300 ){
-                 newX = 300;
-             }
-             if(newX <= -100 ){
-                 newX = -100;
-             }
-             if(newY >= 300 ){
-                 newY = 300;
-             }
-             if(newY <= -100 ){
-                 newY = -100;
-             }
-             state.position.x = newX;
-             state.position.y = newY;
-         },
-         prepare: (rightSteps, upSteps) => ({ payload: { rightSteps, upSteps } })
+      reducer: (state, action) => {
+        const { rightSteps, upSteps } = action.payload;
+        const angleInRadians = (state.angle * Math.PI) / 180;
+        let newX =
+          state.position.x +
+          rightSteps * Math.cos(angleInRadians) -
+          upSteps * Math.sin(angleInRadians);
+        let newY =
+          state.position.y +
+          rightSteps * Math.sin(angleInRadians) +
+          upSteps * Math.cos(angleInRadians);
+
+        const spriteElement = document.getElementById("sprite");
+        const canvasElement = document.getElementsByClassName("highlighted")[1];
+
+        if (newX >= 300) {
+          newX = 300;
+        }
+        if (newX <= -100) {
+          newX = -100;
+        }
+        if (newY >= 300) {
+          newY = 300;
+        }
+        if (newY <= -100) {
+          newY = -100;
+        }
+        state.position.x = newX;
+        state.position.y = newY;
+      },
+      prepare: (rightSteps, upSteps) => ({ payload: { rightSteps, upSteps } }),
     },
     setX: {
       reducer: (state, action) => {
@@ -108,7 +117,7 @@ export const motionSlice = createSlice({
       reducer: (state, action) => {
         if (action.payload.angle == -1) {
           let clientX, clientY;
-          
+
           const move = (event) => {
             clientX = event.clientX;
             clientY = event.clientY;
@@ -121,8 +130,8 @@ export const motionSlice = createSlice({
           const getCursorPosition = (event) => {
             clientX = event.clientX;
             clientY = event.clientY;
-            move({clientX,clientY});
-          }
+            move({ clientX, clientY });
+          };
           window.addEventListener("onmousemove", getCursorPosition);
         } else {
           state.angle = action.payload.angle % 360; // Ensure the angle stays within 0 to 359 degrees
@@ -152,13 +161,24 @@ export const motionSlice = createSlice({
         }
       },
     },
-    // glideSecsXY: {
-    //     reducer: (state, action) => {
-    //         state.position.x = action.payload.x;
-    //         state.position.y = action.payload.y;
-    //     },
-    //     prepare: (x, y) => ({ payload: { x, y } })
-    // }
+    glideSecsXY: {
+      reducer: (state, action) => {
+        state.glideStartPosn = state.position;
+        state.glideEndPosn = action.payload;
+        if (state.glideClicked == false) {
+          state.glideClicked = true;
+          return;
+        }
+        state.position = action.payload;
+      },
+      prepare: (x, y, sec) => ({ payload: { x, y, sec } }),
+    },
+    done: {
+      reducer: (state, action) => {
+        state.glideClicked = false;
+        console.log("Made false")
+      },
+    },
   },
 });
 
@@ -178,6 +198,8 @@ export const {
   changeX,
   changeY,
   ifOnEdgeBounce,
+  glideSecsXY,
+  done
 } = motionSlice.actions;
 
 // export default motionSlice.reducer;
@@ -209,41 +231,6 @@ export const moveSpriteToMousePointer = () => (dispatch) => {
     window.removeEventListener("keydown", handleEscPress);
   };
 };
-
-export const glideSecsXY = (x, y, time) => (dispatch) => {
-  const spritePosition = useSelector((state) => state.motionSlice.position);
-  console.log("Sprite Position:", spritePosition);
-  const startX = spritePosition.x;
-  const startY = spritePosition.y;
-  const distanceX = x - startX;
-  const distanceY = y - startY;
-  const steps = time / 10;
-  let currentStep = 0;
-
-  const intervalId = setInterval(() => {
-    currentStep++;
-    const newX = startX + (distanceX * currentStep) / steps;
-    const newY = startY + (distanceY * currentStep) / steps;
-    dispatch(glideSecsXY(newX, newY));
-
-    if (currentStep >= steps) {
-      clearInterval(intervalId);
-      dispatch(goToXY(x, y));
-    }
-  }, 10);
-};
-//     name: "Motion",
-//     initialState,
-//     reducers: {
-//         moveSprite: {
-//             reducer: (state, action) => {
-//                 state.position.x += action.payload.rightSteps;
-//                 state.position.y += action.payload.upSteps;
-//             },
-//             prepare: (rightSteps, upSteps) => ({ payload: { rightSteps, upSteps } })
-//         },
-//     },
-// });
 
 // Export the action and reducer
 export const { moveSprite } = motionSlice.actions;

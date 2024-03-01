@@ -57,11 +57,8 @@ const InitializeBlockly = (toolboxXml) => {
         var codeToExecute = generateCodeForBlock(clickedBlock);
         const codeString = store.getState().code.codeString;
 
-        // if (codeToExecute !== codeString) {
-        //   store.dispatch(setCodeString(codeToExecute));
-        // }
         store.dispatch(setCodeString(codeToExecute));
-        console.log("Executing block code:", codeToExecute);
+        console.log("Executing block code:",codeToExecute);
         try {
             await eval(`(async () => { ${codeToExecute} })();`);
           console.log("executed");
