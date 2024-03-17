@@ -73,12 +73,9 @@ const Canvas = () => {
   useEffect(() => {
     if (arr.length > 0) {
       let c = 0;
-      const startX = arr[c].x;
-      const startY = arr[c].y;
       const targetX = arr[arr.length-1].x;
       const targetY = arr[arr.length-1].y;
       const sec = start.x != -1 ? glideEndPosn.sec : glideEndPosn.sec;
-      console.log("Second:",sec)
       if (!glideClicked) {
         return;
       }
@@ -101,7 +98,10 @@ const Canvas = () => {
           let newY = arr[c].y;
           c++;
           dispatch(glideSecsXY(newX, newY, sec));
-          requestAnimationFrame(updatePosition);
+          setTimeout(() => {
+            c++;
+            requestAnimationFrame(updatePosition);
+          }, (sec/arr.length)*2000);
         }
       };
 
@@ -142,7 +142,6 @@ const Canvas = () => {
       // Clean up if needed
       setStart({ x: -1, y: -1 });
       setEnd({ x: -1, y: -1 });
-      // setArr([]);
     };
   }, [glideClicked]);
   const canvasRef = useRef(null);
@@ -158,7 +157,7 @@ const Canvas = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.beginPath();
     setStart({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    setArr([...arr, { x: e.clientX - rect.left, y: e.clientY - rect.top }]);
+    setArr([...arr, { x: e.clientX - rect.left - 100, y: e.clientY - rect.top - 150 }]);
     context.moveTo(e.clientX - rect.left, e.clientY - rect.top); // Adjust coordinates using the bounding rectangle
   };
 
@@ -169,7 +168,7 @@ const Canvas = () => {
     const context = canvas.getContext("2d");
     const rect = canvas.getBoundingClientRect(); // Get the bounding rectangle of the canvas
     // setEnd({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    setArr([...arr, { x: e.clientX - rect.left, y: e.clientY - rect.top }]);
+    setArr([...arr, { x: e.clientX - rect.left - 100, y: e.clientY - rect.top - 150 }]);
     context.lineTo(e.clientX - rect.left, e.clientY - rect.top); // Adjust coordinates using the bounding rectangle
     context.stroke();
   };
