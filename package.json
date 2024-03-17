@@ -19,6 +19,7 @@
     "blockly": "^10.2.1",
     "country-flag-emoji": "^1.0.3",
     "emoji-dictionary": "^1.0.11",
+    "immer": "^10.0.3",
     "re-resizable": "^6.9.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -102,18 +102,6 @@ Blockly.Blocks["go_to_menu"] = {
   },
 };
 
-// javascriptGenerator['go_to_menu'] = function(block) {
-//   const destination = block.getFieldValue('DESTINATION');
-//   let code = '';
-//   if (destination === 'mouse_pointer') {
-//     // Generate code to dispatch the moveSpriteToMousePointer thunk
-//     code = 'store.dispatch(moveSpriteToMousePointer());\n';
-//   }
-
-//   console.log(code);
-//   return code;
-// }
-
 Blockly.Blocks["go_to_xy"] = {
   init: function () {
     this.appendDummyInput()
@@ -362,9 +350,8 @@ javascriptGenerator["glidesecstoxy"] = function (block) {
   const sec = block.getFieldValue("SECS");
   const xCoord = block.getFieldValue("X_COORD");
   const yCoord = block.getFieldValue("Y_COORD");
-  const code = `store.dispatch(glideSecsXY(${xCoord}, ${yCoord}, ${sec}));
-`;
-  console.log(code);
+  const code = `store.dispatch(glideSecsXY(${xCoord}, ${yCoord}, ${sec}));`;
+  console.log("Hello Code",code);
   return code;
 };
 
